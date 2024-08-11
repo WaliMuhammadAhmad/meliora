@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "./ui/aurora-background.tsx";
 import { FlipWords } from "./ui/flip-words.tsx";
+import Products from "./components/Products";
 
 function App() {
 
@@ -21,7 +22,8 @@ function App() {
     "Stain Removal"];
 
   return (
-    <AuroraBackground>
+    <div>
+      <AuroraBackground>
       <motion.div
         initial={{ opacity: 0.0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -43,6 +45,8 @@ function App() {
         </button>
       </motion.div>
     </AuroraBackground>
+      <Products />
+    </div>
   );
 }
 
