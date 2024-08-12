@@ -5,7 +5,7 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
-import BookmarkAdd from "@mui/icons-material/BookmarkAddOutlined";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 export default function ProductCard() {
   return (
@@ -20,15 +20,15 @@ export default function ProductCard() {
       <div>
         <Typography level="title-lg">Yosemite National Park</Typography>
         {/* <Typography level="body-sm">April 24 to May 02, 2021</Typography> */}
-        {/* <IconButton
+        <IconButton
           aria-label="bookmark Bahamas Islands"
           variant="plain"
           color="neutral"
           size="sm"
           sx={{ position: "absolute", top: "0.875rem", right: "0.5rem" }}
         >
-          <BookmarkAdd />
-        </IconButton> */}
+          <AddShoppingCartIcon />
+        </IconButton>
       </div>
       <AspectRatio minHeight="120px" maxHeight="200px">
         <img
