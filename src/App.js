@@ -3,7 +3,7 @@ import React from "react";
 import { AuroraBackground } from "./ui/aurora-background.tsx";
 import { FlipWords } from "./ui/flip-words.tsx";
 import Products from "./components/Products";
-import Services from "./components/Services.jsx";
+import { Reviews } from "./components/Reviews.jsx";
 import { WaveAd } from "./components/WaveAd.jsx";
 import Blogs from "./components/Blogs.jsx";
 import logo from './assets/logoSVG.png';
@@ -61,6 +61,7 @@ function App() {
       </div>
       {/* <Services /> */}
       <Blogs />
+      <Reviews />
     </div>
   );
 }
