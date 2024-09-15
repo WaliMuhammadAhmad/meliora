@@ -96,6 +96,10 @@ export const StickyScroll = ({
               >
                 {item.description}
               </motion.p>
+              {/* Mobile View: Show image below the description */}
+              <div className="block lg:hidden mt-6">
+                {item.content}
+              </div>
             </div>
           ))}
           <div className="h-40" />

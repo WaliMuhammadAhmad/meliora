@@ -77,6 +77,7 @@ import { WaveAd } from "./components/WaveAd.jsx";
 import Blogs from "./components/Blogs.jsx";
 import logo from './assets/logoSVG.png';
 import { Navbar } from "./components/Navbar.jsx"; // Import Navbar
+import WholeSale from "./components/WholeSale.jsx"; // Import WholeSale
 
 function App() {
   const words = [
@@ -132,6 +133,9 @@ function App() {
 
       <section id="products">
         <Products />
+      </section>
+      <section id="wholeSale">
+        <WholeSale />
       </section>
       <div className="relative z-10" id="whyus">
         <WaveAd />
