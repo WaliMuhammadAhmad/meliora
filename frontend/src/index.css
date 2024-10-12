@@ -5,7 +5,9 @@
 body {
     overflow-x: hidden;
 }
-
+/* .no-scroll{
+    overflow: hidden;
+} */
 .main-container {
     width: 100vw;
     display: flex;
@@ -19,12 +21,12 @@ p {
 }
 
 .main-container .left-section {
-    width: 40%;
+    width: 35%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     border: 2px solid gray;
-    padding: 20px;
+    padding: 15px;
 }
 
 .left-section .links {
@@ -40,10 +42,11 @@ p {
 ul li a {
     font-weight: 500;
     color: black;
+    font-size: 12px;
 }
 
 .left-section .img-section {
-    /* background-color: black; */
+    /* background-color: white; */
     height: 50%;
     display: flex;
     align-items: center;
@@ -51,22 +54,23 @@ ul li a {
 }
 
 .img-section img {
-    width: 200px;
-    height: 300px;
+    width: 150px;
+    height: 250px;
+    object-fit: contain;
 }
 
 .main-container .right-section {
-    width: 50%;
+    width: 40%;
     padding: 50px 70px;
     border: 2px solid gray;
 }
 
 .right-section h1 {
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .right-section p {
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .right-section .para {
@@ -95,7 +99,7 @@ button {
 .one .logo,
 .two .logo,
 .logo {
-    font-size: 30px;
+    font-size: 25px;
     margin-top: auto;
     margin-bottom: auto;
     padding: 20px;
@@ -110,7 +114,7 @@ button {
 
 .one h3,
 .two h3 {
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .one h3:last-child,
@@ -149,6 +153,379 @@ button {
     font-weight: bold;
 }
 
+.cart-container {
+    position: absolute;
+    display: flex;
+    z-index: 100;
+    width: 100vw;
+    height: 120vh;
+
+}
+
+.cart-container .left-section {
+    /* background-color: rgba(0,0,0,0.5); */
+    width: 60%;
+    height: 100%;
+}
+
+.cart-container .right-section {
+    width: 40%;
+    background-color: #0B6BCB;
+    height: 100%;
+    padding: 50px;
+}
+
+.right-section .top-heading {
+    text-align: center;
+    border-bottom: 2px solid white;
+    padding: 10px;
+}
+
+.cart-container .right-section h1,
+.main-checkout h1 {
+    font-size: 30px;
+    color: white;
+}
+
+.main-checkout h1 {
+    color: black;
+}
+
+.right-section .cart-items .item,
+.main-checkout .cart-items .item {
+    display: flex;
+    font-weight: bold;
+    margin: 20px;
+    color: white;
+}
+
+.main-checkout .cart-items .item {
+    display: flex;
+    font-weight: bold;
+    margin: 20px;
+    color: black;
+}
+
+.item .image-section img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.item .item-right {
+    padding-left: 20px;
+}
+
+.cart-items hr {
+    background-color: white;
+}
+
+.label-1,
+.label-2,
+.label-3 {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px;
+    color: white;
+}
+
+.label-1,
+.label-2 {
+    border-bottom: 2px solid white;
+}
+
+.checkout {
+    display: flex;
+    font-size: 20px;
+}
+
+.checkout span {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+}
+
+.checkout h3 {
+    text-decoration: underline;
+    cursor: pointer;
+    color: white;
+}
+
+.cross-icon {
+    float: right;
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+}
+
+.checkout-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.checkout-container .billing {
+    width: 50%;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    padding-left: 70px;
+    justify-content: center;
+}
+
+.checkout-container .main-checkout {
+    width: 50%;
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.billing h1 {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+form label {
+    display: block;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+form input {
+    width: 300px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 3px;
+    background-color: rgba(211, 211, 211, 0.616);
+}
+
+.checkout-container .main-checkout {
+    padding: 50px;
+}
+
+.radio {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+input[type="checkbox"] {
+    accent-color: #007BFF;
+    /* Changes the color of the radio button */
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+    margin: auto;
+}
+
+.radio label {
+    margin-left: 10px;
+}
+
+header {
+    display: flex;
+    padding: 20px 40px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header img {
+    width: 150px;
+    height: 100px;
+}
+
+header .icons {
+    display: flex;
+    gap: 10px;
+}
+
+header svg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+header ul {
+    display: flex;
+    gap: 30px;
+}
+
+ul li a {
+    font-size: 15px;
+    cursor: pointer;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+
+}
+
+.manage-products,
+.dashboard {
+    padding: 50px;
+    background-color: rgb(33, 109, 158);
+}
+
+.manage-products .top,
+.dashboard .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.manage-products h1,
+.dashboard h1 {
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+
+.manage-products button {
+    /* float: right; */
+    padding: 10px;
+    font-size: 20px;
+    background-color: white;
+}
+
+.manage-products #customers {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#customers td,
+#customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+    background-color: #ddd;
+}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    /* height: 120vh; */
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    /* overflow-y: scroll; */
+}
+
+.modal-overlay .modal-content {
+    background: white;
+    width: 50vw;
+    /* height: 100vh; */
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow-y: scroll;
+}
+
+.modal-content .close-icon {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 20px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: rgba(211, 211, 211, 0.733);
+    border-radius: 5px;
+}
+
+.modal-content button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.dashboard .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cards .card {
+    padding: 50px;
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    background-color: white;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.card h1 {
+    color: black;
+    font-size: 30px;
+}
+
+.dashboard p {
+    color: white;
+}
+
+.dashboard .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.stats .card-one,
+.stats .card-two {
+    color: white;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.hamburger {
+    display: none;
+}
+
+@media screen and (max-width:1300px) {
+    .dashboard .stats {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .dashboard .cards {
+        justify-content: center;
+    }
+}
+
 @media screen and (max-width:1110px) {
     .main-container {
         flex-direction: column;
@@ -167,10 +544,146 @@ button {
         width: 150px;
         height: 200px;
     }
-    li a{
+
+    ul li a {
         font-size: 13px;
     }
-    .right-section h1{
+    .links ul li {
+        margin: 10px;
+    }
+
+    .right-section h1 {
         font-size: 20px;
+    }
+
+    .manage-products .top,
+    .dashboard .top {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-overlay {
+        padding: 0px;
+    }
+
+    .modal-overlay .modal-content {
+        width: 90vw;
+    }
+
+    .modal-content input {
+        padding: 5px;
+        margin-top: 5px;
+    }
+
+    .modal-content button {
+        margin-top: 10px;
+        padding: 5px 10px;
+    }
+
+    .cart-container .left-section {
+        /* background-color: rgba(0,0,0,0.5); */
+        width: 10%;
+    }
+
+    .cart-container .right-section {
+        width: 90%;
+    }
+    .cart-container {
+        height: 200vh;
+    
+    }
+
+}
+
+@media screen and (max-width:750px) {
+    .hamburger {
+        display: block;
+    }
+
+    header {
+        position: relative;
+    }
+
+    header svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    header img {
+        width: 120px;
+        height: 80px;
+    }
+
+    header ul {
+        position: absolute;
+        flex-direction: column;
+        background-color: wheat;
+        right: 0;
+        top: 20vw;
+        padding: 50px;
+    }
+
+    ul li {
+        margin: 20px;
+    }
+
+    header .show {
+        display: block;
+    }
+
+    header .hide {
+        display: none;
+    }
+
+    .cards .card {
+        padding: 50px;
+        font-size: 20px;
+    }
+
+    .card h1 {
+        color: black;
+        font-size: 20px;
+    }
+    .checkout-container {
+        flex-direction: column;
+    }
+    .checkout-container .billing {
+        width: 100%;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    .checkout-container .main-checkout {
+        width: 100%;
+        align-items: center;
+    }
+    
+    .billing h1 {
+        font-size: 20px;
+    }
+    
+    form label {
+        display: block;
+        font-size: 12px;
+        margin-top: 20px;
+    }
+    
+    form input {
+        width: 300px;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 3px;
+        background-color: rgba(211, 211, 211, 0.616);
+    }
+    
+
+}
+
+@media screen and (max-width:500px) {
+
+    #customers td,
+    #customers th {
+        font-size: 7px;
+        padding: 4px;
     }
 }

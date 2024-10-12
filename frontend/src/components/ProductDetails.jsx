@@ -1,14 +1,20 @@
 import { Button, Link } from '@mui/joy'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
 import { GiFirstAidKit } from "react-icons/gi";
 import { Routes, Route } from 'react-router-dom'
+import { Navbar } from './Navbar';
+import Cart from './Cart';
+import CreateContextApi from '../ContextApi/CreateContextApi';
+
 
 export default function ProductDetails() {
     const [limit, setLimit] = useState(1)
+    const { showCart, setShowCart } = useContext(CreateContextApi)
     return (
         <>
+            <Cart />
             <div className="main-container">
                 <div className="left-section">
                     <div className="img-section">
@@ -16,10 +22,10 @@ export default function ProductDetails() {
                     </div>
                     <div className="links">
                         <ul>
-                            <li><Link to='/description'><a>Description</a></Link></li>
-                            <li><Link to='/review'><a>Review (150)</a></Link></li>
-                            <li><Link to='/ingredients'><a>Ingredients</a></Link></li>
-                            <li><Link to='/packaging'><a>Packaging</a></Link></li>
+                            <li><Link to='/description'  className='a'><a>Description</a></Link></li>
+                            <li><Link to='/review' className='a'><a>Review (150)</a></Link></li>
+                            <li><Link to='/ingredients' className='a'><a>Ingredients</a></Link></li>
+                            <li><Link to='/packaging' className='a'><a>Packaging</a></Link></li>
                         </ul>
                     </div>
                     <Routes>
@@ -81,8 +87,9 @@ export default function ProductDetails() {
                             {limit}
                             <button onClick={() => setLimit(limit + 1)}>+</button>
                         </div>
-                        <Button>Add to Cart</Button>
+                        <Button onClick={()=>setShowCart(!showCart)}>Add to Cart</Button>
                     </div>
+                        <span onClick={()=>setShowCart(!showCart)} style={{fontSize:'13px',marginTop:'auto',marginBottom:'auto',textDecoration:'underline',cursor:'pointer'}}>Go To Cart</span>
                     <h5 style={{ fontWeight: "500" }}>Try It With:</h5>
                     <div className="suggestion">
                         <div className="logo">

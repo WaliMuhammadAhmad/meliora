@@ -1,8 +1,10 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import { FloatingNav } from "./../ui/floating-navbar.tsx";
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
+import CreateContextApi from "../ContextApi/CreateContextApi.js";
 export function Navbar() {
+  const { showCart, setShowCart } = useContext(CreateContextApi)
   const navItems = [
     {
       name: "Home",
@@ -29,19 +31,19 @@ export function Navbar() {
       ),
     },
     {
-        name: "Blogs",
-        link: "#blogs",
-        icon: (
-          <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
-        ),
-      },
-      {
-        name: "Reviews",
-        link: "#reviews",
-        icon: (
-          <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
-        ),
-      },
+      name: "Blogs",
+      link: "#blogs",
+      icon: (
+        <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
+      ),
+    },
+    {
+      name: "Reviews",
+      link: "#reviews",
+      icon: (
+        <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
+      ),
+    }
   ];
   return (
     <div className="relative  w-full">

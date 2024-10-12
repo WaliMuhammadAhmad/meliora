@@ -81,15 +81,22 @@ import WholeSale from "./components/WholeSale.jsx"; // Import WholeSale
 import { Route, Routes } from 'react-router-dom'
 import ProductDetails from "./components/ProductDetails.jsx";
 import Home from "./components/Home.jsx";
+import Chekcout from "./components/Chekcout.jsx";
+import Admin from "./components/Admin.jsx";
+import AddProducts from "./components/AddProducts.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 
 function App() {
 
   return (
     <>
-      
+
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
         <Route exact path="/product-details" element={<ProductDetails />}></Route>
+        <Route exact path="/checkout" element={<Chekcout />}></Route>
+        <Route exact path="/admin/dashboard" element={<><Admin /><Dashboard /></>}></Route>
+        <Route exact path="/admin/add-products" element={<><Admin /><AddProducts /></>}></Route>
       </Routes>
     </>
   );
