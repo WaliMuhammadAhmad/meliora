@@ -112,3 +112,7 @@ const Description = () => <div><h2>Description of the product</h2><p>Here is the
 const Review = () => <div><h2>Review of the product</h2><p>Customer reviews go here...</p></div>;
 const Ingredients = () => <div><h2>Ingredients</h2><p>List of ingredients goes here...</p></div>;
 const Packaging = () => <div><h2>Packaging Information</h2><p>Details about the packaging...</p></div>;
+
+
+
+// Made by: Zain Manzoor github: ZainManzoor2003

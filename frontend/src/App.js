@@ -82,9 +82,9 @@ import { Route, Routes } from 'react-router-dom'
 import ProductDetails from "./components/ProductDetails.jsx";
 import Home from "./components/Home.jsx";
 import Chekcout from "./components/Chekcout.jsx";
-import Admin from "./components/Admin.jsx";
-import AddProducts from "./components/AddProducts.jsx";
-import Dashboard from "./components/Dashboard.jsx";
+import Dashboard from "./components/dashboard/Dashboard.jsx";
+import Admin from "./components/dashboard/components/Admin.jsx";
+import AddProducts from "./components/dashboard/components/AddProducts.jsx";
 
 function App() {
 
