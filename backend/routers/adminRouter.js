@@ -1,11 +1,11 @@
 const express = require('express');
-const controller = require('../controllers/controller')
 const router = express.Router();
+const adminController = require('../controllers/adminController');
 
-
-router.post('/register',controller.registerAdmin)
-
-router.post('/login',controller.loginAdmin)
-
+router.post('/', adminController.createAdmin);
+router.get('/', adminController.getAllAdmins);
+router.get('/:id', adminController.getAdminById);
+router.put('/:id', adminController.updateAdmin);
+router.delete('/:id', adminController.deleteAdmin);
 
 module.exports = router;
