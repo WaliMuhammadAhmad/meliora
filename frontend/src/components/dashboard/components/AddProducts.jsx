@@ -60,15 +60,15 @@ const UpdateModal = ({ show, onClose, product }) => {
                 />
                 <label>Front Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, frontImage: e.target.files[0] }))}
                 />
                 <label>Back Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, backImage: e.target.files[0] }))}
                 />
                 <button onClick={handleSubmit}>Update</button>
             </div>
@@ -121,15 +121,15 @@ const AddModal = ({ show, onClose }) => {
                 />
                 <label>Front Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, frontImage: e.target.files[0] }))}
                 />
                 <label>Back Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, backImage: e.target.files[0] }))}
                 />
                 <button onClick={handleSubmit}>Add Product</button>
             </div>
