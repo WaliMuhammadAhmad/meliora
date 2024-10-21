@@ -45,6 +45,12 @@ const UpdateModal = ({ show, onClose, product }) => {
                     value={currentProduct.description}
                     onChange={(e) => setCurrentProduct(prev => ({ ...prev, description: e.target.value }))}
                 />
+                <label>Image:</label>
+                <input
+                    type="file"
+                    // value={currentProduct.price}
+                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, Image: e.target.files[0] }))}
+                />
 
                 <button onClick={handleSubmit}>Update</button>
             </div>
@@ -80,6 +86,12 @@ const AddModal = ({ show, onClose }) => {
                     type="text"
                     value={currentProduct.description}
                     onChange={(e) => setCurrentProduct(prev => ({ ...prev, description: e.target.value }))}
+                />
+                <label>Image:</label>
+                <input
+                    type="file"
+                    // value={currentProduct.price}
+                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, Image: e.target.files[0] }))}
                 />
 
                 <button onClick={handleSubmit}>Add Blog</button>
