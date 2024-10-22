@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { AuroraBackground } from "../ui/aurora-background.tsx";
-import { FlipWords } from "../ui/flip-words.tsx";
+import { AuroraBackground } from "../ui/aurora-background";
+import { FlipWords } from "../ui/flip-words";
 import Products from "../components/Products";
-import { Reviews } from "../components/Reviews.jsx";
-import { WaveAd } from "../components/WaveAd.jsx";
-import Blogs from "../components/Blogs.jsx";
+import { Reviews } from "../components/Reviews";
+import { WaveAd } from "../components/WaveAd";
+import Blogs from "../components/Blogs";
 import logo from '../assets/logoSVG.png';
-import { Navbar } from "../components/Navbar.jsx"; // Import Navbar
-import WholeSale from "../components/WholeSale.jsx"; // Import WholeSale
+import { Navbar } from "../components/Navbar"; // Import Navbar
+import WholeSale from "../components/WholeSale"; // Import WholeSale
 
 const words = [
     "Eco-Friendly Solutions",
