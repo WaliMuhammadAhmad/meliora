@@ -6,6 +6,7 @@ const Admin = require("./models/adminSchema");
 const Product = require("./models/productSchema");
 const Review = require("./models/reviewSchema");
 const Package = require("./models/packageSchema");
+const Order = require("./models/orderSchema");
 
 const connectDB = async () => {
   try {
@@ -30,7 +31,6 @@ const seedData = async () => {
     Package.deleteMany({}),
   ]);
 
-  // Insert dummy data
   const customers = await Customer.insertMany([
     {
       name: "John Doe",
@@ -149,6 +149,29 @@ const seedData = async () => {
       products: [products[0]._id, products[1]._id],
       isAvailable: true,
     },
+  ]);
+
+  const order = await Order.insertMany([
+    {
+      customerId: '6714028cb590524754829a4f',
+      productId: '6714028cb590524754829a55',
+      status: 'pending',
+    },
+    {
+      customerId: '6714028cb590524754829a4f',
+      productId: '6714028cb590524754829a55',
+      status: 'delivered',
+    },
+    {
+      customerId: '6714028cb590524754829a4f',
+      productId: '6714028cb590524754829a55',
+      status: 'completed',
+    },
+    {
+      customerId: '6714028cb590524754829a4f',
+      productId: '6714028cb590524754829a55',
+      status: 'cancelled',
+    }
   ]);
 
   console.log("Dummy data seeded successfully");
