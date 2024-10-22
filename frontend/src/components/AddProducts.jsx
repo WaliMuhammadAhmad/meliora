@@ -60,15 +60,15 @@ const UpdateModal = ({ show, onClose, product }) => {
                 />
                 <label>Front Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, frontImage: e.target.files[0] }))}
                 />
                 <label>Back Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, backImage: e.target.files[0] }))}
                 />
                 <button onClick={handleSubmit}>Update</button>
             </div>
@@ -121,15 +121,15 @@ const AddModal = ({ show, onClose }) => {
                 />
                 <label>Front Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, frontImage: e.target.files[0] }))}
                 />
                 <label>Back Image:</label>
                 <input
-                    type="number"
+                    type="file"
                 // value={currentProduct.price}
-                // onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setCurrentProduct(prev => ({ ...prev, backImage: e.target.files[0] }))}
                 />
                 <button onClick={handleSubmit}>Add Product</button>
             </div>
@@ -158,27 +158,33 @@ export default function AddProducts() {
                     <button onClick={() => handleAddClick()} >Add Product</button>
                 </div>
                 <div className="products">
-                    <table id="customers">
-                        <tr>
-                            <th>Product No.</th>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Operations</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Zain Manzoor</td>
-                            <td>50</td>
-                            <td>In Stock</td>
-                            <td><span style={{ cursor: 'pointer', fontWeight: 'bold' }} onClick={() => handleUpdateClick()}>Update</span>
-                                <span style={{ cursor: 'pointer', fontWeight: 'bold', color: 'red', marginLeft: '10px' }}>Delete</span></td>
-                        </tr>
+                    <div className="product-grid">
+                        <div className="header product-no">Product No.</div>
+                        <div className="header product-name">Product Name</div>
+                        <div className="header product-price">Price</div>
+                        <div className="header product-status">Status</div>
+                        <div className="header product-operations">Operations</div>
 
-                    </table>
-
-
+                        <div className="product-no product-description">3</div>
+                        <div className="product-name product-description">Meliora Body Soap</div>
+                        <div className="product-price product-description">10</div>
+                        <div className="product-status out-of-stock product-description">Out of Stock</div>
+                        <div className="product-operations product-description">
+                            <button className="update-btn" onClick={() => handleUpdateClick()}>Update</button>
+                            <button className="delete-btn">Delete</button>
+                        </div>
+                        <div className="product-no product-description">3</div>
+                        <div className="product-name product-description">Meliora Body Soap</div>
+                        <div className="product-price product-description">10</div>
+                        <div className="product-status out-of-stock product-description">Out of Stock</div>
+                        <div className="product-operations product-description">
+                            <button className="update-btn" onClick={() => handleUpdateClick()}>Update</button>
+                            <button className="delete-btn">Delete</button>
+                        </div>
+                       
+                    </div>
                 </div>
+
                 <UpdateModal
                     show={showModal}
                     onClose={() => setShowModal(false)}
@@ -198,3 +204,4 @@ export default function AddProducts() {
 }
 
 
+// Made by: Zain Manzoor github: ZainManzoor2003

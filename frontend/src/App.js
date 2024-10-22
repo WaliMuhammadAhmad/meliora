@@ -10,12 +10,14 @@ import logo from './assets/logoSVG.png';
 import { Navbar } from "./components/Navbar.jsx"; // Import Navbar
 import WholeSale from "./components/WholeSale.jsx"; // Import WholeSale
 import { Route, Routes } from 'react-router-dom'
-import ProductDetails from "./components/ProductDetails.jsx";
+import ProductDetails from "./pages/ProductDetails.jsx";
 import Home from "./components/Home.jsx";
 import Chekcout from "./components/Chekcout.jsx";
 import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Admin from "./components/dashboard/components/Admin.jsx";
 import AddProducts from "./components/dashboard/components/AddProducts.jsx";
+import AddBlog from "./components/dashboard/components/AddBlog.jsx";
+import Account from "./components/dashboard/components/Account.jsx";
 
 function App() {
 
@@ -28,6 +30,8 @@ function App() {
         <Route exact path="/checkout" element={<Chekcout />}></Route>
         <Route exact path="/admin/dashboard" element={<><Admin /><Dashboard /></>}></Route>
         <Route exact path="/admin/add-products" element={<><Admin /><AddProducts /></>}></Route>
+        <Route exact path="/admin/add-blogs" element={<><Admin /><AddBlog /></>}></Route>
+        <Route exact path="/admin/account" element={<><Admin /><Account /></>}></Route>
       </Routes>
     </>
   );
