@@ -1,5 +1,5 @@
 import { Button, Link } from '@mui/joy'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
 import { GiFirstAidKit } from "react-icons/gi";
@@ -11,10 +11,38 @@ import CreateContextApi from '../ContextApi/CreateContextApi';
 
 export default function ProductDetails() {
     const [limit, setLimit] = useState(1)
-    const { showCart, setShowCart } = useContext(CreateContextApi)
+    const { showCart, setShowCart, cartData, setCartData } = useContext(CreateContextApi)
+    const id=4;
+    const modifyCartData = () => {
+        setCartData(prevCartData => {
+            const productIndex = prevCartData.findIndex(item => item.id === id);
+
+            // If the product exists in the cart, update its 'items' value
+            if (productIndex !== -1) {
+                const updatedCartData = [...prevCartData];
+                updatedCartData[productIndex] = {
+                    ...updatedCartData[productIndex],
+                    items: limit // Update the 'items' with the new 'limit' value
+                };
+                return updatedCartData;
+            }
+
+            // If the product doesn't exist, add a new one to the cart
+            return [
+                ...prevCartData,
+                {
+                    id: 4, // New product with the specified id
+                    img: 'https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false', // Example image
+                    name: 'New Product', // You can customize the name as needed
+                    price: 100, // Example price
+                    items: limit // New item count from the current limit
+                }
+            ];
+        })
+    }
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
             <Cart />
             <div className="main-container">
                 <div className="left-section">
@@ -81,7 +109,7 @@ export default function ProductDetails() {
                             {limit}
                             <button onClick={() => setLimit(limit + 1)}>+</button>
                         </div>
-                        <Button onClick={() => setShowCart(!showCart)}>Add to Cart</Button>
+                        <Button onClick={() => { setShowCart(!showCart); modifyCartData() }}>Add to Cart</Button>
                     </div>
                     <span onClick={() => setShowCart(!showCart)} style={{ fontSize: '13px', marginTop: 'auto', marginBottom: 'auto', textDecoration: 'underline', cursor: 'pointer' }}>Go To Cart</span>
                     <h5 style={{ fontWeight: "500" }}>Try It With:</h5>
@@ -109,14 +137,14 @@ export default function ProductDetails() {
 
                     <div class="card">
                         <img src="/cards.webp" alt="Step 2" />
-                        <h3>Fill with warm water and let tablet dissolve</h3>
-                        <p>Warm water dissolves the soap more quickly, but do not use hot water. Reattach the sprayer and shake gently to dissolve the tablet.</p>
+                        <h3>Add a refill tablet to the bottle</h3>
+                        <p>Our bottles come with a tablet inside. To refill the bottle, remove the sprayer attachment and add one refill tablet. Each tablet makes about 16 fl. oz. of liquid cleaner.</p>
                     </div>
 
                     <div class="card">
                         <img src="/cards.webp" alt="Step 3" />
-                        <h3>Spray hard surfaces and wipe until dry</h3>
-                        <p>Spray on hard surfaces, including wood, stone, metal, and glass. Wipe with a clean cloth for a streak-free finish. Test on a hidden spot with delicate surfaces.</p>
+                        <h3>Add a refill tablet to the bottle</h3>
+                        <p>Our bottles come with a tablet inside. To refill the bottle, remove the sprayer attachment and add one refill tablet. Each tablet makes about 16 fl. oz. of liquid cleaner.</p>
                     </div>
                 </div>
             </div>
@@ -167,8 +195,8 @@ export default function ProductDetails() {
                     <div class="review-header">
                         <div className="top-heading">
 
-                        <h4>Melanie Morningstar</h4>
-                        <span class="verified">Verified</span>
+                            <h4>Melanie Morningstar</h4>
+                            <span class="verified">Verified</span>
                         </div>
                         <p>McLean, US</p>
                     </div>
@@ -179,8 +207,8 @@ export default function ProductDetails() {
                     <div class="review-header">
                         <div className="top-heading">
 
-                        <h4>Melanie Morningstar</h4>
-                        <span class="verified">Verified</span>
+                            <h4>Melanie Morningstar</h4>
+                            <span class="verified">Verified</span>
                         </div>
                         <p>McLean, US</p>
                     </div>
@@ -191,8 +219,8 @@ export default function ProductDetails() {
                     <div class="review-header">
                         <div className="top-heading">
 
-                        <h4>Melanie Morningstar</h4>
-                        <span class="verified">Verified</span>
+                            <h4>Melanie Morningstar</h4>
+                            <span class="verified">Verified</span>
                         </div>
                         <p>McLean, US</p>
                     </div>

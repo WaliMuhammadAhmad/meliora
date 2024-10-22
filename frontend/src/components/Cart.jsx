@@ -8,18 +8,31 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Cart() {
-    const { showCart, setShowCart } = useContext(CreateContextApi)
+    const { showCart, setShowCart, cartData, setCartData } = useContext(CreateContextApi)
+    const [total, setTotal] = useState(0);
     const [bgColor, setBgColor] = useState("transparent");
     const navigate = useNavigate();
+    useEffect(() => {
+        let tempTotal = 0;
+        // Recalculate totals based on price and items
+        for (let index = 0; index < cartData.length; index++) {
+            console.log(cartData[index]);
+
+            tempTotal += cartData[index].price * cartData[index].items
+        }
+
+        setTotal(tempTotal) // Update the state with new totals
+    }, [cartData], []); // Run this effect on mount
     useEffect(() => {
         let timeout;
         if (showCart) {
             timeout = setTimeout(() => {
-                document.body.classList.add('no-scroll')
+                document.body.classList.add('no-scroll');
+                window.scrollTo(0, 0);  // Scroll to the top of the page
                 setBgColor("rgba(0, 0, 0, 0.5)"); // light black background
             }, 1000); // 1 second delay
         } else {
-            document.body.classList.remove('no-scroll')
+            document.body.classList.remove('no-scroll');
             setBgColor("transparent"); // reset background when modal is hidden
         }
         return () => clearTimeout(timeout); // cleanup on unmount or when showCart changes
@@ -37,38 +50,23 @@ export default function Cart() {
                         <h1>CART</h1>
                     </div>
                     <div className="cart-items">
-                        <div className="item">
-                            <div className="image-section">
-                                <img src="https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false" alt="" />
+                        {cartData.map((data => (
+
+                            <div className="item">
+                                <div className="image-section">
+                                    <img src={data.img} alt="" />
+                                </div>
+                                <div className="item-right">
+                                    <h5>{data.name}</h5>
+                                    <h5>${data.price} x {data.items}</h5>
+                                </div>
                             </div>
-                            <div className="item-right">
-                                <h5>Meliora Super Plus</h5>
-                                <h5>$75 x 1</h5>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <div className="image-section">
-                                <img src="https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false" alt="" />
-                            </div>
-                            <div className="item-right">
-                                <h5>Meliora Super Plus</h5>
-                                <h5>$75 x 1</h5>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <div className="image-section">
-                                <img src="https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false" alt="" />
-                            </div>
-                            <div className="item-right">
-                                <h5>Meliora Super Plus</h5>
-                                <h5>$75 x 1</h5>
-                            </div>
-                        </div>
+                        )))}
                         <hr />
                     </div>
                     <div className="label-1">
                         <h3>SubTotal:</h3>
-                        <h3>$175</h3>
+                        <h3>${total}</h3>
                     </div>
                     <div className="label-2">
                         <h3>Shipping:</h3>
@@ -76,10 +74,10 @@ export default function Cart() {
                     </div>
                     <div className="label-3">
                         <h3>Total:</h3>
-                        <h3>$175</h3>
+                        <h3>${total}</h3>
                     </div>
                     <div className="checkout">
-                        <h3 onClick={() => navigate('/checkout')}>Proceed to Checkout</h3>
+                        <h3 onClick={() => { navigate('/checkout'); setShowCart(!showCart); document.body.classList.remove('no-scroll') }}>Proceed to Checkout</h3>
                         <span onClick={() => navigate('/checkout')}><FaArrowRight /></span>
                     </div>
                 </div>
