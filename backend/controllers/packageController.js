@@ -1,4 +1,4 @@
-const Package = require('../models/packageSchema'); // Adjust the path as necessary
+const Package = require('../models/packageSchema');
 
 // Create a new package
 exports.createPackage = async (req, res) => {
@@ -22,7 +22,7 @@ exports.createPackage = async (req, res) => {
 // Get all packages
 exports.getAllPackages = async (req, res) => {
     try {
-        const packages = await Package.find().populate('products'); // Populate products if needed
+        const packages = await Package.find();
         res.status(200).json(packages);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -32,7 +32,7 @@ exports.getAllPackages = async (req, res) => {
 // Get package by ID
 exports.getPackageById = async (req, res) => {
     try {
-        const package = await Package.findById(req.params.id).populate('products');
+        const package = await Package.findById(req.params.id);
         if (!package) {
             return res.status(404).json({ message: 'Package not found' });
         }
@@ -55,7 +55,7 @@ exports.updatePackage = async (req, res) => {
                 price,
                 products
             },
-            { new: true } // Returns the updated package
+            { new: true, runValidators: true }
         );
 
         if (!updatedPackage) {
