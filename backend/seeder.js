@@ -1,5 +1,4 @@
 require("dotenv").config();
-const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const Customer = require("./models/customerSchema");
 const Admin = require("./models/adminSchema");
@@ -22,159 +21,159 @@ const connectDB = async () => {
 };
 
 const seedData = async () => {
-  // Clear existing collections
-  await Promise.all([
-    Customer.deleteMany({}),
-    Admin.deleteMany({}),
-    Product.deleteMany({}),
-    Review.deleteMany({}),
-    Package.deleteMany({}),
-  ]);
+  try {
 
-  const customers = await Customer.insertMany([
-    {
-      name: "John Doe",
-      email: "johndoe@example.com",
-      password: await bcrypt.hash("password123", 10),
-      phone: "1234567890",
-      address: {
-        house: "101",
-        street: "Main Street",
-        city: "New York",
-        state: "NY",
-        postalCode: "10001",
-        country: "USA",
-      },
-      paymentMethods: {
-        cardPayment: {
-          cardNumber: "4111111111111111",
-          expiryDate: "12/25",
-          cvv: "123",
-          nameOnCard: "John Doe",
-          billingAddress: "101 Main Street, New York, NY, 10001",
-          default: true,
+    // Insert customers
+    const customers = await Customer.insertMany([
+      {
+        name: "Ahmed Khan",
+        email: "ahmedkhan@example.com",
+        password: "AhmedSecret789",
+        phone: "1122334455",
+        address: {
+          house: "789",
+          street: "Gulberg",
+          city: "Islamabad",
+          state: "Islamabad Capital Territory",
+          postalCode: "44000",
+          country: "Pakistan",
         },
-        cashOnDelivery: true,
-      },
-      isVerified: true,
-    },
-    {
-      name: "Jane Smith",
-      email: "janesmith@example.com",
-      password: await bcrypt.hash("password456", 10),
-      phone: "0987654321",
-      address: {
-        house: "202",
-        street: "Second Avenue",
-        city: "Los Angeles",
-        state: "CA",
-        postalCode: "90001",
-        country: "USA",
-      },
-      paymentMethods: {
-        cardPayment: {
-          cardNumber: "4242424242424242",
-          expiryDate: "11/24",
-          cvv: "456",
-          nameOnCard: "Jane Smith",
-          billingAddress: "202 Second Avenue, Los Angeles, CA, 90001",
-          default: false,
+        deliveryAddress: "Same as address",
+        paymentMethods: {
+          cashOnDelivery: true,
+          cardPayment: {
+            cardNumber: null,
+            expiryDate: null,
+            cvv: null,
+            nameOnCard: null,
+            billingAddress: null,
+            default: false,
+          },
         },
-        cashOnDelivery: false,
+        isVerified: true,
       },
-      isVerified: false,
-    },
-  ]);
+    ]);
 
-  const admins = await Admin.insertMany([
-    {
-      name: "Alice Johnson",
-      email: "alice.johnson@example.com",
-      password: await bcrypt.hash("password123", 10),
-      role: "admin",
-      isActive: true,
-    },
-    {
-      name: "Bob Smith",
-      email: "bob.smith@example.com",
-      password: await bcrypt.hash("another@password123", 10),
-      role: "moderator",
-      isActive: false,
-    },
-  ]);
+    // Insert admins
+    const admins = await Admin.insertMany([
+      {
+        name: "Labeeb",
+        email: "m.labeeb@example.com",
+        password: "password123",
+        role: "admin",
+        isActive: false,
+      },
+    ]);
 
-  const products = await Product.insertMany([
-    {
-      name: "Chemical A",
-      description: "A high-quality chemical for industrial use.",
-      price: 29.99,
-      size: 1000,
-      image: "https://example.com/product-a.jpg",
-      category: "Chemicals",
-      stockQuantity: 100,
-      isFeatured: true,
-    },
-    {
-      name: "Industrial Cleaner",
-      description: "An industrial-grade cleaner for tough jobs.",
-      price: 49.99,
-      size: 500,
-      image: "https://example.com/product-b.jpg",
-      category: "Cleaning",
-      stockQuantity: 50,
-    },
-  ]);
+    // Insert products
+    const products = await Product.insertMany([
+      {
+        name: "Meliora All-Purpose Cleaner",
+        description: "A powerful all-purpose cleaner that cuts through grease and grime, leaving surfaces sparkling clean.",
+        price: 12.99,
+        size: "Medium",
+        quantity: "500ml",
+        frontImage: "https://example.com/images/all-purpose-cleaner-front.jpg",
+        backImage: "https://example.com/images/all-purpose-cleaner-back.jpg",
+        stockQuantity: 150,
+      },
+      {
+        name: "Meliora Glass Cleaner",
+        description: "A streak-free glass cleaner that provides a brilliant shine to all glass surfaces.",
+        price: 9.99,
+        size: "Small",
+        quantity: "250ml",
+        frontImage: "https://example.com/images/glass-cleaner-front.jpg",
+        backImage: "https://example.com/images/glass-cleaner-back.jpg",
+        stockQuantity: 100,
+      },
+      {
+        name: "Meliora Heavy-Duty Degreaser",
+        description: "An industrial-strength degreaser designed for tough cleaning jobs in kitchens and garages.",
+        price: 19.99,
+        size: "Large",
+        quantity: "1L",
+        frontImage: "https://example.com/images/heavy-duty-degreaser-front.jpg",
+        backImage: "https://example.com/images/heavy-duty-degreaser-back.jpg",
+        stockQuantity: 80,
+      },
+      {
+        name: "Meliora Bathroom Cleaner",
+        description: "A specialized cleaner that removes soap scum and hard water stains, keeping your bathroom fresh.",
+        price: 10.50,
+        size: "Medium",
+        quantity: "500ml",
+        frontImage: "https://example.com/images/bathroom-cleaner-front.jpg",
+        backImage: "https://example.com/images/bathroom-cleaner-back.jpg",
+        stockQuantity: 200,
+      },
+      {
+        name: "Meliora Floor Cleaner",
+        description: "A concentrated formula for cleaning all types of floors, leaving them shiny and fresh.",
+        price: 15.75,
+        size: "Large",
+        quantity: "1L",
+        frontImage: "https://example.com/images/floor-cleaner-front.jpg",
+        backImage: "https://example.com/images/floor-cleaner-back.jpg",
+        stockQuantity: 120,
+      },
+    ]);
 
-  const reviews = await Review.insertMany([
-    {
-      stars: 5,
-      review: "This is an excellent product. Highly recommend!",
-      customerId: customers[0]._id,
-      productId: products[0]._id,
-    },
-    {
-      stars: 4,
-      review: "Good product but a little expensive.",
-      customerId: customers[1]._id,
-      productId: products[1]._id,
-    },
-  ]);
+    // Insert reviews
+    const reviews = await Review.insertMany([
+      {
+        stars: 5,
+        review: "This is an excellent product. Highly recommend!",
+        customerId: customers[0]._id,
+        productId: products[0]._id,
+      },
+      {
+        stars: 4,
+        review: "Good product but a little expensive.",
+        customerId: customers[1]._id,
+        productId: products[1]._id,
+      },
+    ]);
 
-  const pkg = await Package.insertMany([
-    {
-      packageName: "Starter Package",
-      description:
-        "A starter package for new customers with essential products.",
-      price: 99.99,
-      products: [products[0]._id, products[1]._id],
-      isAvailable: true,
-    },
-  ]);
+    // Insert packages
+    const pkg = await Package.insertMany([
+      {
+        packageName: "Starter Package",
+        description: "A starter package for new customers with essential products.",
+        price: 99.99,
+        products: [products[0]._id, products[1]._id],
+        isAvailable: true,
+      },
+    ]);
 
-  const order = await Order.insertMany([
-    {
-      customerId: '6714028cb590524754829a4f',
-      productId: '6714028cb590524754829a55',
-      status: 'pending',
-    },
-    {
-      customerId: '6714028cb590524754829a4f',
-      productId: '6714028cb590524754829a55',
-      status: 'delivered',
-    },
-    {
-      customerId: '6714028cb590524754829a4f',
-      productId: '6714028cb590524754829a55',
-      status: 'completed',
-    },
-    {
-      customerId: '6714028cb590524754829a4f',
-      productId: '6714028cb590524754829a55',
-      status: 'cancelled',
-    }
-  ]);
+    // Insert orders
+    const orders = await Order.insertMany([
+      {
+        customerId: customers[0]._id,
+        productId: products[0]._id,
+        status: "pending",
+      },
+      {
+        customerId: customers[0]._id,
+        productId: products[0]._id,
+        status: "delivered",
+      },
+      {
+        customerId: customers[1]._id,
+        productId: products[1]._id,
+        status: "completed",
+      },
+      {
+        customerId: customers[1]._id,
+        productId: products[1]._id,
+        status: "cancelled",
+      },
+    ]);
 
-  console.log("Dummy data seeded successfully");
+    console.log("Dummy data seeded");
+  } catch (error) {
+    console.error("Error seeding data:", error);
+  }
 };
 
 const runSeeder = async () => {
