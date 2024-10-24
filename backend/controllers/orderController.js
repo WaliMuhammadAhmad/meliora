@@ -28,7 +28,7 @@ exports.neworder = async (req, res) => {
 // Get all Orders
 exports.getAllOrders = async (req, res) => {
     try {
-        const Orders = await Order.find().populate('customerId').populate('productId');
+        const Orders = await Order.find();
         res.status(200).json(Orders);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -38,11 +38,11 @@ exports.getAllOrders = async (req, res) => {
 // Get Order by ID
 exports.getOrderById = async (req, res) => {
     try {
-        const Order = await Order.findById(req.params.id).populate('customerId').populate('productId');
-        if (!Order) {
-            return res.status(404).json({ message: 'Order not found' });
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return res.status(404).json({ message: 'order not found' });
         }
-        res.status(200).json(Order);
+        res.status(200).json(order);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -71,14 +71,12 @@ exports.getOrderByCustomerId = async (req, res) => {
 // Update Order by ID
 exports.updateOrder = async (req, res) => {
     try {
-        const { Order } = req.body;
-
+        const updated = req.body;
+        
         const updatedOrder = await Order.findByIdAndUpdate(
             req.params.id,
-            {
-                Order
-            },
-            { new: true }
+            updated,
+            { new: true, runValidators: true }
         );
 
         if (!updatedOrder) {

@@ -28,6 +28,11 @@ const orderSchema = new mongoose.Schema({
     versionKey: false // Disabling the "__v" version key
 });
 
+orderSchema.pre('findOneAndUpdate', function (next) {
+    this.set({ updated_at: Date.now() });
+    next();
+});
+
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;
