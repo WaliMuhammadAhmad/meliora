@@ -73,6 +73,27 @@ exports.updateAdmin = async (req, res) => {
     }
 };
 
+// Update admin role
+exports.updateAdminRole = async (req, res) => {
+    try {
+        const { role, isActive } = req.body;
+
+        const updatedRole = await Admin.findByIdAndUpdate(
+            req.params.id,
+            { role, isActive },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedRole) {
+            return res.status(404).json({ message: 'Admin not found' });
+        }
+
+        res.status(200).json({ message: 'Admin role updated successfully', admin: updatedRole });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 // Delete admin by ID
 exports.deleteAdmin = async (req, res) => {
     try {
