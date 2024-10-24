@@ -48,6 +48,26 @@ exports.getOrderById = async (req, res) => {
     }
 };
 
+// Get Order by CustomerID
+exports.getOrderByCustomerId = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        const customer = await Customer.findById(customerId);
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+        
+        const orders = await Order.find({ customerId: customerId });
+        if (!orders.length) {
+            return res.status(404).json({ message: 'No orders for this customer' });
+        }
+        res.status(200).json(orders);
+        
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 // Update Order by ID
 exports.updateOrder = async (req, res) => {
     try {
