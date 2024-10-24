@@ -1,16 +1,19 @@
-const Product = require('../models/productSchema'); // Adjust the path as necessary
+const Product = require('../models/productSchema');
 
 // Create a new product
 exports.createProduct = async (req, res) => {
     try {
-        const { image, name, description, price, size } = req.body;
+        const { name, description, price, size, quantity, frontImage, backImage, stockQuantity } = req.body;
 
         const newProduct = new Product({
-            image,
             name,
             description,
             price,
-            size
+            size,
+            quantity,
+            frontImage,
+            backImage,
+            stockQuantity
         });
 
         const savedProduct = await newProduct.save();
@@ -23,7 +26,7 @@ exports.createProduct = async (req, res) => {
 // Get all products
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find(); // Add population if needed
+        const products = await Product.find();
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -46,18 +49,21 @@ exports.getProductById = async (req, res) => {
 // Update product by ID
 exports.updateProduct = async (req, res) => {
     try {
-        const { image, name, description, price, size } = req.body;
+        const { name, description, price, size, quantity, frontImage, backImage, stockQuantity } = req.body;
 
         const updatedProduct = await Product.findByIdAndUpdate(
             req.params.id,
             {
-                image,
                 name,
                 description,
                 price,
-                size
+                size,
+                quantity,
+                frontImage,
+                backImage,
+                stockQuantity
             },
-            { new: true } // Returns the updated product
+            { new: true, runValidators: true }
         );
 
         if (!updatedProduct) {

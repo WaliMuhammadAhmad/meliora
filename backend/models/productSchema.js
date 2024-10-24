@@ -20,43 +20,30 @@ const productSchema = new mongoose.Schema({
         min: [0, 'Price must be greater than or equal to 0']
     },
     size: {
-        type: Number,
+        type: String,
         required: [true, 'Size is required'],
-        min: [1, 'Size must be a positive number']
+        enum: ['Small','Medium','Large','XL','Other']
     },
-    image: {
+    quantity: {
+        type: String,
+        required: [true, "Product Quantity is required"],
+        default: "250ml",
+    },
+    frontImage: {
         type: String,
         required: [true, 'Product image URL is required'],
         trim: true
     },
-    category: {
+    backImage: {
         type: String,
-        required: [true, 'Category is required'],
-        enum: ['Chemicals', 'Industrial', 'Cleaning', 'Other'],
-        default: 'Chemicals'
+        required: [true, 'Product image URL is required'],
+        trim: true
     },
     stockQuantity: {
         type: Number,
         required: [true, 'Stock quantity is required'],
         min: [0, 'Stock quantity cannot be negative'],
         default: 0
-    },
-    ratings: {
-        average: {
-            type: Number,
-            default: 0,
-            min: [0, 'Rating must be at least 0'],
-            max: [5, 'Rating must be at most 5']
-        },
-        totalReviews: {
-            type: Number,
-            default: 0,
-            min: [0, 'Total reviews cannot be negative']
-        }
-    },
-    isFeatured: {
-        type: Boolean,
-        default: false
     }
 }, { 
     timestamps: true
