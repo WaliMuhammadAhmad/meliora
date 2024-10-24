@@ -1,13 +1,12 @@
-const Review = require('../models/reviewSchema'); // Adjust the path as necessary
-const Product = require('../models/productSchema'); // Assuming you have a Product model for product reference
-const Customer = require('../models/customerSchema'); // Assuming you have a Customer model for customer reference
+const Review = require('../models/reviewSchema');
+const Product = require('../models/productSchema');
+const Customer = require('../models/customerSchema');
 
 // Create a new review
 exports.createReview = async (req, res) => {
     try {
         const { stars, review, customerId, productId } = req.body;
 
-        // Validate that the product and customer exist
         const product = await Product.findById(productId);
         const customer = await Customer.findById(customerId);
         if (!product || !customer) {
@@ -31,7 +30,7 @@ exports.createReview = async (req, res) => {
 // Get all reviews
 exports.getAllReviews = async (req, res) => {
     try {
-        const reviews = await Review.find().populate('customerId').populate('productId'); // Populate customer and product info
+        const reviews = await Review.find();
         res.status(200).json(reviews);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -41,7 +40,7 @@ exports.getAllReviews = async (req, res) => {
 // Get review by ID
 exports.getReviewById = async (req, res) => {
     try {
-        const review = await Review.findById(req.params.id).populate('customerId').populate('productId');
+        const review = await Review.findById(req.params.id);
         if (!review) {
             return res.status(404).json({ message: 'Review not found' });
         }
@@ -62,7 +61,7 @@ exports.updateReview = async (req, res) => {
                 stars,
                 review
             },
-            { new: true } // Returns the updated review
+            { new: true, runValidators: true }
         );
 
         if (!updatedReview) {
