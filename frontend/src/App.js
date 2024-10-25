@@ -32,15 +32,6 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/orders",
-    element: (
-      <>
-        <Admin />
-        
-      </>
-    ),
-  },
-  {
     path: "/admin/products",
     element: (
       <>
