@@ -1,207 +1,142 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import UpdateModal from "../components/dashboard/components/UpdateModal";
+import AddModal from "../components/dashboard/components/AddModal";
+import Alert from "../components/dashboard/components/Alert";
 
-const UpdateModal = ({ show, onClose, product }) => {
-    const [currentProduct, setCurrentProduct] = useState({
-        name: '',
-        description: '',
-        ingredient: '',
-        price: ''
-    });
-    useEffect(() => {
-        if (product) {
-            setCurrentProduct({
-                name: product.name,
-                description: product.description,
-                ingredient: product.ingredient,
-                price: product.price
-            });
-        }
-    }, [product]);
-
-    if (!show) return null;
-
-
-    const handleSubmit = () => {
-        // onUpdate({ ...productData, name: productName, price });
-        // onClose();
-    };
-
-    return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <span className="close-icon" onClick={onClose}>&times;</span>
-                <h2>Update Product</h2>
-                <label>Product Name:</label>
-                <input
-                    type="text"
-                    value={currentProduct.name}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, name: e.target.value }))}
-                />
-
-                <label>Description:</label>
-                <input
-                    type="text"
-                    value={currentProduct.description}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, description: e.target.value }))}
-                />
-
-                <label>Ingredients:</label>
-                <input
-                    type="text"
-                    value={currentProduct.ingredient}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, ingredient: e.target.value }))}
-                />
-
-                <label>Price:</label>
-                <input
-                    type="number"
-                    value={currentProduct.price}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, price: e.target.value }))}
-                />
-                <label>Front Image:</label>
-                <input
-                    type="file"
-                // value={currentProduct.price}
-                onChange={(e) => setCurrentProduct(prev => ({ ...prev, frontImage: e.target.files[0] }))}
-                />
-                <label>Back Image:</label>
-                <input
-                    type="file"
-                // value={currentProduct.price}
-                onChange={(e) => setCurrentProduct(prev => ({ ...prev, backImage: e.target.files[0] }))}
-                />
-                <button onClick={handleSubmit}>Update</button>
-            </div>
-        </div>
-    );
-};
-
-const AddModal = ({ show, onClose }) => {
-
-    const [currentProduct, setCurrentProduct] = useState({});
-    if (!show) return null;
-
-
-    const handleSubmit = () => {
-        // onUpdate({ ...productData, name: productName, price });
-        // onClose();
-    };
-
-    return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <span className="close-icon" onClick={onClose}>&times;</span>
-                <h2>Add Product</h2>
-                <label>Product Name:</label>
-                <input
-                    type="text"
-                    value={currentProduct.name}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, name: e.target.value }))}
-                />
-
-                <label>Description:</label>
-                <input
-                    type="text"
-                    value={currentProduct.description}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, description: e.target.value }))}
-                />
-
-                <label>Ingredients:</label>
-                <input
-                    type="text"
-                    value={currentProduct.ingredients}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, ingredients: e.target.value }))}
-                />
-
-                <label>Price:</label>
-                <input
-                    type="number"
-                    value={currentProduct.price}
-                    onChange={(e) => setCurrentProduct(prev => ({ ...prev, price: e.target.value }))}
-                />
-                <label>Front Image:</label>
-                <input
-                    type="file"
-                // value={currentProduct.price}
-                onChange={(e) => setCurrentProduct(prev => ({ ...prev, frontImage: e.target.files[0] }))}
-                />
-                <label>Back Image:</label>
-                <input
-                    type="file"
-                // value={currentProduct.price}
-                onChange={(e) => setCurrentProduct(prev => ({ ...prev, backImage: e.target.files[0] }))}
-                />
-                <button onClick={handleSubmit}>Add Product</button>
-            </div>
-        </div>
-    );
-};
-
+axios.defaults.baseURL = "http://localhost:3001";
 
 export default function AddProducts() {
-    const [showModal, setShowModal] = useState(false);
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState({});
-    const handleUpdateClick = () => {
-        setSelectedProduct({ name: 'zain', description: '27127192197829', ingredient: 'hello chocloate', price: '25' });
-        setShowModal(true);
+  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [products, setProducts] = useState([]);
+  const [productToDelete, setProductToDelete] = useState(null);
+
+  const handleAddProduct = async (productData) => {
+    try {
+      const response = await axios.post("/products", productData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Product added successfully", response.data);
+    } catch (error) {
+      console.error("Error adding product", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/products");
+
+        if (response.data && response.data.length > 0) {
+          setProducts(response.data);
+        } else {
+          alert("No products found");
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     };
-    const handleAddClick = () => {
-        setShowAddModal(true);
-    };
-    return (
-        <>
-            <div className="manage-products">
-                <div className="top">
 
-                    <h1>Manage Products</h1>
-                    <button onClick={() => handleAddClick()} >Add Product</button>
+    fetchData();
+  }, []);
+
+  const handleUpdateClick = (product) => {
+    setSelectedProduct(product);
+    setShowModal(true);
+  };
+
+  const handleDeleteClick = (product) => {
+    setProductToDelete(product); // Set the product to be deleted
+    setShowDeleteAlert(true); // Show the alert
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await axios.delete(`/products/${productToDelete._id}`);
+      setProducts(products.filter((p) => p._id !== productToDelete._id)); // Remove the deleted product from the state
+      setShowDeleteAlert(false); // Close the alert after deletion
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  return (
+    <>
+      <div className="manage-products">
+        <div className="top">
+          <h1>Manage Products</h1>
+          <button onClick={() => setShowAddModal(true)}>Add Product</button>
+        </div>
+        <div className="products">
+          <div className="product-grid">
+            <div className="header product-no">Product No.</div>
+            <div className="header product-name">Product Name</div>
+            <div className="header product-price">Price</div>
+            <div className="header product-status">Status</div>
+            <div className="header product-operations">Operations</div>
+
+            {products.map((product, index) => (
+              <React.Fragment key={product._id}>
+                <div className="product-no product-description">
+                  {index + 1}
                 </div>
-                <div className="products">
-                    <div className="product-grid">
-                        <div className="header product-no">Product No.</div>
-                        <div className="header product-name">Product Name</div>
-                        <div className="header product-price">Price</div>
-                        <div className="header product-status">Status</div>
-                        <div className="header product-operations">Operations</div>
-
-                        <div className="product-no product-description">3</div>
-                        <div className="product-name product-description">Meliora Body Soap</div>
-                        <div className="product-price product-description">10</div>
-                        <div className="product-status out-of-stock product-description">Out of Stock</div>
-                        <div className="product-operations product-description">
-                            <button className="update-btn" onClick={() => handleUpdateClick()}>Update</button>
-                            <button className="delete-btn">Delete</button>
-                        </div>
-                        <div className="product-no product-description">3</div>
-                        <div className="product-name product-description">Meliora Body Soap</div>
-                        <div className="product-price product-description">10</div>
-                        <div className="product-status out-of-stock product-description">Out of Stock</div>
-                        <div className="product-operations product-description">
-                            <button className="update-btn" onClick={() => handleUpdateClick()}>Update</button>
-                            <button className="delete-btn">Delete</button>
-                        </div>
-                       
-                    </div>
+                <div className="product-name product-description">
+                  {product.name}
                 </div>
+                <div className="product-price product-description">
+                  ${product.price}
+                </div>
+                <div
+                  className={`product-status ${
+                    product.stockQuantity === 0 ? "out-of-stock" : "in-stock"
+                  } product-description`}
+                >
+                  {product.stockQuantity === 0 ? "Out of Stock" : "In Stock"}
+                </div>
+                <div className="product-operations product-description">
+                  <button
+                    className="update-btn"
+                    onClick={() => handleUpdateClick(product)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteClick(product)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
 
-                <UpdateModal
-                    show={showModal}
-                    onClose={() => setShowModal(false)}
-                    product={selectedProduct}
-                // onUpdate={handleUpdate}
-                />
-                <AddModal
-                    show={showAddModal}
-                    onClose={() => setShowAddModal(false)}
-                // product={selectedProduct}
-                // onUpdate={handleUpdate}
-                />
+        {/* Modals for updating and adding products */}
+        <UpdateModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          product={selectedProduct}
+        />
+        <AddModal
+        show={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        submitAction={handleAddProduct}
+      />
 
-            </div>
-        </>
-    )
+        {showDeleteAlert && (
+          <Alert
+            productName={productToDelete.name}
+            onConfirm={handleConfirmDelete}
+            onCancel={() => setShowDeleteAlert(false)}
+          />
+        )}
+      </div>
+    </>
+  );
 }
-
-
-// Made by: Zain Manzoor github: ZainManzoor2003
