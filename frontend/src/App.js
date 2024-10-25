@@ -32,7 +32,16 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/add-products",
+    path: "/admin/orders",
+    element: (
+      <>
+        <Admin />
+        
+      </>
+    ),
+  },
+  {
+    path: "/admin/products",
     element: (
       <>
         <Admin />
@@ -41,7 +50,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/add-blogs",
+    path: "/admin/blogs",
     element: (
       <>
         <Admin />
