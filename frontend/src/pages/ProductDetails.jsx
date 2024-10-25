@@ -1,17 +1,18 @@
-import { Button, Link } from '@mui/joy'
-import React, { useContext, useEffect, useState } from 'react'
+import { Button } from '@mui/joy'
+import React, { useContext, useState } from 'react'
 import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
 import { GiFirstAidKit } from "react-icons/gi";
-import { Routes, Route } from 'react-router-dom'
 import { Navbar } from '../components/Navbar';
 import Cart from '../components/Cart';
 import CreateContextApi from '../ContextApi/CreateContextApi';
+import ProductUsage from '../components/ProductUsage';
+import ReviewSection from '../components/ReviewSection';
 
 
 export default function ProductDetails() {
     const [limit, setLimit] = useState(1)
-    const { showCart, setShowCart, cartData, setCartData } = useContext(CreateContextApi)
+    const { showCart, setShowCart, setCartData } = useContext(CreateContextApi)
     const id=4;
     const modifyCartData = () => {
         setCartData(prevCartData => {
@@ -42,7 +43,7 @@ export default function ProductDetails() {
     }
     return (
         <>
-            {/* <Navbar /> */}
+            <Navbar />
             <Cart />
             <div className="main-container">
                 <div className="left-section">
@@ -126,110 +127,8 @@ export default function ProductDetails() {
                     </div>
                 </div>
             </div>
-            <div class="product-cards-container">
-                <h1>How to use All-Purpose Home Cleaner</h1>
-                <div className="cards">
-                    <div class="card">
-                        <img src="/cards.webp" alt="Step 1" />
-                        <h3>Add a refill tablet to the bottle</h3>
-                        <p>Our bottles come with a tablet inside. To refill the bottle, remove the sprayer attachment and add one refill tablet. Each tablet makes about 16 fl. oz. of liquid cleaner.</p>
-                    </div>
-
-                    <div class="card">
-                        <img src="/cards.webp" alt="Step 2" />
-                        <h3>Add a refill tablet to the bottle</h3>
-                        <p>Our bottles come with a tablet inside. To refill the bottle, remove the sprayer attachment and add one refill tablet. Each tablet makes about 16 fl. oz. of liquid cleaner.</p>
-                    </div>
-
-                    <div class="card">
-                        <img src="/cards.webp" alt="Step 3" />
-                        <h3>Add a refill tablet to the bottle</h3>
-                        <p>Our bottles come with a tablet inside. To refill the bottle, remove the sprayer attachment and add one refill tablet. Each tablet makes about 16 fl. oz. of liquid cleaner.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="review-section">
-                <h2>Customer Reviews</h2>
-                <div class="header">
-                    <div class="rating-summary">
-                        <span class="stars">★★★★☆</span>
-                        <span>4.5 out of 5</span>
-                        <p>Based on 109 Reviews</p>
-                    </div>
-                    <div class="rating-breakdown">
-                        <div class="rating-bar">
-                            <span class="stars">★★★★★</span>
-                            <div class="bar"><div class="fill" style={{ width: "90%" }}></div></div>
-                            <span>98</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="stars">★★★★</span>
-                            <div class="bar"><div class="fill" style={{ width: " 8%" }}></div></div>
-                            <span>5</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="stars">★★★</span>
-                            <div class="bar"><div class="fill" style={{ width: "4%" }}></div></div>
-                            <span>4</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="stars">★★</span>
-                            <div class="bar"><div class="fill" style={{ width: "1%;" }}></div></div>
-                            <span>1</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span class="stars">★</span>
-                            <div class="bar"><div class="fill" style={{ width: "1%;" }}></div></div>
-                            <span>1</span>
-                        </div>
-                    </div>
-                    <button class="write-review">Write a Review</button>
-                </div>
-
-                <div class="search-review">
-                    <input type="text" placeholder="Search Review" />
-                    <button class="search-btn">🔍</button>
-                </div>
-
-                <div class="review">
-                    <div class="review-header">
-                        <div className="top-heading">
-
-                            <h4>Melanie Morningstar</h4>
-                            <span class="verified">Verified</span>
-                        </div>
-                        <p>McLean, US</p>
-                    </div>
-                    <div class="review-content">
-                        <h5>Best spray cleaner I've ever used</h5>
-                        <p>This spray cleaner is wonderful. It cuts grease and grime and makes cleaning so easy...</p>
-                    </div>
-                    <div class="review-header">
-                        <div className="top-heading">
-
-                            <h4>Melanie Morningstar</h4>
-                            <span class="verified">Verified</span>
-                        </div>
-                        <p>McLean, US</p>
-                    </div>
-                    <div class="review-content">
-                        <h5>Best spray cleaner I've ever used</h5>
-                        <p>This spray cleaner is wonderful. It cuts grease and grime and makes cleaning so easy...</p>
-                    </div>
-                    <div class="review-header">
-                        <div className="top-heading">
-
-                            <h4>Melanie Morningstar</h4>
-                            <span class="verified">Verified</span>
-                        </div>
-                        <p>McLean, US</p>
-                    </div>
-                    <div class="review-content">
-                        <h5>Best spray cleaner I've ever used</h5>
-                        <p>This spray cleaner is wonderful. It cuts grease and grime and makes cleaning so easy...</p>
-                    </div>
-                </div>
-            </div>
+            <ProductUsage />
+            <ReviewSection />
         </>
     )
 }
