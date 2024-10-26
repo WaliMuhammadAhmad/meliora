@@ -1,11 +1,11 @@
-const blog = require('../models/blogSchema');
+const Blog = require('../models/blogSchema');
 
 // Create a new blog
 exports.createBlog = async (req, res) => {
     try {
         const { blogName, text, image } = req.body;
 
-        const newblog = new blog({
+        const newblog = new Blog({
             blogName,
             text,
             image,
@@ -21,7 +21,7 @@ exports.createBlog = async (req, res) => {
 // Get all blogs
 exports.getAllBlogs = async (req, res) => {
     try {
-        const blogs = await blog.find();
+        const blogs = await Blog.find();
         res.status(200).json(blogs);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -31,7 +31,7 @@ exports.getAllBlogs = async (req, res) => {
 // Get blog by ID
 exports.getBlogById = async (req, res) => {
     try {
-        const blog = await blog.findById(req.params.id);
+        const blog = await Blog.findById(req.params.id);
         if (!blog) {
             return res.status(404).json({ message: 'Blog not found' });
         }
@@ -46,7 +46,7 @@ exports.updateBlog = async (req, res) => {
     try {
         const { blogName, text, image } = req.body;
 
-        const updatedblog = await blog.findByIdAndUpdate(
+        const updatedblog = await Blog.findByIdAndUpdate(
             req.params.id,
             {
                 blogName,
@@ -69,7 +69,7 @@ exports.updateBlog = async (req, res) => {
 // Delete blog by ID
 exports.deleteBlog = async (req, res) => {
     try {
-        const deletedblog = await blog.findByIdAndDelete(req.params.id);
+        const deletedblog = await Blog.findByIdAndDelete(req.params.id);
         if (!deletedblog) {
             return res.status(404).json({ message: 'blog not found' });
         }

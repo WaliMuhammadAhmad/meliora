@@ -5,8 +5,8 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Blog name is required'],
         trim: true,
+        unique: true,
         minlength: [5, 'Blog name must be at least 5 characters long'],
-        maxlength: [50, 'Blog name must not exceed 50 characters']
     },
     text: {
         type: String,
@@ -17,7 +17,8 @@ const blogSchema = new mongoose.Schema({
     image: {
         type: String,
         required: [true, 'Blog image URL is required'],
-        trim: true
+        trim: true,
+        unique: true
     },
 }, {
     timestamps: true

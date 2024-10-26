@@ -7,7 +7,6 @@ const Review = require("./models/reviewSchema");
 const Package = require("./models/packageSchema");
 const Order = require("./models/orderSchema");
 const Blog = require("./models/blogSchema");
-const Blog = require("./models/blogSchema");
 
 const connectDB = async () => {
   try {
@@ -172,7 +171,7 @@ const seedData = async () => {
       },
     ]);
 
-    const blogs = await Blog.inserMany([
+    const blogs = await Blog.insertMany([
       {
         "blogName": "Eco-Friendly Dishwashing with Meliora",
         "text": "Using our Meliora dishwashing detergent is simple and effective! Apply a small amount of detergent onto a wet sponge, scrub your dishes thoroughly, and rinse with warm water. Our formula cuts through grease and leaves dishes sparkling without the use of harsh chemicals.",
