@@ -1,0 +1,41 @@
+.manageItems,
+.dashboard,
+.account {
+  padding: 50px;
+  background-color: rgb(33, 109, 158);
+  height: minmax(90vh, inherit);
+}
+
+.manageItems .top,
+.dashboard .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.manageItems h1,
+.dashboard h1,
+.account h1 {
+  font-size: 25px;
+  color: white;
+  font-weight: bold;
+}
+
+.manageItems button {
+  /* float: right; */
+  padding: 15px;
+  font-size: 20px;
+  background-color: white;
+  background-color: #216d9e;
+  font-weight: bold;
+  border: 2px solid white;
+  color: white;
+  border-radius: 12px;
+}
+
+.manageItems #customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
