@@ -6,6 +6,8 @@ const Product = require("./models/productSchema");
 const Review = require("./models/reviewSchema");
 const Package = require("./models/packageSchema");
 const Order = require("./models/orderSchema");
+const Blog = require("./models/blogSchema");
+const Blog = require("./models/blogSchema");
 
 const connectDB = async () => {
   try {
@@ -169,6 +171,35 @@ const seedData = async () => {
         status: "cancelled",
       },
     ]);
+
+    const blogs = await Blog.inserMany([
+      {
+        "blogName": "Eco-Friendly Dishwashing with Meliora",
+        "text": "Using our Meliora dishwashing detergent is simple and effective! Apply a small amount of detergent onto a wet sponge, scrub your dishes thoroughly, and rinse with warm water. Our formula cuts through grease and leaves dishes sparkling without the use of harsh chemicals.",
+        "image": "https://example.com/images/dishwashing.jpg"
+      },
+      {
+        "blogName": "Cleaning Bathroom Tiles with Meliora Cleaner",
+        "text": "Tackle tough bathroom grime with Meliora's tile cleaner. Pour a small amount on a sponge or brush, scrub tiles gently in a circular motion, and rinse off with warm water. It's effective at removing soap scum and leaves a fresh scent.",
+        "image": "https://example.com/images/bathroom_cleaning.jpg"
+      },
+      {
+        "blogName": "Keeping Your Kitchen Surfaces Clean and Shiny",
+        "text": "Use Meliora’s all-purpose cleaner to wipe down kitchen countertops and surfaces. Spray a small amount directly onto the surface, wipe with a microfiber cloth, and see the shine! Safe on granite, wood, and stainless steel.",
+        "image": "https://example.com/images/kitchen_cleaning.jpg"
+      },
+      {
+        "blogName": "Meliora’s Guide to Eco-Friendly Laundry",
+        "text": "Use our Meliora laundry powder for a natural, eco-friendly wash. Add one scoop per load, set your washing machine to your desired cycle, and let our plant-based ingredients handle tough stains without harming the environment.",
+        "image": "https://example.com/images/laundry.jpg"
+      },
+      {
+        "blogName": "Window and Glass Cleaning with Meliora",
+        "text": "Achieve streak-free windows with Meliora’s glass cleaner. Spray a light mist on the glass and wipe using a lint-free cloth. This cleaner is ammonia-free, making it safe for indoor use without harsh fumes.",
+        "image": "https://example.com/images/window_cleaning.jpg"
+      }
+    ]
+    );
 
     console.log("Dummy data seeded");
   } catch (error) {
