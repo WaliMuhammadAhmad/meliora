@@ -554,7 +554,7 @@ ul li a:hover {
   text-decoration: underline;
 }
 
-.manage-products,
+.manageItems,
 .dashboard,
 .account {
   padding: 50px;
@@ -562,14 +562,14 @@ ul li a:hover {
   height: minmax(90vh, inherit);
 }
 
-.manage-products .top,
+.manageItems .top,
 .dashboard .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.manage-products h1,
+.manageItems h1,
 .dashboard h1,
 .account h1 {
   font-size: 25px;
@@ -577,7 +577,7 @@ ul li a:hover {
   font-weight: bold;
 }
 
-.manage-products button {
+.manageItems button {
   /* float: right; */
   padding: 15px;
   font-size: 20px;
@@ -589,7 +589,7 @@ ul li a:hover {
   border-radius: 12px;
 }
 
-.manage-products #customers {
+.manageItems #customers {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
@@ -1063,8 +1063,8 @@ tbody tr {
     font-size: 12px;
   }
 
-  .manage-products .top,
-  .dashboard .top {
+  .manageItems,
+  .dashboard {
     display: flex;
     flex-direction: column;
   }
