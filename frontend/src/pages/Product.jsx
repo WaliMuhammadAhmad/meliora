@@ -67,7 +67,7 @@ export default function AddProducts() {
 
   return (
     <>
-      <div className="manage-products">
+      <div className="manageItems">
         <div className="top">
           <h1>Manage Products</h1>
           <button onClick={() => setShowAddModal(true)}>Add Product</button>
