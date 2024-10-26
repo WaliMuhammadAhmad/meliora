@@ -6,6 +6,7 @@ const productRouter = require('./productRouter');
 const packageRouter = require('./packageRouter');
 const reviewRouter = require('./reviewRouter');
 const orderRouter = require('./orderRouter');
+const blogRouter = require('./blogRouter');
 
 router.use('/admins', adminRouter);
 router.use('/products', productRouter);
@@ -13,6 +14,7 @@ router.use('/customers', customerRouter);
 router.use('/package', packageRouter);
 router.use('/review', reviewRouter);
 router.use('/order', orderRouter);
+router.use('/blog', blogRouter);
 
 router.get('/', (req, res) => {
     res.send('hello');

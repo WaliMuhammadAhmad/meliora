@@ -5,6 +5,7 @@ import ProductDetails from './pages/ProductDetails';
 import Checkout from './pages/Chekcout';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
+import Order from './pages/Order';
 import AddProducts from './pages/AddProducts';
 import AddBlog from './pages/AddBlog';
 import Account from './pages/Account';
@@ -28,6 +29,33 @@ const router = createBrowserRouter([
       <>
         <Admin />
         <Dashboard />
+      </>
+    ),
+  },
+  {
+    path: "/admin/orders",
+    element: (
+      <>
+        <Admin />
+        <Order />
+      </>
+    ),
+  },
+  {
+    path: "/admin/packages",
+    element: (
+      <>
+        <Admin />
+        
+      </>
+    ),
+  },
+  {
+    path: "/admin/customers",
+    element: (
+      <>
+        <Admin />
+        
       </>
     ),
   },
