@@ -7,7 +7,7 @@ import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
 import Order from './pages/Order';
 import AddProducts from './pages/AddProducts';
-import AddBlog from './pages/AddBlog';
+import Blog from './pages/Blog';
 import Account from './pages/Account';
 
 const router = createBrowserRouter([
@@ -73,7 +73,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <Admin />
-        <AddBlog />
+        <Blog />
       </>
     ),
   },
