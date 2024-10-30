@@ -6,9 +6,10 @@ import Checkout from './pages/Chekcout';
 import Admin from './pages/Admin';
 import Dashboard from './pages/Dashboard';
 import Order from './pages/Order';
-import AddProducts from './pages/AddProducts';
+import AddProducts from './pages/Product';
 import Blog from './pages/Blog';
 import Account from './pages/Account';
+import Packages from './pages/Packages';
 
 const router = createBrowserRouter([
   {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <Admin />
-        
+        <Packages />
       </>
     ),
   },
