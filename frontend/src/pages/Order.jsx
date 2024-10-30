@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Alert from "../components/dashboard/components/Alert";
+import OrderAlert from "../components/dashboard/components/OrderAlert";
 import styles from "./style.module.css";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function Orders() {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [showCompleteAlert, setShowCompleteAlert] = useState(false);
   const [products, setProducts] = useState([]);
-  const [productToDelete, setProductToDelete] = useState(null);
+  const [changeOrder, setChangeOrder] = useState(null);
 
   const fetchAdditionalData = async (order) => {
     try {
@@ -49,15 +51,37 @@ export default function Orders() {
     fetchData();
   }, []);
 
+  const handleCompleteClick = (product) => {
+    setChangeOrder(product);
+    setShowCompleteAlert(true);
+  };
+
   const handleDeleteClick = (product) => {
-    setProductToDelete(product);
+    setChangeOrder(product);
     setShowDeleteAlert(true);
+  };
+
+  const handleConfirmComplete = async () => {
+    try {
+      await axios.put(`/order/${changeOrder._id}`, {
+        ...changeOrder,
+        status: "completed",
+      });
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p._id === changeOrder._id ? { ...p, status: "completed" } : p
+        )
+      );
+      setShowCompleteAlert(false);
+    } catch (error) {
+      console.error("Error completing order:", error);
+    }
   };
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/order/${productToDelete._id}`);
-      setProducts(products.filter((p) => p._id !== productToDelete._id));
+      await axios.delete(`/order/${changeOrder._id}`);
+      setProducts(products.filter((p) => p._id !== changeOrder._id));
       setShowDeleteAlert(false);
     } catch (error) {
       console.error("Error deleting order:", error);
@@ -81,7 +105,7 @@ export default function Orders() {
             {products.map((product, index) => (
               <React.Fragment key={product._id}>
                 <div className="product-no product-description">
-                  {index + 1}
+                  {product._id}
                 </div>
                 <div className="product-name product-description">
                   {product.customerName}
@@ -95,6 +119,7 @@ export default function Orders() {
                 <div className="product-operations product-description">
                   <button
                     className="update-btn"
+                    onClick={() => handleCompleteClick(product)}
                   >
                     Complete
                   </button>
@@ -109,10 +134,16 @@ export default function Orders() {
             ))}
           </div>
         </div>
-
+        {showCompleteAlert && (
+          <OrderAlert
+            onConfirm={handleConfirmComplete}
+            onCancel={() => setShowCompleteAlert(false)}
+            order={changeOrder}
+          />
+        )}
         {showDeleteAlert && (
           <Alert
-            productName={productToDelete.name}
+            productName={changeOrder.productName}
             onConfirm={handleConfirmDelete}
             onCancel={() => setShowDeleteAlert(false)}
           />
