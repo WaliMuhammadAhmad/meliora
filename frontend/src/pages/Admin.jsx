@@ -21,6 +21,9 @@ export default function Admin() {
               <Link to="/admin/products">Products</Link>
             </li>
             <li>
+              <Link to="/admin/packages">Packages</Link>
+            </li>
+            <li>
               <Link to="/admin/blogs">Blogs</Link>
             </li>
             <li>
