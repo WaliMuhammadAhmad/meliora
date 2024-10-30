@@ -14,9 +14,7 @@ export default function Orders() {
 
   const fetchAdditionalData = async (order) => {
     try {
-      const customerResponse = await axios.get(
-        `/customers/${order.customerId}`
-      );
+      const customerResponse = await axios.get(`/customers/${order.customerId}`);
       const productResponse = await axios.get(`/products/${order.productId}`);
 
       return {
@@ -88,12 +86,41 @@ export default function Orders() {
     }
   };
 
+  const renderOrdersByStatus = (status) => {
+    const filteredProducts = products.filter((product) => product.status === status);
+
+    return filteredProducts.length > 0 ? (
+      filteredProducts.map((product, index) => (
+        <React.Fragment key={index}>
+          <div className="product-no product-description">{product._id}</div>
+          <div className="product-name product-description">{product.customerName}</div>
+          <div className="product-price product-description">{product.productName}</div>
+          <div className="product-price product-description">{product.status}</div>
+          <div className="product-operations product-description">
+            {status === "pending" && (
+              <button className="update-btn" onClick={() => handleCompleteClick(product)}>
+                Complete
+              </button>
+            )}
+            <button className="delete-btn" onClick={() => handleDeleteClick(product)}>
+              Cancel
+            </button>
+          </div>
+        </React.Fragment>
+      ))
+    ) : (
+      <div className="text-xl text-white">No <strong>{status}</strong> Orders</div>
+    );
+  };
+
   return (
     <>
       <div className={styles.manageItems}>
         <div className={styles.top}>
           <h1>Manage Orders</h1>
         </div>
+
+        <h1>Pending Orders</h1>
         <div className="products">
           <div className="product-grid">
             <div className="header product-no">Order No.</div>
@@ -101,39 +128,34 @@ export default function Orders() {
             <div className="header product-name">Customer Name</div>
             <div className="header product-status">Status</div>
             <div className="header product-operations">Operations</div>
-            {}
-            {products.map((product, index) => (
-              <React.Fragment key={product._id}>
-                <div className="product-no product-description">
-                  {product._id}
-                </div>
-                <div className="product-name product-description">
-                  {product.customerName}
-                </div>
-                <div className="product-price product-description">
-                  {product.productName}
-                </div>
-                <div className="product-price product-description">
-                  {product.status}
-                </div>
-                <div className="product-operations product-description">
-                  <button
-                    className="update-btn"
-                    onClick={() => handleCompleteClick(product)}
-                  >
-                    Complete
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDeleteClick(product)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </React.Fragment>
-            ))}
+            {renderOrdersByStatus("pending")}
           </div>
         </div>
+
+        <h1>Completed Orders</h1>
+        <div className="products">
+          <div className="product-grid">
+            <div className="header product-no">Order No.</div>
+            <div className="header product-name">Product Name</div>
+            <div className="header product-name">Customer Name</div>
+            <div className="header product-status">Status</div>
+            <div className="header product-operations">Operations</div>
+            {renderOrdersByStatus("completed")}
+          </div>
+        </div>
+
+        <h1>Cancelled Orders</h1>
+        <div className="products">
+          <div className="product-grid">
+            <div className="header product-no">Order No.</div>
+            <div className="header product-name">Product Name</div>
+            <div className="header product-name">Customer Name</div>
+            <div className="header product-status">Status</div>
+            <div className="header product-operations">Operations</div>
+            {renderOrdersByStatus("cancelled")}
+          </div>
+        </div>
+
         {showCompleteAlert && (
           <OrderAlert
             onConfirm={handleConfirmComplete}
