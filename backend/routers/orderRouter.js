@@ -4,6 +4,9 @@ const orderController = require('../controllers/orderController');
 
 router.post('/', orderController.neworder);
 router.get('/', orderController.getAllOrders);
+router.get('/revenue', orderController.getRevenue);
+router.get('/top-selling',orderController.topSellingProduct);
+router.get('/stats',orderController.orderStats);
 router.get('/:id', orderController.getOrderById);
 router.get('/customer/:customerId', orderController.getOrderByCustomerId);
 router.put('/:id', orderController.updateOrder);
