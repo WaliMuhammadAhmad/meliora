@@ -78,11 +78,18 @@ export default function Orders() {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/order/${changeOrder._id}`);
-      setProducts(products.filter((p) => p._id !== changeOrder._id));
-      setShowDeleteAlert(false);
+      await axios.put(`/order/${changeOrder._id}`, {
+        ...changeOrder,
+        status: "completed",
+      });
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p._id === changeOrder._id ? { ...p, status: "cancelled" } : p
+        )
+      );
+      setShowCompleteAlert(false);
     } catch (error) {
-      console.error("Error deleting order:", error);
+      console.error("Error completing order:", error);
     }
   };
 
