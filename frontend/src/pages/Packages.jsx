@@ -3,6 +3,7 @@ import axios from "axios";
 import UpdateModal from "../components/dashboard/components/UpdateModal";
 import AddModal from "../components/dashboard/components/AddModal";
 import Alert from "../components/dashboard/components/Alert";
+import styles from './style.module.css'
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -67,46 +68,46 @@ export default function Packages() {
 
   return (
     <>
-      <div className="manageItems">
-        <div className="top">
+      <div className={styles.manageItems}>
+        <div className={styles.top}>
           <h1>Manage Products</h1>
           <button onClick={() => setShowAddModal(true)}>Add Product</button>
         </div>
-        <div className="products">
-          <div className="product-grid">
-            <div className="header product-no">Product No.</div>
-            <div className="header product-name">Product Name</div>
-            <div className="header product-price">Price</div>
-            <div className="header product-status">Status</div>
-            <div className="header product-operations">Operations</div>
+        <div className={styles.products}>
+          <div className={styles.productgrid}>
+            <div className={`${styles.header} ${styles.productno}`}>Product No.</div>
+            <div className={`${styles.header} ${styles.productname}`}>Product Name</div>
+            <div className={`${styles.header} ${styles.productprice}`}>Price</div>
+            <div className={`${styles.header} ${styles.productstatus}`}>Status</div>
+            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
 
             {products.map((product, index) => (
               <React.Fragment key={product._id}>
-                <div className="product-no product-description">
+                <div className={`${styles.productno} ${styles.productdescription}`}>
                   {index + 1}
                 </div>
-                <div className="product-name product-description">
+                <div className={`${styles.productname} ${styles.productdescription}`}>
                   {product.name}
                 </div>
-                <div className="product-price product-description">
-                  ${product.price}
+                <div className={`${styles.productprice} ${styles.productdescription}`}>
+                  {product.price}
                 </div>
                 <div
-                  className={`product-status ${
-                    product.stockQuantity === 0 ? "out-of-stock" : "in-stock"
-                  } product-description`}
+                  className={`${styles.productstatus} ${styles.productdescription} 
+                  ${product.stockQuantity === 0 ? styles.outofstock : styles.instock
+                    }`}
                 >
                   {product.stockQuantity === 0 ? "Out of Stock" : "In Stock"}
                 </div>
-                <div className="product-operations product-description">
+                <div className={`${styles.productoperations} ${styles.productdescription}`} >
                   <button
-                    className="update-btn"
+                    className={styles.updatebtn}
                     onClick={() => handleUpdateClick(product)}
                   >
                     Update
                   </button>
                   <button
-                    className="delete-btn"
+                    className={styles.deletebtn}
                     onClick={() => handleDeleteClick(product)}
                   >
                     Delete
@@ -124,10 +125,10 @@ export default function Packages() {
           product={selectedProduct}
         />
         <AddModal
-        show={showAddModal}
-        onClose={() => setShowAddModal(false)}
-        submitAction={handleAddProduct}
-      />
+          show={showAddModal}
+          onClose={() => setShowAddModal(false)}
+          submitAction={handleAddProduct}
+        />
 
         {showDeleteAlert && (
           <Alert

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
+import styles from './style.module.css'
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -54,36 +55,36 @@ export default function Dashboard() {
   const progress = (topSellingProduct.percentage / 100) * circleCircumference;
 
   return (
-    <div className="dashboard">
-      <div className="top">
-        <div className="left">
+    <div className={styles.dashboard}>
+      <div className={styles.top}>
+        <div className={styles.left}>
           <h1>Dashboard</h1>
           <p>Welcome Back Admin!</p>
         </div>
       </div>
-      <div className="main-dashboard">
-        <div className="cards">
-          <div className="card">
+      <div className={styles.maindashboard}>
+        <div className={styles.cards}>
+          <div className={styles.card}>
             <h1>{totalOrders}</h1>
             <h2>Total Orders</h2>
           </div>
-          <div className="card">
+          <div className={styles.card}>
             <h1>{totalProducts}</h1>
             <h2>Total Products</h2>
           </div>
-          <div className="card">
+          <div className={styles.card}>
             <h1>${totalRevenue.toFixed(2)}</h1>
             <h2>Total Revenue</h2>
           </div>
-          <div className="card last-card">
-            <div className="first">
+          <div className={styles.lastcard}>
+            <div className={styles.first}>
               <h2>Top Selling Product</h2>
               <h1>{topSellingProduct.name}</h1>
             </div>
-            <div className="progress-container">
-              <svg width="120" height="120" className="circular-chart">
+            <div className={styles.progresscontainer}>
+              <svg width="120" height="120" className={styles.circularchart}>
                 <circle
-                  className="circle-background"
+                  className={styles.circlebackground}
                   cx="60"
                   cy="60"
                   r="45"
@@ -91,7 +92,7 @@ export default function Dashboard() {
                   fill="none"
                 />
                 <circle
-                  className="circle-progress"
+                  className={styles.circleprogress}
                   cx="60"
                   cy="60"
                   r="45"
@@ -110,12 +111,12 @@ export default function Dashboard() {
                   {topSellingProduct.percentage}%
                 </text>
               </svg>
-              <div className="label">Total Order</div>
+              <div className={styles.label}>Total Order</div>
             </div>
           </div>
         </div>
-        <div className="stats">
-          <div className="card-one">
+        <div className={styles.stats}>
+          <div className={styles.cardone}>
             <LineChart
               xAxis={[{ data: orderStats.map((stat) => stat.month) }]}
               series={[
@@ -125,7 +126,7 @@ export default function Dashboard() {
               height={400}
             />
           </div>
-          <div className="card-two">
+          <div className={styles.cardtwo}>
             <BarChart
               dataset={orderStats.map((stat) => ({
                 month: stat.month,

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import styles from './style.module.css'
 
 export default function Admin() {
   const [nav, setNav] = useState(false);
@@ -10,7 +11,7 @@ export default function Admin() {
       <header>
         <img src="/logo.jpg" alt="Meliora Logo" />
         <nav>
-          <ul className={nav ? "show" : "hide"}>
+          <ul className={nav ? `${styles.show}` : `${styles.hide}`}>
             <li>
               <Link to="/admin/dashboard">Dashboard</Link>
             </li>
@@ -31,8 +32,8 @@ export default function Admin() {
             </li>
           </ul>
         </nav>
-        <div className="icons">
-          <span className="hamburger" onClick={() => setNav(!nav)}>
+        <div className={styles.icons}>
+          <span className={styles.hamburger} onClick={() => setNav(!nav)}>
             <GiHamburgerMenu />
           </span>
           <button

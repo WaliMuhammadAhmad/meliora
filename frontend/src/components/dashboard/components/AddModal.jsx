@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from './style.module.css'
 
 export default function AddModal({ show, onClose }){
   const [currentProduct, setCurrentProduct] = useState({});
@@ -10,9 +11,9 @@ export default function AddModal({ show, onClose }){
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <span className="close-icon" onClick={onClose}>
+    <div className={styles.modaloverlay}>
+      <div className={styles.modalcontent}>
+        <span className={styles.closeicon} onClick={onClose}>
           &times;
         </span>
         <h2>Add Product</h2>
