@@ -391,8 +391,12 @@ button {
 
 .progresscontainer {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .progresscontainer .circularchart {
@@ -412,13 +416,13 @@ button {
 }
 
 .progresstext {
-  font-size: 22px;
+  font-size: 18px;
   fill: #333;
 }
 
 .progresscontainer .label {
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 }
 
@@ -466,6 +470,8 @@ button {
 .lastcard h1,
 .lastcard h2 {
   text-align: left;
+  color: black;
+
 }
 
 .card h1 {
@@ -658,6 +664,7 @@ header img {
 header .icons {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 header svg {
@@ -841,6 +848,12 @@ ul li a:hover {
 @media (max-width: 1024px) {
   .dashboard .cards {
     grid-template-columns: repeat(2, 1fr);
+    /* For tablets: 2 columns */
+  }
+}
+@media (max-width: 768px) {
+  .dashboard .cards {
+    grid-template-columns: repeat(1, 1fr);
     /* For tablets: 2 columns */
   }
 }
