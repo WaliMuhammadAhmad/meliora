@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { LineChart } from "@mui/x-charts/LineChart";
-import { BarChart } from "@mui/x-charts/BarChart";
-import styles from './style.module.css'
+import LineGraph from "../components/dashboard/components/LineGraph";
+import BarGraph from "../components/dashboard/components/BarGraph";
+import styles from "./style.module.css";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -14,17 +14,16 @@ export default function Dashboard() {
     name: "",
     percentage: 0,
   });
-  const [orderStats, setOrderStats] = useState([]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         // Fetch total orders
-        const ordersResponse = await axios.get("/order/");
+        const ordersResponse = await axios.get("/order");
         setTotalOrders(ordersResponse.data.length);
 
         // Fetch total products
-        const productsResponse = await axios.get("/products/");
+        const productsResponse = await axios.get("/products");
         setTotalProducts(productsResponse.data.length);
 
         // Fetch total revenue
@@ -38,10 +37,6 @@ export default function Dashboard() {
           name: topProduct.name,
           percentage: topProduct.percentage,
         });
-
-        // Fetch order statistics for LineChart
-        // const statsResponse = await axios.get("/orders/stats");
-        // setOrderStats(statsResponse.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -117,33 +112,10 @@ export default function Dashboard() {
         </div>
         <div className={styles.stats}>
           <div className={styles.cardone}>
-            <LineChart
-              xAxis={[{ data: orderStats.map((stat) => stat.month) }]}
-              series={[
-                { data: orderStats.map((stat) => stat.value), area: true },
-              ]}
-              width={500}
-              height={400}
-            />
+            <LineGraph />
           </div>
           <div className={styles.cardtwo}>
-            <BarChart
-              dataset={orderStats.map((stat) => ({
-                month: stat.month,
-                value: stat.value,
-              }))}
-              yAxis={[{ scaleType: "band", dataKey: "month" }]}
-              series={[
-                {
-                  dataKey: "value",
-                  label: "Monthly Orders",
-                  valueFormatter: (val) => `${val} orders`,
-                },
-              ]}
-              layout="horizontal"
-              width={500}
-              height={400}
-            />
+            <BarGraph />
           </div>
         </div>
       </div>
