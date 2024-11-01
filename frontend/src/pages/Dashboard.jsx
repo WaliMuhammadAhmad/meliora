@@ -106,7 +106,7 @@ export default function Dashboard() {
                   y="50%"
                   textAnchor="middle"
                   dy=".3em"
-                  className="progress-text"
+                  className={styles.progresstext}
                 >
                   {topSellingProduct.percentage}%
                 </text>

@@ -3,7 +3,7 @@
 .account {
   padding: 50px;
   background-color: rgb(33, 109, 158);
-  height: minmax(90vh, inherit);
+  min-height: 90dvh;
 }
 
 .manageItems .top,
@@ -154,7 +154,7 @@ input[type="checkbox"] {
   width: 100vw;
   padding: 50px;
   background-color: rgb(33, 109, 158);
-  height: minmax(90vh, inherit);
+  min-height: 90dvh;
 }
 
 .account h1 {
@@ -376,7 +376,7 @@ button {
 .dashboard {
   padding: 50px;
   background-color: rgb(33, 109, 158);
-  height: minmax(90vh, inherit);
+  min-height: 90dvh;
 }
 
 .dashboard h1 {
@@ -391,8 +391,12 @@ button {
 
 .progresscontainer {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .progresscontainer .circularchart {
@@ -412,13 +416,13 @@ button {
 }
 
 .progresstext {
-  font-size: 22px;
+  font-size: 18px;
   fill: #333;
 }
 
 .progresscontainer .label {
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 }
 
@@ -466,6 +470,8 @@ button {
 .lastcard h1,
 .lastcard h2 {
   text-align: left;
+  color: black;
+
 }
 
 .card h1 {
@@ -496,19 +502,19 @@ button {
   border-radius: 1rem;
 }
 
-.manageItems{
+.manageItems {
   padding: 50px;
   background-color: rgb(33, 109, 158);
-  height: minmax(90vh, inherit);
+  height: minmax(90dvh, inherit);
 }
 
-.manageItems .top{
+.manageItems .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.manageItems h1{
+.manageItems h1 {
   font-size: 25px;
   color: white;
   font-weight: bold;
@@ -545,7 +551,6 @@ button {
   padding: 0;
   background-color: #216d9e;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   /* Adds shadow for better visibility */
 }
 
@@ -556,7 +561,6 @@ button {
   padding: 0;
   background-color: #216d9e;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   /* Adds shadow for better visibility */
 }
 
@@ -573,6 +577,11 @@ button {
 }
 
 .productno,
+.productstatus {
+  font-weight: 500;
+}
+
+.productno,
 .productname,
 .productprice,
 .productstatus,
@@ -586,8 +595,8 @@ button {
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
 }
 
-.productgrid > div,
-.bloggrid > div {
+.productgrid>div,
+.bloggrid>div {
   border-left: none;
   border-right: none;
   border-radius: 0;
@@ -604,8 +613,8 @@ button {
   border-bottom-left-radius: 12px;
 }
 
-.productgrid > div:nth-child(5n),
-.bloggrid > div:nth-child(4n) {
+.productgrid>div:nth-child(5n),
+.bloggrid>div:nth-child(4n) {
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
@@ -613,6 +622,10 @@ button {
 .outofstock {
   color: red;
   font-weight: bold;
+}
+
+.instock {
+  color: green;
 }
 
 .productoperations button {
@@ -651,6 +664,7 @@ header img {
 header .icons {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 header svg {
@@ -716,7 +730,7 @@ ul li a:hover {
 
 
 @media (max-width: 1110px) {
-  .manageItems{
+  .manageItems {
     display: flex;
     flex-direction: column;
   }
@@ -764,6 +778,7 @@ ul li a:hover {
 
 
 @media screen and (max-width: 500px) {
+
   #customers td,
   #customers th {
     font-size: 7px;
@@ -772,16 +787,19 @@ ul li a:hover {
 }
 
 @media (max-width: 768px) {
+
   .productgrid,
   .bloggrid {
     width: 100%;
     overflow-x: scroll;
     white-space: nowrap;
   }
+
   .dashboard .cards {
     grid-template-columns: 1fr;
     /* For small screens: single column */
   }
+
   .checkoutcontainer {
     flex-direction: column;
   }
@@ -830,6 +848,12 @@ ul li a:hover {
 @media (max-width: 1024px) {
   .dashboard .cards {
     grid-template-columns: repeat(2, 1fr);
+    /* For tablets: 2 columns */
+  }
+}
+@media (max-width: 768px) {
+  .dashboard .cards {
+    grid-template-columns: repeat(1, 1fr);
     /* For tablets: 2 columns */
   }
 }
