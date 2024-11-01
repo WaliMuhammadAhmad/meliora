@@ -99,17 +99,18 @@ export default function Orders() {
     return filteredProducts.length > 0 ? (
       filteredProducts.map((product, index) => (
         <React.Fragment key={index}>
-          <div className="product-no product-description">{product._id}</div>
-          <div className="product-name product-description">{product.customerName}</div>
-          <div className="product-price product-description">{product.productName}</div>
-          <div className="product-price product-description">{product.status}</div>
-          <div className="product-operations product-description">
+          <div className={`${styles.productno} ${styles.productdescription}`}>{product._id}</div>
+          <div className={`${styles.productname} ${styles.productdescription}`}>{product.customerName}</div>
+          <div className={`${styles.productprice} ${styles.productdescription}`}>{product.productName}</div>
+          <div className={`${styles.productstatus} ${styles.productdescription}`}
+            style={{ color: product.status === 'pending' ? '#216D9E' : product.status == 'completed' ? 'green' : 'red' }}>{product.status}</div>
+          <div className={`${styles.productoperations} ${styles.productdescription}`}>
             {status === "pending" && (
-              <button className="update-btn" onClick={() => handleCompleteClick(product)}>
+              <button className={styles.updatebtn} onClick={() => handleCompleteClick(product)}>
                 Complete
               </button>
             )}
-            <button className="delete-btn" onClick={() => handleDeleteClick(product)}>
+            <button className={styles.deletebtn} onClick={() => handleDeleteClick(product)}>
               Cancel
             </button>
           </div>
@@ -128,37 +129,37 @@ export default function Orders() {
         </div>
 
         <h1>Pending Orders</h1>
-        <div className="products">
-          <div className="product-grid">
-            <div className="header product-no">Order No.</div>
-            <div className="header product-name">Product Name</div>
-            <div className="header product-name">Customer Name</div>
-            <div className="header product-status">Status</div>
-            <div className="header product-operations">Operations</div>
+        <div className={styles.products}>
+          <div className={styles.productgrid}>
+            <div className={`${styles.header} ${styles.productno}`}>Order No.</div>
+            <div className={`${styles.header} ${styles.productname}`}>Product Name</div>
+            <div className={`${styles.header} ${styles.productname}`}>Customer Name</div>
+            <div className={`${styles.header} ${styles.productstatus}`}>Status</div>
+            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
             {renderOrdersByStatus("pending")}
           </div>
         </div>
 
         <h1>Completed Orders</h1>
-        <div className="products">
-          <div className="product-grid">
-            <div className="header product-no">Order No.</div>
-            <div className="header product-name">Product Name</div>
-            <div className="header product-name">Customer Name</div>
-            <div className="header product-status">Status</div>
-            <div className="header product-operations">Operations</div>
+        <div className={styles.products}>
+          <div className={styles.productgrid}>
+            <div className={`${styles.header} ${styles.productno}`}>Order No.</div>
+            <div className={`${styles.header} ${styles.productname}`}>Product Name</div>
+            <div className={`${styles.header} ${styles.productname}`}>Customer Name</div>
+            <div className={`${styles.header} ${styles.productstatus}`}>Status</div>
+            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
             {renderOrdersByStatus("completed")}
           </div>
         </div>
 
         <h1>Cancelled Orders</h1>
-        <div className="products">
-          <div className="product-grid">
-            <div className="header product-no">Order No.</div>
-            <div className="header product-name">Product Name</div>
-            <div className="header product-name">Customer Name</div>
-            <div className="header product-status">Status</div>
-            <div className="header product-operations">Operations</div>
+        <div className={styles.products}>
+          <div className={styles.productgrid}>
+            <div className={`${styles.header} ${styles.productno}`}>Order No.</div>
+            <div className={`${styles.header} ${styles.productname}`}>Product Name</div>
+            <div className={`${styles.header} ${styles.productname}`}>Customer Name</div>
+            <div className={`${styles.header} ${styles.productstatus}`}>Status</div>
+            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
             {renderOrdersByStatus("cancelled")}
           </div>
         </div>
