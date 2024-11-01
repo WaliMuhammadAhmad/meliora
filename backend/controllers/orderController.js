@@ -163,10 +163,106 @@ exports.topSellingProduct = async (req, res) => {
   }
 };
 
-exports.orderStats = async (req, res) => {
+exports.lineStats = async (req, res) => {
   try {
-    const stats = await Order.aggregate();
+    const completedOrders = await Order.find({ status: "completed" });
+    const productCount = {};
+    completedOrders.forEach((order) => {
+      const productId = order.productId.toString();
+      productCount[productId] = (productCount[productId] || 0) + 1;
+    });
+    const topProductId = Object.keys(productCount).reduce((a, b) =>
+      productCount[a] > productCount[b] ? a : b
+    );
+    const topProduct = await Product.findById(topProductId);
+    if (!topProduct) {
+      return res.status(404).json({ message: "Top-selling product not found" });
+    }
+    const monthlySales = await Order.aggregate([
+      {
+        $match: { status: "completed", productId: topProduct._id },
+      },
+      {
+        $group: {
+          _id: { $month: "$created_at" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const salesData = Array(12).fill(0);
+    monthlySales.forEach((entry) => {
+      const monthIndex = entry._id - 1;
+      salesData[monthIndex] = entry.count;
+    });
+    res.status(200).json({
+      name: topProduct.name,
+      data: salesData,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error in order stats", error });
+    res
+      .status(500)
+      .json({ message: "Error retrieving top-selling product stats", error });
+  }
+};
+
+exports.barStats = async (req, res) => {
+  try {
+    const completedOrders = await Order.find({ status: "completed" });
+    const productCount = {};
+    completedOrders.forEach((order) => {
+      const productId = order.productId.toString();
+      productCount[productId] = (productCount[productId] || 0) + 1;
+    });
+    const topProductId = Object.keys(productCount).reduce((a, b) =>
+      productCount[a] > productCount[b] ? a : b
+    );
+    const topProduct = await Product.findById(topProductId);
+    if (!topProduct) {
+      return res.status(404).json({ message: "Top-selling product not found" });
+    }
+    const monthlySales = await Order.aggregate([
+      {
+        $match: { status: "completed", productId: topProduct._id },
+      },
+      {
+        $group: {
+          _id: { $month: "$created_at" },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const salesData = Array.from({ length: 12 }, (_, i) => ({
+      month: months[i],
+      value: 0,
+    }));
+    monthlySales.forEach((entry) => {
+      const monthIndex = entry._id - 1;
+      salesData[monthIndex].value = entry.count;
+    });
+    res.status(200).json({
+      name: topProduct.name,
+      salesData,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving top-selling product stats", error });
   }
 };
