@@ -8,6 +8,7 @@ import Cart from '../components/Cart';
 import CreateContextApi from '../ContextApi/CreateContextApi';
 import ProductUsage from '../components/ProductUsage';
 import ReviewSection from '../components/ReviewSection';
+import styles from './style.module.css'
 
 
 export default function ProductDetails() {
@@ -45,9 +46,9 @@ export default function ProductDetails() {
         <>
             <Navbar />
             <Cart />
-            <div className="main-container">
-                <div className="left-section">
-                    <div className="img-section">
+            <div className={styles.maincontainer}>
+                <div className={styles.leftsection}>
+                    <div className={styles.imgsection}>
                         <img src="https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false" alt="" />
                     </div>
 
@@ -58,33 +59,33 @@ export default function ProductDetails() {
                         Temporibus voluptates praesentium recusandae aliquid quaerat nihil, velit voluptate sint commodi excepturi. Eligendi cumque fuga aspernatur sint assumenda ducimus natus accusamus vel est amet neque facere, quod delectus temporibus quae?
                         Magnam sed rerum facere repudiandae tempore adipisci tempora, numquam debitis obcaecati eligendi autem qui repellat ullam iure aspernatur repellendus dolore possimus vero optio amet esse exercitationem dolorem culpa hic! Atque.</p>
                 </div>
-                <div className="right-section">
+                <div className={styles.rightsection}>
                     <h1 style={{ fontWeight: 'bold' }}>All-Purpose Home Cleaner Spray
                         - Refill Tablets</h1>
                     <h1>$192.00</h1>
                     <h5 style={{ fontSize: '12px', margin: '5px 0 10px 0' }}>Shipping -  Calculated at checkout</h5>
                     <Button>Use to refill your reusable spray bottles.</Button>
-                    <div className="para" style={{ marginTop: '10px' }}>
+                    <div className={styles.para} style={{ marginTop: '10px' }}>
                         <p>Our All-Purpose Home Cleaner is a people and planet
                             friendly all-purpose cleaner made with safer ingredients
                             and eco-friendly packaging.</p>
                     </div>
-                    <div className="para" style={{ marginTop: '30px' }}>
+                    <div className={styles.para} style={{ marginTop: '30px' }}>
                         <p>These solid soap refill tablets are just as effective as pre
                             mixed cleaning spray but are ultra-concentrated, plasticfree, and preservative-free.</p>
                     </div>
                     <h5 style={{ fontWeight: '500', marginTop: '10px' }}>Size</h5>
-                    <div className="buttons">
+                    <div className={styles.buttons}>
                         <button>Bottle and 3-Pack Refill</button>
                         <button>Bottle Only</button>
                         <button>3 Bottle Refil</button>
                     </div>
                     <h5 style={{ fontWeight: '500', marginTop: '10px' }}>Scent</h5>
                     <button>Unscented</button>
-                    <div className="deliveryDetails" style={{ marginTop: '10px' }}>
-                        <div className="one">
+                    <div className={styles.deliveryDetails} style={{ marginTop: '10px' }}>
+                        <div className={styles.one}>
 
-                            <div className="logo">
+                            <div className={styles.logo}>
                                 <FiTruck />
                             </div>
                             <div className="text">
@@ -92,20 +93,20 @@ export default function ProductDetails() {
                                 <h3>Enter your postal code for Delivery Availability</h3>
                             </div>
                         </div>
-                        <div className="two">
+                        <div className={styles.two}>
 
-                            <div className="logo">
+                            <div className={styles.logo}>
                                 <LiaSyncAltSolid />
                             </div>
-                            <div className="text">
+                            <div className={styles.text}>
 
                                 <h3>Return Delivery</h3>
                                 <h3>Free 30 Days Delivery Returns. Details</h3>
                             </div>
                         </div>
                     </div>
-                    <div className="cart-options">
-                        <div className="increaseLimit">
+                    <div className={styles.cartoptions}>
+                        <div className={styles.increaseLimit}>
                             <button onClick={() => limit !== 1 && setLimit(limit - 1)}>-</button>
                             {limit}
                             <button onClick={() => setLimit(limit + 1)}>+</button>
@@ -114,11 +115,11 @@ export default function ProductDetails() {
                     </div>
                     <span onClick={() => setShowCart(!showCart)} style={{ fontSize: '13px', marginTop: 'auto', marginBottom: 'auto', textDecoration: 'underline', cursor: 'pointer' }}>Go To Cart</span>
                     <h5 style={{ fontWeight: "500" }}>Try It With:</h5>
-                    <div className="suggestion">
-                        <div className="logo">
+                    <div className={styles.suggestion}>
+                        <div className={styles.logo}>
                             <GiFirstAidKit />
                         </div>
-                        <div className="text">
+                        <div className={styles.text}>
 
                             <h3>Dish Wash Soap - Plastic Free Bag</h3>
                             <h3>80%</h3>

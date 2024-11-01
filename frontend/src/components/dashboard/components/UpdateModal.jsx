@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from './style.module.css'
 
 export default function UpdateModal({ show, onClose, product }) {
   const [currentProduct, setCurrentProduct] = useState({
@@ -26,9 +27,9 @@ export default function UpdateModal({ show, onClose, product }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <span className="close-icon" onClick={onClose}>
+    <div className={styles.modaloverlay}>
+      <div className={styles.modalcontent}>
+        <span className={styles.closeicon} onClick={onClose}>
           &times;
         </span>
         <h2>Update Product</h2>

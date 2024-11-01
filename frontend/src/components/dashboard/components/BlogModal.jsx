@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import styles from './style.module.css'
 
 export default function BlogModal({ show, onClose, blog, onSubmit }) {
   const [currentBlog, setCurrentBlog] = useState({
@@ -50,9 +51,9 @@ export default function BlogModal({ show, onClose, blog, onSubmit }) {
   if (!show) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <span className="close-icon" onClick={onClose}>
+    <div className={styles.modaloverlay}>
+      <div className={styles.modalcontent}>
+        <span className={styles.closeicon} onClick={onClose}>
           &times;
         </span>
         <h2>{blog ? "Update Blog" : "Add Blog"}</h2>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Alert from "../components/dashboard/components/Alert";
 import BlogModal from "../components/dashboard/components/BlogModal";
+import styles from './style.module.css'
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -78,42 +79,42 @@ export default function AddBlogs() {
 
   return (
     <>
-      <div className="manageItems">
-        <div className="top">
+      <div className={styles.manageItems}>
+        <div className={styles.top}>
           <h1>Manage Blogs</h1>
           <button onClick={() => setShowModal(true)}>Add Blog</button>
         </div>
-        <div className="blogs">
-          <div className="product-grid">
-            <div className="header product-no">Blog No.</div>
-            <div className="header product-name">Blog Image</div>
-            <div className="header product-price">Blog Name</div>
-            <div className="header product-status">Blog Text</div>
-            <div className="header product-operations">Operations</div>
+        <div className={styles.blogs}>
+          <div className={styles.productgrid}>
+          <div className={`${styles.header} ${styles.productno}`}>Blog No.</div>
+          <div className={`${styles.header} ${styles.productname}`}>Blog Image</div>
+          <div className={`${styles.header} ${styles.productprice}`}>Blog Name</div>
+          <div className={`${styles.header} ${styles.productstatus}`}>Blog Text</div>
+            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
 
             {blogs.map((blog, index) => (
               <React.Fragment key={blog._id}>
-                <div className="product-no product-description">
+               <div className={`${styles.productno} ${styles.productdescription}`}>
                   {index + 1}
                 </div>
-                <div className="product-name product-description">
+                <div className={`${styles.productname} ${styles.productdescription}`}>
                   <img src={blog.image} alt={blog.blogName} />
                 </div>
-                <div className="product-price product-description">
+                <div className={`${styles.productprice} ${styles.productdescription}`}>
                   {blog.name}
                 </div>
-                <div className="product-price product-description">
+                <div className={`${styles.productprice} ${styles.productdescription}`}>
                   {blog.text}
                 </div>
-                <div className="product-operations product-description">
+                <div className={`${styles.productoperations} ${styles.productdescription}`}>
                   <button
-                    className="update-btn"
+                    className={styles.updatebtn}
                     onClick={() => handleUpdateClick(blog)}
                   >
                     Update
                   </button>
                   <button
-                    className="delete-btn"
+                    className={styles.deletebtn}
                     onClick={() => handleDeleteClick(blog)}
                   >
                     Delete

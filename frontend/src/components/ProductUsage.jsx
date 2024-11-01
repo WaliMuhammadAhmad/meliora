@@ -1,11 +1,12 @@
 import React from "react";
+import styles from './style.module.css'
 
 export default function ProductUsage() {
   return (
-    <div class="product-cards-container">
+    <div class={styles.productcardscontainer}>
       <h1>How to use All-Purpose Home Cleaner</h1>
-      <div className="cards">
-        <div class="card">
+      <div className={styles.cards}>
+        <div class={styles.card}>
           <img src="/cards.webp" alt="Step 1" />
           <h3>Add a refill tablet to the bottle</h3>
           <p>
@@ -15,7 +16,7 @@ export default function ProductUsage() {
           </p>
         </div>
 
-        <div class="card">
+        <div class={styles.card}>
           <img src="/cards.webp" alt="Step 2" />
           <h3>Add a refill tablet to the bottle</h3>
           <p>
@@ -25,7 +26,7 @@ export default function ProductUsage() {
           </p>
         </div>
 
-        <div class="card">
+        <div class={styles.card}>
           <img src="/cards.webp" alt="Step 3" />
           <h3>Add a refill tablet to the bottle</h3>
           <p>
