@@ -594,6 +594,11 @@ button {
   color: black;
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
 }
+.blogimg{
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
 
 .productgrid>div,
 .bloggrid>div {

@@ -112,7 +112,7 @@ export default function Dashboard() {
         </div>
         <div className={styles.stats}>
           <div className={styles.cardone}>
-            <LineGraph />
+            {/* <LineGraph /> */}
           </div>
           <div className={styles.cardtwo}>
             <BarGraph />
