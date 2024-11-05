@@ -98,7 +98,7 @@ export default function AddBlogs() {
                   {index + 1}
                 </div>
                 <div className={`${styles.productname} ${styles.productdescription}`}>
-                  <img src={blog.image} alt={blog.blogName} />
+                  <img className={`${styles.blogimg}`}src={blog.image} alt={blog.blogName} />
                 </div>
                 <div className={`${styles.productprice} ${styles.productdescription}`}>
                   {blog.name}
