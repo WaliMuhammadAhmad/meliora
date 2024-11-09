@@ -31,16 +31,19 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Product price is required'],
         min: [0, 'Price must be greater than or equal to 0']
     },
-    size: {
-        type: String,
-        required: [true, 'Size is required'],
-        enum: ['Small','Medium','Large','XL','Other']
-    },
-    quantity: {
-        type: String,
-        required: [true, "Product Quantity is required"],
-        default: "250ml",
-    },
+    sizes: [
+        {
+          size: {
+            type: String,
+            required: true,
+            enum: ['Small', 'Medium', 'Large', 'XL', 'Other'],
+          },
+          quantity: {
+            type: String,
+            required: true,
+          }
+        }
+      ],
     frontImage: {
         type: String,
         required: [true, 'Product image URL is required'],
