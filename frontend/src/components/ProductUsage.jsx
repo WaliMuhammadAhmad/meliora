@@ -1,41 +1,31 @@
 import React from "react";
-import styles from './style.module.css'
+import styles from "./style.module.css";
 
-export default function ProductUsage() {
+export default function ProductUsage({ product }) {
   return (
     <div class={styles.productcardscontainer}>
-      <h1>How to use All-Purpose Home Cleaner</h1>
+      <h1>{product.usageTitle}</h1>
       <div className={styles.cards}>
         <div class={styles.card}>
-          <img src="/cards.webp" alt="Step 1" />
-          <h3>Add a refill tablet to the bottle</h3>
-          <p>
-            Our bottles come with a tablet inside. To refill the bottle, remove
-            the sprayer attachment and add one refill tablet. Each tablet makes
-            about 16 fl. oz. of liquid cleaner.
-          </p>
+          <img src={product.steps.step1.image} alt="Step 1" />
+          <h3>{product.steps.step1.title}</h3>
+          <p>{product.steps.step1.description}</p>
         </div>
 
         <div class={styles.card}>
-          <img src="/cards.webp" alt="Step 2" />
-          <h3>Add a refill tablet to the bottle</h3>
-          <p>
-            Our bottles come with a tablet inside. To refill the bottle, remove
-            the sprayer attachment and add one refill tablet. Each tablet makes
-            about 16 fl. oz. of liquid cleaner.
-          </p>
+          <img src={product.steps.step2.image} alt="Step 2" />
+          <h3>{product.steps.step2.title}</h3>
+          <p>{product.steps.step2.description}</p>
         </div>
 
         <div class={styles.card}>
-          <img src="/cards.webp" alt="Step 3" />
-          <h3>Add a refill tablet to the bottle</h3>
-          <p>
-            Our bottles come with a tablet inside. To refill the bottle, remove
-            the sprayer attachment and add one refill tablet. Each tablet makes
-            about 16 fl. oz. of liquid cleaner.
-          </p>
+          <img src={product.steps.step3.image} alt="Step 3" />
+          <h3>{product.steps.step3.title}</h3>
+          <p>{product.steps.step3.description}</p>
         </div>
       </div>
     </div>
   );
 }
+
+/* Dynamic by: Wali M. Github: WaliMuhammadAhmad */
