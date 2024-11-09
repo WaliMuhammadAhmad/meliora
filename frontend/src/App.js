@@ -10,6 +10,8 @@ import AddProducts from './pages/Product';
 import Blog from './pages/Blog';
 import Account from './pages/Account';
 import Packages from './pages/Packages';
+import OrderDetails from './pages/OrderDetails';
+import { Navbar } from './components/Navbar';
 
 const router = createBrowserRouter([
   {
@@ -84,6 +86,15 @@ const router = createBrowserRouter([
       <>
         <Admin />
         <Account />
+      </>
+    ),
+  },
+  {
+    path: "/orderDetails",
+    element: (
+      <>
+        <Navbar />
+        <OrderDetails />
       </>
     ),
   },
