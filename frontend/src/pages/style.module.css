@@ -594,7 +594,8 @@ button {
   color: black;
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
 }
-.blogimg{
+
+.blogimg {
   width: 100px;
   height: 100px;
   object-fit: contain;
@@ -694,6 +695,34 @@ ul li a:hover {
 
 .hamburger {
   display: none;
+}
+
+.orderdetails {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height:100dvh;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #216d9e;
+}
+
+.orderdetails .heading {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+}
+
+.orderdetails button {
+  padding: 10px;
+  font-size: 1rem;
+  background-color: white;
+  background-color: #216d9e;
+  font-weight: bold;
+  border: 2px solid white;
+  color: white;
+  border-radius: 10px;
 }
 
 
@@ -856,6 +885,7 @@ ul li a:hover {
     /* For tablets: 2 columns */
   }
 }
+
 @media (max-width: 768px) {
   .dashboard .cards {
     grid-template-columns: repeat(1, 1fr);
