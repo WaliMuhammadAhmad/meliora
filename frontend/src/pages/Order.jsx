@@ -7,7 +7,7 @@ import styles from "./style.module.css";
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function Orders() {
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [showCancelAlert, setShowCancelAlert] = useState(false);
   const [showCompleteAlert, setShowCompleteAlert] = useState(false);
   const [products, setProducts] = useState([]);
   const [changeOrder, setChangeOrder] = useState(null);
@@ -54,9 +54,9 @@ export default function Orders() {
     setShowCompleteAlert(true);
   };
 
-  const handleDeleteClick = (product) => {
+  const handleCancelClick = (product) => {
     setChangeOrder(product);
-    setShowDeleteAlert(true);
+    setShowCancelAlert(true);
   };
 
   const handleConfirmComplete = async () => {
@@ -76,11 +76,11 @@ export default function Orders() {
     }
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmCancel = async () => {
     try {
       await axios.put(`/order/${changeOrder._id}`, {
         ...changeOrder,
-        status: "completed",
+        status: "cancelled",
       });
       setProducts((prevProducts) =>
         prevProducts.map((p) =>
@@ -89,7 +89,7 @@ export default function Orders() {
       );
       setShowCompleteAlert(false);
     } catch (error) {
-      console.error("Error completing order:", error);
+      console.error("Error cancelling order:", error);
     }
   };
 
@@ -103,14 +103,14 @@ export default function Orders() {
           <div className={`${styles.productname} ${styles.productdescription}`}>{product.customerName}</div>
           <div className={`${styles.productprice} ${styles.productdescription}`}>{product.productName}</div>
           <div className={`${styles.productstatus} ${styles.productdescription}`}
-            style={{ color: product.status === 'pending' ? '#216D9E' : product.status == 'completed' ? 'green' : 'red' }}>{product.status}</div>
+            style={{ color: product.status === 'pending' ? '#216D9E' : product.status === 'completed' ? 'green' : 'red' }}>{product.status}</div>
           <div className={`${styles.productoperations} ${styles.productdescription}`}>
             {status === "pending" && (
               <button className={styles.updatebtn} onClick={() => handleCompleteClick(product)}>
                 Complete
               </button>
             )}
-            <button className={styles.deletebtn} onClick={() => handleDeleteClick(product)}>
+            <button className={styles.deletebtn} onClick={() => handleCancelClick(product)}>
               Cancel
             </button>
           </div>
@@ -171,11 +171,11 @@ export default function Orders() {
             order={changeOrder}
           />
         )}
-        {showDeleteAlert && (
+        {showCancelAlert && (
           <Alert
             productName={changeOrder.productName}
-            onConfirm={handleConfirmDelete}
-            onCancel={() => setShowDeleteAlert(false)}
+            onConfirm={handleConfirmCancel}
+            onCancel={() => setShowCancelAlert(false)}
           />
         )}
       </div>
