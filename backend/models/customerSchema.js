@@ -35,9 +35,19 @@ const customerSchema = new mongoose.Schema(
       city: { type: String, required: true },
       state: { type: String },
       postalCode: { type: String, required: true },
-      country: { type: String, required: true, default: "USA" },
+      country: { type: String, required: true, default: "Pakistan" },
+    },
+    deliveryAddress : {
+      type: String,
+      required: false,
+      trim: true,
+      minlength: [3,"Same as address or not"]
     },
     paymentMethods: {
+      cashOnDelivery: {
+        type: Boolean,
+        default: true,
+      },
       cardPayment: {
         cardNumber: { type: String, trim: true },
         expiryDate: { type: String },
@@ -46,29 +56,7 @@ const customerSchema = new mongoose.Schema(
         billingAddress: { type: String },
         default: { type: Boolean, default: false },
       },
-      cashOnDelivery: {
-        type: Boolean,
-        default: true,
-      },
     },
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
-    carts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
-    orders: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
-      },
-    ],
     isVerified: {
       type: Boolean,
       default: false,

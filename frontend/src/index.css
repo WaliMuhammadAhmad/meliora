@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 .no-scroll{
     overflow: hidden;
 }
-
 .main-container {
     width: 100vw;
     display: flex;
@@ -602,6 +601,75 @@ ul li a:hover {
 }
 
 
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: separate;
+    /* Changed to 'separate' to allow spacing between rows */
+    border-spacing: 0 15px;
+    /* Adds space between rows */
+}
+
+thead {
+    background-color: white;
+    /* White background for thead */
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    color: black;
+    font-size: 18px;
+}
+
+tr {
+    background-color: white;
+    border-radius: 12px;
+    /* Rounded corners for rows */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Optional shadow for better visibility */
+}
+
+tbody tr:first-of-type {
+    margin-top: 15px;
+    /* Extra space between thead and first row */
+}
+
+td {
+    font-size: 16px;
+}
+
+.in-stock {
+    color: green;
+    font-weight: bold;
+}
+
+.out-of-stock {
+    color: red;
+    font-weight: bold;
+}
+
+/* button {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+} */
+
+
+/* Add a border-radius to the first and last table rows to make them rounded */
+tbody tr {
+    overflow: hidden;
+    border-radius: 10px;
+}
 
 .products {
     width: 100%;

@@ -1,23 +1,10 @@
-const Customer = require('../models/customerSchema'); // Adjust the path as necessary
-// const bcrypt = require('bcryptjs'); // Uncomment this when you are ready to implement password hashing
+const Customer = require('../models/customerSchema');
+const bcrypt = require('bcrypt');
 
-// Create a new customer
 exports.createCustomer = async (req, res) => {
     try {
-        const { name, email, password, cardPayment, cashOnDelivery } = req.body;
-
-        // Hash the password before saving (uncomment when ready)
-        // const saltRounds = 10;
-        // const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        const newCustomer = new Customer({
-            name,
-            email,
-            password, // Use hashedPassword here when ready
-            cardPayment,
-            cashOnDelivery
-        });
-
+        const cust = req.body;
+        const newCustomer = new Customer(cust);
         const savedCustomer = await newCustomer.save();
         res.status(201).json({ message: 'Customer created successfully', customer: savedCustomer });
     } catch (error) {
@@ -38,7 +25,7 @@ exports.getAllCustomers = async (req, res) => {
 // Get customer by ID
 exports.getCustomerById = async (req, res) => {
     try {
-        const customer = await Customer.findById(req.params.id).populate('reviews').populate('carts');
+        const customer = await Customer.findById(req.params.id);
         if (!customer) {
             return res.status(404).json({ message: 'Customer not found' });
         }
@@ -51,22 +38,20 @@ exports.getCustomerById = async (req, res) => {
 // Update customer by ID
 exports.updateCustomer = async (req, res) => {
     try {
-        const { name, email, password, cardPayment, cashOnDelivery } = req.body;
+        const { name, password, phone, address, deliveryAddress } = req.body;
+        const updateData = {
+            name, phone, address, deliveryAddress
+        }
 
-        // Hash the password if it's being updated (uncomment when ready)
-        // const saltRounds = 10;
-        // const hashedPassword = await bcrypt.hash(password, saltRounds);
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(password, salt);
+        }
 
         const updatedCustomer = await Customer.findByIdAndUpdate(
             req.params.id,
-            {
-                name,
-                email,
-                // password: hashedPassword, // Uncomment this when ready to use hashed password
-                cardPayment,
-                cashOnDelivery
-            },
-            { new: true }
+            updateData,
+            { new: true, runValidators: true }
         );
 
         if (!updatedCustomer) {
@@ -91,9 +76,3 @@ exports.deleteCustomer = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-// Example of password comparison (to be uncommented when ready)
-// const isPasswordValid = await bcrypt.compare(req.body.password, customer.password);
-// if (!isPasswordValid) {
-//     return res.status(401).json({ message: 'Invalid credentials' });
-// }

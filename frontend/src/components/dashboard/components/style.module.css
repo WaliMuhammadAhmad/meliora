@@ -1,0 +1,142 @@
+.alertBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.alertBox {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+.alertTitle {
+    margin: 0;
+    color: #216D9E;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.alertMessage {
+    color: #216D9E;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirmButton {
+    background-color: #216D9E;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancelButton {
+    background-color: transparent;
+    color: #216D9E;
+    border: 2px solid #216D9E;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirmButton:hover,
+.cancelButton:hover {
+    opacity: 0.9;
+}
+
+.modaloverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .modaloverlay .modalcontent {
+    background: white;
+    width: 30vw;
+    /* height: 100vh; */
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 12px;
+    /* overflow: hidden; */
+  }
+  
+  .modalcontent h2 {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .modalcontent .closeicon {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .modalcontent label {
+    display: block;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  .modalcontent input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: rgba(211, 211, 211, 0.733);
+    border-radius: 5px;
+  }
+  
+  .modalcontent button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #185ea5;
+    color: white;
+  }
+  
+  @media screen and (max-width: 1110px) {
+    .modaloverlay {
+      padding: 0px;
+    }
+  
+    .modaloverlay .modalcontent {
+      width: 90vw;
+    }
+  
+    .modalcontent input {
+      padding: 5px;
+      margin-top: 5px;
+    }
+  
+    .modalcontent button {
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
+  
+  }

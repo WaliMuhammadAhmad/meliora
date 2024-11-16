@@ -13,7 +13,7 @@ const packageSchema = new mongoose.Schema({
         required: [true, 'Description is required'],
         trim: true,
         minlength: [10, 'Description must be at least 10 characters long'],
-        maxlength: [500, 'Description must not exceed 500 characters']
+        maxlength: [2500, 'Description must not exceed 2500 characters']
     },
     price: {
         type: Number,

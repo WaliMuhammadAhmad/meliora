@@ -1,40 +1,117 @@
-import { motion } from "framer-motion";
-import React from "react";
-import { AuroraBackground } from "./ui/aurora-background.tsx";
-import { FlipWords } from "./ui/flip-words.tsx";
-import Products from "./components/Products";
-import { Reviews } from "./components/Reviews.jsx";
-import { WaveAd } from "./components/WaveAd.jsx";
-import Blogs from "./components/Blogs.jsx";
-import logo from './assets/logoSVG.png';
-import { Navbar } from "./components/Navbar.jsx"; // Import Navbar
-import WholeSale from "./components/WholeSale.jsx"; // Import WholeSale
-import { Route, Routes } from 'react-router-dom'
-import ProductDetails from "./pages/ProductDetails.jsx";
-import Home from "./components/Home.jsx";
-import Chekcout from "./components/Chekcout.jsx";
-import Dashboard from "./components/dashboard/Dashboard.jsx";
-import Admin from "./components/dashboard/components/Admin.jsx";
-import AddProducts from "./components/dashboard/components/AddProducts.jsx";
-import AddBlog from "./components/dashboard/components/AddBlog.jsx";
-import Account from "./components/dashboard/components/Account.jsx";
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Home from './pages/Home';
+import ProductDetails from './pages/ProductDetails';
+import Checkout from './pages/Chekcout';
+import Admin from './pages/Admin';
+import Dashboard from './pages/Dashboard';
+import Order from './pages/Order';
+import AddProducts from './pages/Product';
+import Blog from './pages/Blog';
+import Account from './pages/Account';
+import Packages from './pages/Packages';
+import OrderDetails from './pages/OrderDetails';
+import { Navbar } from './components/Navbar';
+// import SignIn from './signin/SignIn';
+// import SignUp from './signup/SignUp';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  // {
+  //   path: '/signin',
+  //   element: <SignIn />,
+  // },
+  // {
+  //   path: 'signup',
+  //   element: <SignUp />,
+  // },
+  {
+    path: "/product-details/:id",
+    element: <ProductDetails />,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: (
+      <>
+        <Admin />
+        <Dashboard />
+      </>
+    ),
+  },
+  {
+    path: "/admin/orders",
+    element: (
+      <>
+        <Admin />
+        <Order />
+      </>
+    ),
+  },
+  {
+    path: "/admin/packages",
+    element: (
+      <>
+        <Admin />
+        <Packages />
+      </>
+    ),
+  },
+  {
+    path: "/admin/customers",
+    element: (
+      <>
+        <Admin />
+        
+      </>
+    ),
+  },
+  {
+    path: "/admin/products",
+    element: (
+      <>
+        <Admin />
+        <AddProducts />
+      </>
+    ),
+  },
+  {
+    path: "/admin/blogs",
+    element: (
+      <>
+        <Admin />
+        <Blog />
+      </>
+    ),
+  },
+  {
+    path: "/admin/account",
+    element: (
+      <>
+        <Admin />
+        <Account />
+      </>
+    ),
+  },
+  {
+    path: "/orderDetails",
+    element: (
+      <>
+        <Navbar />
+        <OrderDetails />
+      </>
+    ),
+  },
+]);
 
 function App() {
-
-  return (
-    <>
-
-      <Routes>
-        <Route exact path="/" element={<Home />}></Route>
-        <Route exact path="/product-details" element={<ProductDetails />}></Route>
-        <Route exact path="/checkout" element={<Chekcout />}></Route>
-        <Route exact path="/admin/dashboard" element={<><Admin /><Dashboard /></>}></Route>
-        <Route exact path="/admin/add-products" element={<><Admin /><AddProducts /></>}></Route>
-        <Route exact path="/admin/add-blogs" element={<><Admin /><AddBlog /></>}></Route>
-        <Route exact path="/admin/account" element={<><Admin /><Account /></>}></Route>
-      </Routes>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
