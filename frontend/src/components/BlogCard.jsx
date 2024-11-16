@@ -9,7 +9,7 @@ const content = [
   {
     title: "Carpet Washing",
     description:
-      "Revitalize your carpets with our professional carpet washing service. We use advanced cleaning techniques and eco-friendly products to remove dirt, stains, and allergens, leaving your carpets fresh and like new.",
+      "Revitalize your carpets with our professional carpet washing service. We use advanced cleaning techniques and eco-friendly blogs to remove dirt, stains, and allergens, leaving your carpets fresh and like new.",
     content: (
       <div className="h-full w-full bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] flex items-center justify-center text-white">
         <img
@@ -135,7 +135,8 @@ const content = [
 ];
 
 export default function BlogCard() {
-  const [products, setProducts] = useState([]);
+  // eslint-disable-next-line
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,7 +144,7 @@ export default function BlogCard() {
         const response = await axios.get("/blog");
 
         if (response.data && response.data.length > 0) {
-          setProducts(response.data);
+          setBlogs(response.data);
         } else {
           alert("No blogs found");
         }
@@ -154,12 +155,6 @@ export default function BlogCard() {
 
     fetchData();
   }, []);
-
-  products.map((product) => (
-      content.title = product.title,
-      content.description = product.description
-    )
-  );
 
   return (
     <div>
