@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@mui/joy";
 import styles from "./style.module.css";
 import axios from "axios";
+import CreateContextApi from "../ContextApi/CreateContextApi";
+import Cookies from "js-cookie";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function Checkout() {
+  const { cartData, setCartData,total,setTotal } = useContext(CreateContextApi)
+  useEffect(() => {
+    // Check if 'cart' cookie exists
+    const cartCookie = Cookies.get('cart');
+    if (cartCookie) {
+      // Parse and set the cart data if the cookie is present
+      setCartData(JSON.parse(cartCookie));
+    }
+  }, []);
   const [formData, setFormData] = useState({
     firstName: "",
     streetAddress: "",
@@ -128,53 +139,40 @@ export default function Checkout() {
               <label>Email</label>
               <input type="email" name="email" onChange={handleChange} />
             </div>
-            <div className="radio" style={{ marginTop: "20px" }}>
-              <input type="checkbox" name="saveInfo" onChange={handleChange} />
-              <label style={{ marginLeft: "20px" }}>
-                Save this information for faster check-out next time
-              </label>
-            </div>
+            <div className={styles.radio}>
+            <input type="checkbox" name="" id="" />
+            <label>Save this information for faster check-out next time</label>
+          </div>
           </form>
         </div>
         <div className={styles.maincheckout}>
-          <div className={styles.topheading}>
-            <h1 style={{ fontWeight: "bold" }}>Item Details</h1>
-          </div>
+            <h1>Item Details</h1>
           <div className={styles.cartitems}>
-            <div className={styles.item}>
-              <div className={styles.imagesection}>
-                <img
-                  src="https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false"
-                  alt=""
-                />
+            {cartData.map((data => (
+
+              <div className={styles.item}>
+                <div className={styles.imagesection}>
+                  <img src={data.frontImage} alt="" />
+                </div>
+                <div className={styles.itemright}>
+                  <h5>{data.name}</h5>
+                  <h5>${data.price} x {data.items}</h5>
+                </div>
               </div>
-              <div className={styles.itemright}>
-                <h5>Meliora Super Plus</h5>
-                <h5>$75 x 1</h5>
-              </div>
-            </div>
+            )))}
             <hr />
           </div>
-          <div
-            className={styles.label1}
-            style={{ color: "black", borderBottom: "2px solid black" }}
-          >
+          <div className={styles.label1}>
             <h3>SubTotal:</h3>
-            <h3>$175</h3>
+            <h3>${total}</h3>
           </div>
-          <div
-            className={styles.label2}
-            style={{ color: "black", borderBottom: "2px solid black" }}
-          >
+          <div className={styles.label2}>
             <h3>Shipping:</h3>
             <h3>Free</h3>
           </div>
-          <div
-            className={styles.label3}
-            style={{ color: "black", borderBottom: "2px solid black" }}
-          >
+          <div className={styles.label3}>
             <h3>Total:</h3>
-            <h3>$175</h3>
+            <h3>${total}</h3>
           </div>
           <div className={styles.radio}>
             <input type="checkbox" name="" id="" />

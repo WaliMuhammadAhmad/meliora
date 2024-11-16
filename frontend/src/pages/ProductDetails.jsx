@@ -10,6 +10,10 @@ import ReviewSection from "../components/ReviewSection";
 import styles from "./style.module.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -17,7 +21,48 @@ export default function ProductDetails() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [limit, setLimit] = useState(1);
-  const { showCart, setShowCart } = useContext(CreateContextApi);
+  const { showCart, setShowCart, cartData, setCartData } = useContext(CreateContextApi);
+
+  useEffect(() => {
+    // Check if 'cart' cookie exists
+    const cartCookie = Cookies.get('cart');
+    if (cartCookie) {
+      // Parse and set the cart data if the cookie is present
+      setCartData(JSON.parse(cartCookie));
+    }
+  }, []);
+
+  const handleAddToCart = () => {
+    const existingProductIndex = cartData.findIndex(
+      (item) => item.id === product.id
+    );
+    let updatedCart;
+    if (existingProductIndex !== -1) {
+      // Product already exists, update the quantity
+      updatedCart = cartData.map((item, index) =>
+        index === existingProductIndex
+          ? { ...item, items: limit }
+          : item
+      );
+    } else {
+      // Product doesn't exist, add it to the cart
+      updatedCart = [
+        ...cartData,
+        { ...product, items: limit }, // Add new product with the selected limit
+      ];
+    }
+
+    // Update state and cookie
+    setCartData(updatedCart);
+
+    Cookies.set("cart", JSON.stringify(updatedCart), {
+      expires: 1 // 1-day expiry
+    });
+    toast.success(`Cart Item Updated to ${limit}`, {
+      autoClose: 1000,
+      position:'top-center'
+  })
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,13 +157,20 @@ export default function ProductDetails() {
             </div>
             <Button
               onClick={() => {
-                setShowCart(!showCart);
+                handleAddToCart();
               }}
             >
               Add to Cart
             </Button>
           </div>
-          <span
+          <Button
+            onClick={() => {
+              setShowCart(!showCart);
+            }}
+          >
+            Go To Cart
+          </Button>
+          {/* <span
             onClick={() => setShowCart(!showCart)}
             style={{
               fontSize: "13px",
@@ -129,11 +181,12 @@ export default function ProductDetails() {
             }}
           >
             Go To Cart
-          </span>
+          </span> */}
         </div>
       </div>
       <ProductUsage product={product} />
       <ReviewSection product={product} />
+      <ToastContainer/>
     </>
   );
 }

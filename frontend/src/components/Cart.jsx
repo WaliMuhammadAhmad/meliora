@@ -5,23 +5,15 @@ import CreateContextApi from '../ContextApi/CreateContextApi';
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import styles from './style.module.css'
+import { useCookies } from "react-cookie";
 
 
 
 export default function Cart() {
-    const { showCart, setShowCart, cartData } = useContext(CreateContextApi)
-    const [total, setTotal] = useState(0);
+
+    const { showCart, setShowCart,cartData,setCartData,total,setTotal } = useContext(CreateContextApi)
     const [bgColor, setBgColor] = useState("transparent");
     const navigate = useNavigate();
-    useEffect(() => {
-        let tempTotal = 0;
-        // Recalculate totals based on price and items
-        for (let index = 0; index < cartData.length; index++) {
-            tempTotal += cartData[index].price * cartData[index].items
-        }
-
-        setTotal(tempTotal) // Update the state with new totals
-    }, [cartData], []); // Run this effect on mount
     useEffect(() => {
         let timeout;
         if (showCart) {
@@ -53,7 +45,7 @@ export default function Cart() {
 
                             <div className={styles.item}>
                                 <div className={styles.imagesection}>
-                                    <img src={data.img} alt="" />
+                                    <img src={data.frontImage} alt="" />
                                 </div>
                                 <div className={styles.itemright}>
                                     <h5>{data.name}</h5>
@@ -76,8 +68,7 @@ export default function Cart() {
                         <h3>${total}</h3>
                     </div>
                     <div className={styles.checkout}>
-                        <h3 onClick={() => { navigate('/checkout'); setShowCart(!showCart); document.body.classList.remove('no-scroll') }}>Proceed to Checkout</h3>
-                        <span onClick={() => navigate('/checkout')}><FaArrowRight /></span>
+                        <button style={{color:'white',fontSize:'18px',border:'2px solid white',padding:'10px'}} onClick={() => { navigate('/checkout'); setShowCart(!showCart); document.body.classList.remove('no-scroll') }}>Proceed to Checkout</button>
                     </div>
                 </div>
             </motion.div>

@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function ReviewSection({ product }) {
   const [reviews, setReviews] = useState([]);
   const [customers, setCustomers] = useState({});
+  const [stars, setStars] = useState(1);
+
+  // Handle increasing stars
+  const incrementStars = () => {
+    if (stars < 5) setStars(stars + 1);
+  };
+
+  // Handle decreasing stars
+  const decrementStars = () => {
+    if (stars > 1) setStars(stars - 1);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,16 +61,16 @@ export default function ReviewSection({ product }) {
 
   return (
     <div className={styles.reviewsection}>
-      <h2>Customer Reviews</h2>
+      <h2 style={{ padding: '15px 0px' }}>Customer Reviews</h2>
       <div className={styles.header}>
         <div className={styles.ratingsummary}>
           <span className={styles.stars}>★★★★☆</span>
           <span>
             {totalReviews > 0
               ? (
-                  reviews.reduce((sum, review) => sum + review.stars, 0) /
-                  totalReviews
-                ).toFixed(1)
+                reviews.reduce((sum, review) => sum + review.stars, 0) /
+                totalReviews
+              ).toFixed(1)
               : 0}{" "}
             out of 5
           </span>
@@ -78,6 +90,20 @@ export default function ReviewSection({ product }) {
             </div>
           ))}
         </div>
+        <div className={styles.reviewcontainer}>
+          <textarea
+            className={styles.textarea}
+            placeholder="Write your review here..."
+          />
+          <div className={styles.starsContainer}>
+            <button onClick={decrementStars} className={styles.button}>-</button>
+            <span className={styles.stars}>{stars} ★</span>
+            <button onClick={incrementStars} className={styles.button}>+</button>
+          </div>
+          <button className={styles.postButton}>
+            Post Review
+          </button>
+        </div>
       </div>
 
       {reviews.length > 0 && (
@@ -87,9 +113,9 @@ export default function ReviewSection({ product }) {
               <div className={styles.reviewheader}>
                 <div className={styles.topheading}>
                   <h4>{customers[review.customerId]?.name || "Loading..."}</h4>
-                  {customers[review.customerId]?.isVerified && (
+                  {customers[review.customerId]?.isVerified ? (
                     <span className={styles.verified}>Verified</span>
-                  )}
+                  ) : <span className={styles.verified} style={{ backgroundColor: 'red' }}>Not Verfied</span>}
                   <p>
                     {Array.from({ length: review.stars }).map((_, index) => (
                       <span key={index} className={styles.stars}>
