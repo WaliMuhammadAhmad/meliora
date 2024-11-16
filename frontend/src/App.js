@@ -12,14 +12,24 @@ import Account from './pages/Account';
 import Packages from './pages/Packages';
 import OrderDetails from './pages/OrderDetails';
 import { Navbar } from './components/Navbar';
+// import SignIn from './signin/SignIn';
+// import SignUp from './signup/SignUp';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
   },
+  // {
+  //   path: '/signin',
+  //   element: <SignIn />,
+  // },
+  // {
+  //   path: 'signup',
+  //   element: <SignUp />,
+  // },
   {
-    path: "/product-details",
+    path: "/product-details/:id",
     element: <ProductDetails />,
   },
   {
