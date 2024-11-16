@@ -4,7 +4,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
-export default function BarGraph() {
+export default function BarGraph({name}) {
   const [barStats, setBarStats] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function BarGraph() {
       series={[
         {
           dataKey: "value",
-          label: `Orders of ${barStats.name}`,
+          label: `Orders of ${name}`,
           valueFormatter: (val) => `${val} orders`,
         },
       ]}

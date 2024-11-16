@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CompleteOrder from "../components/dashboard/components/Alerts/CompleteOrder";
-import CancelOrder from "../components/dashboard/components/Alerts/CancelOrder";
-import DeleteOrder from "../components/dashboard/components/Alerts/DeleteOrder";
+import CompleteOrder from "../components/Alerts/CompleteOrder";
+import CancelOrder from "../components/Alerts/CancelOrder";
+import DeleteOrder from "../components/Alerts/DeleteOrder";
 import styles from "./style.module.css";
 
 axios.defaults.baseURL = "http://localhost:3001";

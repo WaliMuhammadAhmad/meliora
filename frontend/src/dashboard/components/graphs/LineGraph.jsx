@@ -18,12 +18,14 @@ export default function LineGraph() {
 
     fetchDashboardData();
   }, []);
+  const graphData = orderStats ? orderStats.data : [0];
+  
   return (
     <LineChart
       xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
       series={[
         {
-          data: orderStats.data,
+          data: (graphData),
         },
       ]}
       width={500}

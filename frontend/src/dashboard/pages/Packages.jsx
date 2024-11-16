@@ -1,40 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UpdateModal from "../components/dashboard/components/UpdateModal";
-import AddModal from "../components/dashboard/components/AddModal";
-import Alert from "../components/dashboard/components/Alert";
+import Delete from "../components/Alerts/Delete";
 import styles from './style.module.css'
 
 axios.defaults.baseURL = "http://localhost:3001";
 
-export default function AddProducts() {
-  const [showModal, setShowModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
+export default function Packages() {
+  const [products, setPackages] = useState([]);
+  // const [showModal, setShowModal] = useState(false);
+  // const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState({});
-  const [products, setProducts] = useState([]);
-  const [productToDelete, setProductToDelete] = useState(null);
+  // const [selectedPackage, setSelectedPackage] = useState({});
+  const [productToDelete, setPackageToDelete] = useState(null);
 
-  const handleAddProduct = async (productData) => {
-    try {
-      const response = await axios.post("/products", productData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("Product added successfully", response.data);
-    } catch (error) {
-      console.error("Error adding product", error);
-    }
-  };
+  // const handleAddPackage = async (productData) => {
+  //   try {
+  //     const response = await axios.post("package", productData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     console.log("Package added successfully", response.data);
+  //   } catch (error) {
+  //     console.error("Error adding product", error);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/products");
-
+        const response = await axios.get("package");
         if (response.data && response.data.length > 0) {
-          setProducts(response.data);
+          setPackages(response.data);
         } else {
           alert("No products found");
         }
@@ -46,21 +43,21 @@ export default function AddProducts() {
     fetchData();
   }, []);
 
-  const handleUpdateClick = (product) => {
-    setSelectedProduct(product);
-    setShowModal(true);
-  };
+  // const handleUpdateClick = (product) => {
+  //   setSelectedPackage(product);
+  //   setShowModal(true);
+  // };
 
   const handleDeleteClick = (product) => {
-    setProductToDelete(product); // Set the product to be deleted
-    setShowDeleteAlert(true); // Show the alert
+    setPackageToDelete(product);
+    setShowDeleteAlert(true);
   };
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/products/${productToDelete._id}`);
-      setProducts(products.filter((p) => p._id !== productToDelete._id)); // Remove the deleted product from the state
-      setShowDeleteAlert(false); // Close the alert after deletion
+      await axios.delete(`package/${productToDelete._id}`);
+      setPackages(products.filter((p) => p._id !== productToDelete._id));
+      setShowDeleteAlert(false);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -70,13 +67,14 @@ export default function AddProducts() {
     <>
       <div className={styles.manageItems}>
         <div className={styles.top}>
-          <h1>Manage Products</h1>
-          <button onClick={() => setShowAddModal(true)}>Add Product</button>
+          <h1>Manage Packages</h1>
+          {/* <button onClick={() => setShowAddModal(true)}>Add Package</button> */}
+          <button>Add Package</button>
         </div>
         <div className={styles.products}>
           <div className={styles.productgrid}>
-            <div className={`${styles.header} ${styles.productno}`}>Product No.</div>
-            <div className={`${styles.header} ${styles.productname}`}>Product Name</div>
+            <div className={`${styles.header} ${styles.productno}`}>Package No.</div>
+            <div className={`${styles.header} ${styles.productname}`}>Package Name</div>
             <div className={`${styles.header} ${styles.productprice}`}>Price</div>
             <div className={`${styles.header} ${styles.productstatus}`}>Status</div>
             <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
@@ -85,24 +83,25 @@ export default function AddProducts() {
               <React.Fragment key={product._id}>
                 <div className={`${styles.productno} ${styles.productdescription}`}>
                   {index + 1}
+                  <img src={product.image} alt={product.name} />
                 </div>
                 <div className={`${styles.productname} ${styles.productdescription}`}>
                   {product.name}
                 </div>
                 <div className={`${styles.productprice} ${styles.productdescription}`}>
-                  {product.price}$
+                  {product.price}
                 </div>
                 <div
                   className={`${styles.productstatus} ${styles.productdescription} 
-                  ${product.stockQuantity === 0 ? styles.outofstock : styles.instock
+                  ${product.isAvailable === false ? styles.outofstock : styles.instock
                     }`}
                 >
-                  {product.stockQuantity === 0 ? "Out of Stock" : "In Stock"}
+                  {product.isAvailable === false ? "Out of Stock" : "In Stock"}
                 </div>
                 <div className={`${styles.productoperations} ${styles.productdescription}`} >
                   <button
                     className={styles.updatebtn}
-                    onClick={() => handleUpdateClick(product)}
+                    // onClick={() => handleUpdateClick(product)}
                   >
                     Update
                   </button>
@@ -118,26 +117,15 @@ export default function AddProducts() {
           </div>
         </div>
 
-        {/* Modals for updating and adding products */}
-        <UpdateModal
-          show={showModal}
-          onClose={() => setShowModal(false)}
-          product={selectedProduct}
-        />
-        <AddModal
-          show={showAddModal}
-          onClose={() => setShowAddModal(false)}
-          submitAction={handleAddProduct}
-        />
-
         {showDeleteAlert && (
-          <Alert
-            productName={productToDelete.name}
+          <Delete
+            text="Package"
+            obj={productToDelete.name}
             onConfirm={handleConfirmDelete}
             onCancel={() => setShowDeleteAlert(false)}
           />
         )}
-      </div >
+      </div>
     </>
   );
 }

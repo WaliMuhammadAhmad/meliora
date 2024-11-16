@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from './style.module.css'
 
-export default function BlogModal({ show, onClose, blog, onSubmit }) {
+export default function Blog({ show, onClose, blog, onSubmit }) {
   const [currentBlog, setCurrentBlog] = useState({
     blogName: "",
     text: "",

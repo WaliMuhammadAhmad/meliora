@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import LineGraph from "../components/dashboard/components/LineGraph";
-import BarGraph from "../components/dashboard/components/BarGraph";
+// import LineGraph from "../dashboard/graphs/LineGraph";
+import BarGraph from "../components/graphs/BarGraph";
 import styles from "./style.module.css";
 
 axios.defaults.baseURL = "http://localhost:3001";
