@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 
-export default function WholeSaleCard() {
+export default function WholeSaleCard({pkg}) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
@@ -16,12 +16,16 @@ export default function WholeSaleCard() {
           alt="green iguana"
         />
         <CardContent>
+          <div className='flex justify-between'>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {pkg.packageName}
           </Typography>
+          <Typography gutterBottom variant="h6" component="div">
+            ${pkg.price}
+          </Typography>
+          </div>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {pkg.description}
           </Typography>
         </CardContent>
       </CardActionArea>

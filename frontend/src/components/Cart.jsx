@@ -9,7 +9,7 @@ import styles from './style.module.css'
 
 
 export default function Cart() {
-    const { showCart, setShowCart, cartData, setCartData } = useContext(CreateContextApi)
+    const { showCart, setShowCart, cartData } = useContext(CreateContextApi)
     const [total, setTotal] = useState(0);
     const [bgColor, setBgColor] = useState("transparent");
     const navigate = useNavigate();
@@ -17,8 +17,6 @@ export default function Cart() {
         let tempTotal = 0;
         // Recalculate totals based on price and items
         for (let index = 0; index < cartData.length; index++) {
-            console.log(cartData[index]);
-
             tempTotal += cartData[index].price * cartData[index].items
         }
 
