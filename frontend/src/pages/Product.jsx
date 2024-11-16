@@ -90,7 +90,7 @@ export default function AddProducts() {
                   {product.name}
                 </div>
                 <div className={`${styles.productprice} ${styles.productdescription}`}>
-                  {product.price}
+                  {product.price}$
                 </div>
                 <div
                   className={`${styles.productstatus} ${styles.productdescription} 

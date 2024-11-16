@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import LineGraph from "../components/dashboard/components/LineGraph";
+// import LineGraph from "../components/dashboard/components/LineGraph";
 import BarGraph from "../components/dashboard/components/BarGraph";
 import styles from "./style.module.css";
 
@@ -54,7 +54,7 @@ export default function Dashboard() {
       <div className={styles.top}>
         <div className={styles.left}>
           <h1>Dashboard</h1>
-          <p>Welcome Back Admin!</p>
+          <p>Welcome Admin!</p>
         </div>
       </div>
       <div className={styles.maindashboard}>
@@ -115,7 +115,7 @@ export default function Dashboard() {
             {/* <LineGraph /> */}
           </div>
           <div className={styles.cardtwo}>
-            <BarGraph />
+            <BarGraph name={topSellingProduct.name} />
           </div>
         </div>
       </div>
