@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import styles from './style.module.css'
+import styles from "./style.module.css";
 
 export default function UpdateModal({ show, onClose, product }) {
+  console.log(product);
   const [currentProduct, setCurrentProduct] = useState({
     name: "",
     description: "",
-    ingredient: "",
+    detail: "",
+    subDetail: "",
+    frontImage: "",
+    backImage: "",
+    stockQuantity: "",
+    sizes: "",
     price: "",
   });
   useEffect(() => {
@@ -13,7 +19,12 @@ export default function UpdateModal({ show, onClose, product }) {
       setCurrentProduct({
         name: product.name,
         description: product.description,
-        ingredient: product.ingredient,
+        detail: product.detail,
+        subDetail: product.subDetail,
+        frontImage: product.frontImage,
+        backImage: product.backImage,
+        stockQuantity: product.stockQuantity,
+        sizes: product.sizes,
         price: product.price,
       });
     }
@@ -42,6 +53,30 @@ export default function UpdateModal({ show, onClose, product }) {
           }
         />
 
+        <label>detail:</label>
+        <input
+          type="text"
+          value={currentProduct.detail}
+          onChange={(e) =>
+            setCurrentProduct((prev) => ({
+              ...prev,
+              ingredient: e.target.value,
+            }))
+          }
+        />
+
+        <label>subDetail:</label>
+        <input
+          type="text"
+          value={currentProduct.subDetail}
+          onChange={(e) =>
+            setCurrentProduct((prev) => ({
+              ...prev,
+              ingredient: e.target.value,
+            }))
+          }
+        />
+
         <label>Description:</label>
         <input
           type="text"
@@ -54,18 +89,6 @@ export default function UpdateModal({ show, onClose, product }) {
           }
         />
 
-        <label>Ingredients:</label>
-        <input
-          type="text"
-          value={currentProduct.ingredient}
-          onChange={(e) =>
-            setCurrentProduct((prev) => ({
-              ...prev,
-              ingredient: e.target.value,
-            }))
-          }
-        />
-
         <label>Price:</label>
         <input
           type="number"
@@ -74,7 +97,23 @@ export default function UpdateModal({ show, onClose, product }) {
             setCurrentProduct((prev) => ({ ...prev, price: e.target.value }))
           }
         />
-        <label>Front Image:</label>
+
+        <label>stockQuantity:</label>
+        <input
+          type="number"
+          value={currentProduct.stockQuantity}
+          onChange={(e) =>
+            setCurrentProduct((prev) => ({
+              ...prev,
+              stockQuantity: e.target.value,
+            }))
+          }
+        />
+
+        <div className="flex">
+          <label>Front Image:</label>
+          <img className="w-20 h-100" src={currentProduct.frontImage} alt="" />
+        </div>
         <input
           type="file"
           // value={currentProduct.price}
@@ -85,7 +124,11 @@ export default function UpdateModal({ show, onClose, product }) {
             }))
           }
         />
-        <label>Back Image:</label>
+
+        <div className="flex">
+          <label>Back Image:</label>
+          <img className="w-20 h-100" src={currentProduct.backImage} alt="" />
+        </div>
         <input
           type="file"
           // value={currentProduct.price}

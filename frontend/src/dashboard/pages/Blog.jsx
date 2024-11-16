@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Alert from "../components/dashboard/components/Alert";
-import BlogModal from "../components/dashboard/components/BlogModal";
-import styles from './style.module.css'
+import Delete from "../components/Alerts/Delete";
+import BlogModal from "../components/Modals/Blog";
+import styles from "./style.module.css";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -13,7 +13,6 @@ export default function AddBlogs() {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [blogToDelete, setBlogToDelete] = useState(null);
 
-  // Fetch blogs on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +42,9 @@ export default function AddBlogs() {
   const handleConfirmDelete = async () => {
     try {
       await axios.delete(`/blog/${blogToDelete._id}`);
-      setBlogs((prevBlogs) => prevBlogs.filter((b) => b._id !== blogToDelete._id));
+      setBlogs((prevBlogs) =>
+        prevBlogs.filter((b) => b._id !== blogToDelete._id)
+      );
       setShowDeleteAlert(false);
       setBlogToDelete(null);
     } catch (error) {
@@ -51,7 +52,6 @@ export default function AddBlogs() {
     }
   };
 
-  // Handles adding or updating a blog
   const handleBlogSubmit = async (formData, blogId) => {
     try {
       console.log("Form data:", formData);
@@ -86,27 +86,51 @@ export default function AddBlogs() {
         </div>
         <div className={styles.blogs}>
           <div className={styles.productgrid}>
-          <div className={`${styles.header} ${styles.productno}`}>Blog No.</div>
-          <div className={`${styles.header} ${styles.productname}`}>Blog Image</div>
-          <div className={`${styles.header} ${styles.productprice}`}>Blog Name</div>
-          <div className={`${styles.header} ${styles.productstatus}`}>Blog Text</div>
-            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
+            <div className={`${styles.header} ${styles.productname}`}>
+              Blog No.
+            </div>
+            <div className={`${styles.header} ${styles.productname}`}>
+              Blog Image
+            </div>
+            <div className={`${styles.header} ${styles.productprice}`}>
+              Blog Name
+            </div>
+            <div className={`${styles.header} ${styles.productname}`}>
+              Blog Text
+            </div>
+            <div className={`${styles.header} ${styles.productoperations}`}>
+              Operations
+            </div>
 
             {blogs.map((blog, index) => (
               <React.Fragment key={blog._id}>
-               <div className={`${styles.productno} ${styles.productdescription}`}>
+                <div
+                  className={`${styles.productno} ${styles.productdescription}`}
+                >
                   {index + 1}
                 </div>
-                <div className={`${styles.productname} ${styles.productdescription}`}>
-                  <img className={`${styles.blogimg}`}src={blog.image} alt={blog.blogName} />
+                <div
+                  className={`${styles.productname} ${styles.productdescription}`}
+                >
+                  <img
+                    className={`${styles.blogimg}`}
+                    src={blog.image}
+                    alt={blog.blogName}
+                  />
                 </div>
-                <div className={`${styles.productprice} ${styles.productdescription}`}>
-                  {blog.name}
+                <div
+                  className={`${styles.productprice} ${styles.productdescription}`}
+                >
+                  {blog.blogName}
                 </div>
-                <div className={`${styles.productprice} ${styles.productdescription}`}>
+                <div
+                  className={`${styles.productprice} ${styles.productdescription}`}
+                >
                   {blog.text}
                 </div>
-                <div className={`${styles.productoperations} ${styles.productdescription}`}>
+                <div
+                  className={`${styles.productoperations} ${styles.productdescription}`}
+                >
                   <button
                     className={styles.updatebtn}
                     onClick={() => handleUpdateClick(blog)}
@@ -132,12 +156,13 @@ export default function AddBlogs() {
             setSelectedBlog(null);
           }}
           blog={selectedBlog}
-          onSubmit={handleBlogSubmit} // Pass the unified submit handler
+          onSubmit={handleBlogSubmit}
         />
 
         {showDeleteAlert && (
-          <Alert
-            productName={blogToDelete?.name}
+          <Delete
+            text="Blog"
+            obj={blogToDelete.blogName}
             onConfirm={handleConfirmDelete}
             onCancel={() => setShowDeleteAlert(false)}
           />

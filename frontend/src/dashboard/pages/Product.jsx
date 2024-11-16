@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UpdateModal from "../components/dashboard/components/UpdateModal";
-import AddModal from "../components/dashboard/components/AddModal";
-import Alert from "../components/dashboard/components/Alert";
+import UpdateModal from "../components/Modals/UpdateProduct";
+import AddModal from "../components/Modals/AddProduct";
+import Alert from "../components/Alerts/Alert";
 import styles from './style.module.css'
 
 axios.defaults.baseURL = "http://localhost:3001";
 
-export default function Packages() {
+export default function AddProducts() {
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -17,7 +17,7 @@ export default function Packages() {
 
   const handleAddProduct = async (productData) => {
     try {
-      const response = await axios.post("package", productData, {
+      const response = await axios.post("/products", productData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -31,7 +31,7 @@ export default function Packages() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("package");
+        const response = await axios.get("/products");
 
         if (response.data && response.data.length > 0) {
           setProducts(response.data);
@@ -52,15 +52,15 @@ export default function Packages() {
   };
 
   const handleDeleteClick = (product) => {
-    setProductToDelete(product); // Set the product to be deleted
-    setShowDeleteAlert(true); // Show the alert
+    setProductToDelete(product); 
+    setShowDeleteAlert(true);
   };
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`package/${productToDelete._id}`);
-      setProducts(products.filter((p) => p._id !== productToDelete._id)); // Remove the deleted product from the state
-      setShowDeleteAlert(false); // Close the alert after deletion
+      await axios.delete(`/products/${productToDelete._id}`);
+      setProducts(products.filter((p) => p._id !== productToDelete._id));
+      setShowDeleteAlert(false);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -85,12 +85,13 @@ export default function Packages() {
               <React.Fragment key={product._id}>
                 <div className={`${styles.productno} ${styles.productdescription}`}>
                   {index + 1}
+                <img src={product.frontImage} alt={product.name} />
                 </div>
                 <div className={`${styles.productname} ${styles.productdescription}`}>
                   {product.name}
                 </div>
                 <div className={`${styles.productprice} ${styles.productdescription}`}>
-                  {product.price}
+                  {product.price}$
                 </div>
                 <div
                   className={`${styles.productstatus} ${styles.productdescription} 
@@ -137,7 +138,7 @@ export default function Packages() {
             onCancel={() => setShowDeleteAlert(false)}
           />
         )}
-      </div>
+      </div >
     </>
   );
 }
