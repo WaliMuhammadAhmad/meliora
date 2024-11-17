@@ -7,8 +7,8 @@ import { Reviews } from "../components/Reviews";
 import { WaveAd } from "../components/WaveAd";
 import Blogs from "../components/Blogs";
 import logo from '../assets/logoSVG.png';
-import { Navbar } from "../components/Navbar"; // Import Navbar
-import WholeSale from "../components/WholeSale"; // Import WholeSale
+import { Navbar } from "../components/Navbar"; 
+import WholeSale from "../components/WholeSale";
 
 const words = [
     "Eco-Friendly Solutions",
