@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import axios from "axios";
-import { Button } from "@mui/material";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
