@@ -1,35 +1,23 @@
 import CreateContextApi from "./CreateContextApi";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function ContextApiStates(props) {
   const [showCart, setShowCart] = useState(false)
-  const [cartData, setCartData] = useState([
-    {
-      id:1,
-      img: 'https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false',
-      name: 'Meliora Super Plus',
-      price: 75,
-      items: 1
-    },
-    {
-      id:2,
-      img: 'https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false',
-      name: 'Meliora Super Plus',
-      price: 75,
-      items: 2
-    },
-    {
-      id:3,
-      img: 'https://rukminim2.flixcart.com/image/416/416/xif0q/glass-cleaner/j/k/s/1-glass-cleaner-sparkling-shine-500-ml-x-2-pic-liiya-original-imagvx78uhxsgzwc.jpeg?q=70&crop=false',
-      name: 'Meliora Super Plus',
-      price: 175,
-      items: 3
+  const [cartData, setCartData] = useState([])
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    let tempTotal = 0;
+    // Recalculate totals based on price and items
+    for (let index = 0; index < cartData.length; index++) {
+      tempTotal += cartData[index].price * cartData[index].items
     }
-  ])
+
+    setTotal(tempTotal) // Update the state with new totals
+  }, [cartData], []); // Run this effect on mount
 
   return (
     <>
-      <CreateContextApi.Provider value={{ showCart, setShowCart, cartData, setCartData }}>
+      <CreateContextApi.Provider value={{ showCart, setShowCart, cartData, setCartData, total, setTotal }}>
         {props.children}
       </CreateContextApi.Provider>
     </>
