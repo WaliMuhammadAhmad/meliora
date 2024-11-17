@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import LineGraph from "../dashboard/graphs/LineGraph";
+import LineGraph from "../components/graphs/LineGraph";
 import BarGraph from "../components/graphs/BarGraph";
 import styles from "./style.module.css";
 
@@ -28,11 +28,12 @@ export default function Dashboard() {
 
         // Fetch total revenue
         const revenueResponse = await axios.get("/order/revenue");
-        setTotalRevenue(revenueResponse.data.totalRevenue);
+        setTotalRevenue(revenueResponse.data.revenue);
 
         // Fetch top-selling product
         const topProductResponse = await axios.get("/order/top-selling");
         const topProduct = topProductResponse.data;
+
         setTopSellingProduct({
           name: topProduct.name,
           percentage: topProduct.percentage,
@@ -68,7 +69,7 @@ export default function Dashboard() {
             <h2>Total Products</h2>
           </div>
           <div className={styles.card}>
-            <h1>${totalRevenue.toFixed(2)}</h1>
+            <h1>${totalRevenue ? totalRevenue.toFixed(2) : "0" }</h1>
             <h2>Total Revenue</h2>
           </div>
           <div className={styles.lastcard}>
@@ -112,7 +113,7 @@ export default function Dashboard() {
         </div>
         <div className={styles.stats}>
           <div className={styles.cardone}>
-            {/* <LineGraph /> */}
+            <LineGraph />
           </div>
           <div className={styles.cardtwo}>
             <BarGraph name={topSellingProduct.name} />

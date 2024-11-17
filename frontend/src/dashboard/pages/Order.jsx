@@ -14,24 +14,43 @@ export default function Orders() {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   // Orders States
-  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [changeOrder, setChangeOrder] = useState(null);
 
   const fetchAdditionalData = async (order) => {
     try {
-      const customerResponse = await axios.get(
-        `/customers/${order.customerId}`
+      const productDetails = await Promise.all(
+        order.cart.items.map(async (item) => {
+          try {
+            const productResponse = await axios.get(
+              `/products/${item.productId}`
+            );
+            return {
+              productId: item.productId,
+              productName: productResponse.data.name,
+              quantity: item.quantity,
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching product data for ID ${item.productId}:`,
+              error
+            );
+            return {
+              productId: item.productId,
+              productName: "Unknown",
+              quantity: item.quantity,
+            };
+          }
+        })
       );
-      const productResponse = await axios.get(`/products/${order.productId}`);
 
       return {
         ...order,
-        customerName: customerResponse.data.name,
-        productName: productResponse.data.name,
+        productDetails,
       };
     } catch (error) {
       console.error("Error fetching additional data:", error);
-      return { ...order, customerName: "Unknown", productName: "Unknown" };
+      return { ...order, productDetails: [] };
     }
   };
 
@@ -44,7 +63,7 @@ export default function Orders() {
           const ordersWithDetails = await Promise.all(
             response.data.map((order) => fetchAdditionalData(order))
           );
-          setProducts(ordersWithDetails);
+          setOrders(ordersWithDetails);
         } else {
           alert("No orders found");
         }
@@ -77,7 +96,7 @@ export default function Orders() {
         ...changeOrder,
         status: s,
       });
-      setProducts((prevProducts) =>
+      setOrders((prevProducts) =>
         prevProducts.map((p) =>
           p._id === changeOrder._id ? { ...p, status: s } : p
         )
@@ -97,7 +116,7 @@ export default function Orders() {
   const handleDelete = async () => {
     try {
       await axios.delete(`/order/${changeOrder._id}`);
-      setProducts((prevProducts) =>
+      setOrders((prevProducts) =>
         prevProducts.filter((p) => p._id !== changeOrder._id)
       );
       setShowDeleteAlert(false);
@@ -107,36 +126,69 @@ export default function Orders() {
   };
 
   const renderOrdersByStatus = (status) => {
-    const filteredProducts = products.filter(
+    const filteredOrders = orders.filter(
       (product) => product.status === status
     );
 
-    return filteredProducts.length > 0 ? (
-      filteredProducts.map((product, index) => (
+    return filteredOrders.length > 0 ? (
+      filteredOrders.map((order, index) => (
         <React.Fragment key={index}>
           <div className={`${styles.productno} ${styles.productdescription}`}>
-            {product._id}
+            {order._id}
           </div>
           <div className={`${styles.productname} ${styles.productdescription}`}>
-            {product.customerName}
+            <div className="flex flex-col">
+              <div>
+                Cutomer Name: <strong>{order.billingDetails.name}</strong>
+              </div>
+              <div>
+                Email: <strong>{order.billingDetails.email}</strong>
+              </div>
+              <div>
+                Contact: <strong>{order.billingDetails.phone}</strong>
+              </div>
+              <div className="flex flex-col">
+                <div>
+                Address: <strong>{order.billingDetails.address.house},{order.billingDetails.address.street}</strong>
+                </div>
+                <div>
+                  Postal Code: <strong>{order.billingDetails.address.postalCode}</strong>
+                </div>
+                <div>
+                City: <strong>{order.billingDetails.address.city},{order.billingDetails.address.country}</strong>
+                </div>
+              </div>
+            </div>
           </div>
           <div
             className={`${styles.productprice} ${styles.productdescription}`}
           >
-            {product.productName}
+            <div>
+              {order.productDetails.map((product) => (
+                <div key={product.productId}>
+                  <div>
+                    Product Name: <strong>{product.productName}</strong>
+                  </div>
+                  <div>
+                    Quantity: <strong>{product.quantity}</strong>
+                  </div>
+                  <hr />
+                </div>
+              ))}
+            </div>
           </div>
           <div
-            className={`${styles.productstatus} ${styles.productdescription}`}
+            className={`${styles.productprice} ${styles.productdescription}`}
             style={{
               color:
-                product.status === "pending"
+                order.status === "pending"
                   ? "#216D9E"
-                  : product.status === "completed"
+                  : order.status === "completed"
                   ? "green"
                   : "red",
             }}
           >
-            {product.status}
+            {order.status}
           </div>
           <div
             className={`${styles.productoperations} ${styles.productdescription}`}
@@ -145,13 +197,13 @@ export default function Orders() {
               <div>
                 <button
                   className={styles.updatebtn}
-                  onClick={() => handleCompleteClick(product)}
+                  onClick={() => handleCompleteClick(order)}
                 >
                   Complete
                 </button>
                 <button
                   className={styles.deletebtn}
-                  onClick={() => handleCancelClick(product)}
+                  onClick={() => handleCancelClick(order)}
                 >
                   Cancel
                 </button>
@@ -161,7 +213,7 @@ export default function Orders() {
               <div>
                 <button
                   className={styles.deletebtn}
-                  onClick={() => handleDeleteClick(product)}
+                  onClick={() => handleDeleteClick(order)}
                 >
                   Delete
                 </button>
@@ -185,18 +237,18 @@ export default function Orders() {
         </div>
 
         {["pending", "completed", "cancelled"].map((status) => (
-          <div key={status} className={styles.products}>
+          <div key={status} className={styles.orders}>
             <div className={styles.productgrid}>
               <div className={`${styles.header} ${styles.productno}`}>
                 Order No.
               </div>
               <div className={`${styles.header} ${styles.productname}`}>
-                Product Name
+                Customer Details
               </div>
               <div className={`${styles.header} ${styles.productname}`}>
-                Customer Name
+                Product Details
               </div>
-              <div className={`${styles.header} ${styles.productstatus}`}>
+              <div className={`${styles.header} ${styles.productname}`}>
                 Status
               </div>
               <div className={`${styles.header} ${styles.productoperations}`}>
