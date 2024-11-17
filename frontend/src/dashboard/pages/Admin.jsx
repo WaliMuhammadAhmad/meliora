@@ -9,7 +9,7 @@ export default function Admin() {
   return (
     <>
       <header>
-        <img src="/logo.jpg" alt="Meliora Logo" />
+        <img src="/images/assets/logo.jpg" alt="Meliora Logo" />
         <nav>
           <ul className={nav ? `${styles.show}` : `${styles.hide}`}>
             <li>

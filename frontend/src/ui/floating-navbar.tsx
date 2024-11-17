@@ -7,6 +7,7 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const FloatingNav = ({
   navItems,
@@ -22,6 +23,7 @@ export const FloatingNav = ({
   const { scrollYProgress } = useScroll();
 
   const [visible, setVisible] = useState(false);
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
@@ -38,6 +40,14 @@ export const FloatingNav = ({
       }
     }
   });
+
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -71,7 +81,12 @@ export const FloatingNav = ({
           </a>
         ))}
         <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
+          {/* Login/Logout Button */}
+          {!isAuthenticated ? (
+            <span onClick={handleLogin}>Log In</span>
+          ) : (
+            <span onClick={handleLogout}>Log Out</span>
+          )}
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
         </button>
       </motion.div>
