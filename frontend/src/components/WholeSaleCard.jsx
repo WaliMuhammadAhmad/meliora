@@ -12,13 +12,13 @@ export default function WholeSaleCard({pkg}) {
         <CardMedia
           component="img"
           height="70"
-          image="https://www.spectrumchemical.com/media/catalog/category/chemicals_fine-chemicals-in-bulk.png"
-          alt="green iguana"
+          image={pkg.image}
+          alt={pkg.name}
         />
         <CardContent>
           <div className='flex justify-between'>
           <Typography gutterBottom variant="h5" component="div">
-            {pkg.packageName}
+            {pkg.name}
           </Typography>
           <Typography gutterBottom variant="h6" component="div">
             ${pkg.price}

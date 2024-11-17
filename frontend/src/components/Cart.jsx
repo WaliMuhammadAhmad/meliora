@@ -5,7 +5,6 @@ import CreateContextApi from '../ContextApi/CreateContextApi';
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import styles from './style.module.css'
-import { useCookies } from "react-cookie";
 
 
 

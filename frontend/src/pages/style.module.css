@@ -21,6 +21,11 @@
   font-weight: bold;
 }
 
+.productImage{
+  height: 5rem;
+  width: 5rem;
+}
+
 .manageItems button {
   /* float: right; */
   padding: 15px;
@@ -220,6 +225,14 @@ input[type="checkbox"] {
   /* height: 100dvh; */
   display: flex;
   justify-content: center;
+  position: relative;
+}
+.whatsapplogo{
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+  font-size: 30px;
+  cursor: pointer;
 }
 
 p {
@@ -392,10 +405,6 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.progresscontainer .circularchart {
-  /* transform: rotate(90deg); */
 }
 
 .circlebackground {
