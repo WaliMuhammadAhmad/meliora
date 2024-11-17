@@ -21,6 +21,11 @@
   font-weight: bold;
 }
 
+.productImage{
+  height: 5rem;
+  width: 5rem;
+}
+
 .manageItems button {
   /* float: right; */
   padding: 15px;
@@ -396,10 +401,6 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.progresscontainer .circularchart {
-  /* transform: rotate(90deg); */
 }
 
 .circlebackground {

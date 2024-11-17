@@ -5,7 +5,14 @@ const bcrypt = require("bcrypt");
 exports.createAdmin = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    const image = req.file ? req.file.filename : null;
+    let image = "";
+
+    // Check if there is an uploaded image
+    if (req.file) {
+      image = `${req.protocol}://${req.get("host")}/images/uploads/admins/${
+        req.file.filename
+      }`;
+    }
 
     const newAdmin = new Admin({
       name,
@@ -28,12 +35,19 @@ exports.createAdmin = async (req, res) => {
 exports.updateAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const image = req.file ? req.file.filename : undefined;
+    let image = req.body.image;
+
+    // Update image if a new file is uploaded
+    if (req.file) {
+      image = `${req.protocol}://${req.get("host")}/images/uploads/admins/${
+        req.file.filename
+      }`;
+    }
 
     const updateData = {
       name,
       email,
-      ...(image && { image }),
+      image,
     };
 
     if (password) {

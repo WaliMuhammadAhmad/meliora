@@ -1,15 +1,23 @@
-const multer = require('multer');
-const path = require('path');
-const crypto = require('crypto');
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+const crypto = require("crypto");
+
+// Ensure the directory exists
+const uploadPath = "public/images/uploads/admins/";
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/images/uploads/admins/');
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    const uniqueName = crypto.randomBytes(8).toString('hex') + path.extname(file.originalname);
+    const uniqueName =
+      crypto.randomBytes(8).toString("hex") + path.extname(file.originalname);
     cb(null, uniqueName);
-  }
+  },
 });
 
 const upload = multer({ storage: storage });
