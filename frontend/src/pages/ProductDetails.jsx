@@ -13,6 +13,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaWhatsapp } from "react-icons/fa";
 
 
 axios.defaults.baseURL = "http://localhost:3001";
@@ -60,8 +61,8 @@ export default function ProductDetails() {
     });
     toast.success(`Cart Item Updated to ${limit}`, {
       autoClose: 1000,
-      position:'top-center'
-  })
+      position: 'top-center'
+    })
   };
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export default function ProductDetails() {
       <Navbar />
       <Cart />
       <div className={styles.maincontainer}>
+        <span className={styles.whatsapplogo}><FaWhatsapp /></span>
         <div className={styles.leftsection}>
           <div className={styles.imgsection}>
             <img src={product.frontImage} alt={product.name} />
@@ -186,7 +188,7 @@ export default function ProductDetails() {
       </div>
       <ProductUsage product={product} />
       <ReviewSection product={product} />
-      <ToastContainer/>
+      <ToastContainer />
     </>
   );
 }

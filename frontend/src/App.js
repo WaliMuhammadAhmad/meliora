@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
 import Checkout from './pages/Chekcout';
@@ -12,21 +13,16 @@ import Account from './dashboard/pages/Account';
 import Packages from './dashboard/pages/Packages';
 import OrderDetails from './pages/OrderDetails';
 import { Navbar } from './components/Navbar';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+import ProfileComponent from './components/Profile';
+
+// Create the Auth0Provider configuration
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: '/signin',
-    element: <SignIn />,
-  },
-  {
-    path: '/signup',
-    element: <SignUp />,
   },
   {
     path: "/product-details/:id",
@@ -60,15 +56,6 @@ const router = createBrowserRouter([
       <>
         <Admin />
         <Packages />
-      </>
-    ),
-  },
-  {
-    path: "/admin/customers",
-    element: (
-      <>
-        <Admin />
-        
       </>
     ),
   },
@@ -108,10 +95,24 @@ const router = createBrowserRouter([
       </>
     ),
   },
+  {
+    path: "/profile",
+    element: <ProfileComponent />,
+  },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    >
+      <RouterProvider router={router} />
+    </Auth0Provider>
+  );
 }
 
 export default App;
