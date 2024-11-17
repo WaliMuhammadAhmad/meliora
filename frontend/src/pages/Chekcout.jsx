@@ -4,26 +4,31 @@ import styles from "./style.module.css";
 import axios from "axios";
 import CreateContextApi from "../ContextApi/CreateContextApi";
 import Cookies from "js-cookie";
+import { useAuth0 } from "@auth0/auth0-react";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function Checkout() {
-  const { cartData, setCartData,total,setTotal } = useContext(CreateContextApi)
+  const { user, isAuthenticated } = useAuth0();
+  // eslint-disable-next-line no-unused-vars
+  const { cartData, setCartData, total, setTotal } =
+    useContext(CreateContextApi);
+
+  // Load cart data from cookies on component mount
   useEffect(() => {
-    // Check if 'cart' cookie exists
-    const cartCookie = Cookies.get('cart');
+    const cartCookie = Cookies.get("cart");
     if (cartCookie) {
-      // Parse and set the cart data if the cookie is present
       setCartData(JSON.parse(cartCookie));
     }
-  }, []);
+  });
+
   const [formData, setFormData] = useState({
     firstName: "",
     streetAddress: "",
     apartment: "",
     city: "",
     phoneNumber: "",
-    email: "",
+    email: user ? user.email : "",
     saveInfo: false,
     cashOnDelivery: true,
   });
@@ -37,76 +42,60 @@ export default function Checkout() {
     }));
   };
 
-  // Function to send customer data to server
-  const addCustomer = async (customerData) => {
+  const placeOrder = async (orderData) => {
+    console.log("Placing order", orderData);
     try {
-      const response = await axios.post("/customers", customerData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Customer Info saved successfully", response.data);
-      return response.data._id; // Return customer ID after saving
-    } catch (error) {
-      console.error("Error saving Customer", error);
-      throw error;
-    }
-  };
-
-  // Function to place an order
-  const addOrder = async (orderData) => {
-    try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.post("/order", orderData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log("Order placed successfully", response.data);
+      alert("Order placed successfully");
     } catch (error) {
       console.error("Error placing order", error);
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Combine address fields into one object and create full customer data
-    const customerData = {
-      name: formData.firstName,
-      email: formData.email,
-      password: formData.firstName, // Dummy password for now
-      phone: formData.phoneNumber,
-      address: {
-        house: formData.apartment || "N/A",
-        street: formData.streetAddress,
-        city: formData.city,
-        state: "N/A", // Default for now; adjust as needed
-        postalCode: "N/A", // Placeholder; adjust if needed
-        country: "Pakistan", // Default value
+    if (!isAuthenticated || !user) {
+      alert("User not authenticated. Please log in.");
+      return;
+    }
+
+    const orderData = {
+      user: {
+        name: user.name,
+        email: user.email,
+        auth0Id: user.sub,
       },
-      deliveryAddress: formData.streetAddress,
-      paymentMethods: {
-        cashOnDelivery: formData.cashOnDelivery,
+      billingDetails: {
+        name: formData.firstName,
+        email: formData.email,
+        phone: formData.phoneNumber,
+        address: {
+          house: formData.apartment || "N/A",
+          street: formData.streetAddress,
+          city: formData.city,
+          state: "N/A", // Adjust if needed
+          postalCode: "N/A", // Placeholder; adjust if needed
+          country: "Pakistan", // Default value
+        },
       },
-      isVerified: false,
+      cart: {
+        items: cartData.map((data) => ({
+          productId: data._id,
+          quantity: data.items,
+        })),
+      },
+      paymentMethod: formData.cashOnDelivery ? "Cash on Delivery" : "Other",
+      totalAmount: total,
+      status: "pending",
     };
 
-    try {
-      // Save customer and get the customer ID
-      const customerId = await addCustomer(customerData);
-
-      // Place an order using the returned customer ID
-      const orderData = {
-        customerId: customerId,
-        productId: "6719f1516dbac474c74137cb", // Test product ID
-        status: "pending", // Optional: default is 'pending'
-      };
-
-      addOrder(orderData);
-    } catch (error) {
-      console.error("Error during customer/order process", error);
-    }
+    placeOrder(orderData);
   };
 
   return (
@@ -140,26 +129,29 @@ export default function Checkout() {
               <input type="email" name="email" onChange={handleChange} />
             </div>
             <div className={styles.radio}>
-            <input type="checkbox" name="" id="" />
-            <label>Save this information for faster check-out next time</label>
-          </div>
+              <input type="checkbox" name="saveInfo" onChange={handleChange} />
+              <label>
+                Save this information for faster check-out next time
+              </label>
+            </div>
           </form>
         </div>
         <div className={styles.maincheckout}>
-            <h1>Item Details</h1>
+          <h1>Item Details</h1>
           <div className={styles.cartitems}>
-            {cartData.map((data => (
-
-              <div className={styles.item}>
+            {cartData.map((data, index) => (
+              <div className={styles.item} key={index}>
                 <div className={styles.imagesection}>
-                  <img src={data.frontImage} alt="" />
+                  <img src={data.frontImage} alt={data.name} />
                 </div>
                 <div className={styles.itemright}>
                   <h5>{data.name}</h5>
-                  <h5>${data.price} x {data.items}</h5>
+                  <h5>
+                    ${data.price} x {data.items}
+                  </h5>
                 </div>
               </div>
-            )))}
+            ))}
             <hr />
           </div>
           <div className={styles.label1}>
@@ -175,10 +167,17 @@ export default function Checkout() {
             <h3>${total}</h3>
           </div>
           <div className={styles.radio}>
-            <input type="checkbox" name="" id="" />
+            <input
+              type="checkbox"
+              name="cashOnDelivery"
+              checked={formData.cashOnDelivery}
+              onChange={handleChange}
+            />
             <label>Cash On Delivery</label>
           </div>
-          <Button onClick={handleSubmit}>Place Order</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Place Order
+          </Button>
         </div>
       </div>
     </>
