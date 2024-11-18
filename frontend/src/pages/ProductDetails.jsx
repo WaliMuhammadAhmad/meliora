@@ -31,7 +31,7 @@ export default function ProductDetails() {
       // Parse and set the cart data if the cookie is present
       setCartData(JSON.parse(cartCookie));
     }
-  }, []);
+  });
 
   const handleAddToCart = () => {
     const existingProductIndex = cartData.findIndex(

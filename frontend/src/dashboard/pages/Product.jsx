@@ -17,12 +17,13 @@ export default function AddProducts() {
 
   const handleAddProduct = async (productData) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.post("/products", productData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Product added successfully", response.data);
+      alert("Product added successfully");
     } catch (error) {
       console.error("Error adding product", error);
     }
