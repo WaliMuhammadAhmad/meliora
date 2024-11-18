@@ -225,6 +225,14 @@ input[type="checkbox"] {
   /* height: 100dvh; */
   display: flex;
   justify-content: center;
+  position: relative;
+}
+.whatsapplogo{
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+  font-size: 30px;
+  cursor: pointer;
 }
 
 p {

@@ -64,6 +64,7 @@ export default function Blog({ show, onClose, blog, onSubmit }) {
           onChange={(e) =>
             setCurrentBlog((prev) => ({ ...prev, blogName: e.target.value }))
           }
+          className={styles.blogInput}
         />
         <label>Description:</label>
         <input
@@ -72,6 +73,7 @@ export default function Blog({ show, onClose, blog, onSubmit }) {
           onChange={(e) =>
             setCurrentBlog((prev) => ({ ...prev, text: e.target.value }))
           }
+          className={styles.blogInput}
         />
         <label>Image:</label>
         <input
@@ -82,6 +84,7 @@ export default function Blog({ show, onClose, blog, onSubmit }) {
               image: e.target.files[0],
             }))
           }
+          className={styles.blogInput}
         />
         <button onClick={handleSubmit}>
           {blog ? "Update Blog" : "Add Blog"}
