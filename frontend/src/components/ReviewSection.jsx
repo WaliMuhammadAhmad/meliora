@@ -1,22 +1,50 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function ReviewSection({ product }) {
+  const { isAuthenticated, user } = useAuth0();
   const [reviews, setReviews] = useState([]);
   const [customers, setCustomers] = useState({});
+  const [customer, setCustomer] = useState({});
   const [stars, setStars] = useState(1);
+  const [reviv, setReview] = useState("");
 
-  // Handle increasing stars
+  // Handle stars
   const incrementStars = () => {
     if (stars < 5) setStars(stars + 1);
   };
-
-  // Handle decreasing stars
   const decrementStars = () => {
     if (stars > 1) setStars(stars - 1);
+  };
+  const starCounts = [1, 2, 3, 4, 5].reduce((counts, star) => {
+    counts[star] = reviews.filter((review) => review.stars === star).length;
+    return counts;
+  }, {});
+
+  const handleReviewSubmission = () => {
+    const reviewObject = {
+      customerId: customer._id,
+      productId: product._id,
+      review: reviv.trim(),
+      stars: stars,
+    };
+    try {
+      axios.post("/review/", reviewObject).then((response) => {
+        if (response.data) {
+          setReviews((prevReviews) => [response.data.review, ...prevReviews]);
+        } else {
+          console.error("Error submitting review:", response);
+        }
+      });
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+    setReview("");
+    setStars(1);
   };
 
   useEffect(() => {
@@ -43,15 +71,25 @@ export default function ReviewSection({ product }) {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+
+      try {
+        if (isAuthenticated) {
+          const customerResponse = await axios.get(
+            `/customers/email/${user.email}`
+          );
+          if (customerResponse.data) {
+            setCustomer(customerResponse.data);
+          } else {
+            console.error("No customer found with Email:", user.email);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching customer:", error);
+      }
     };
 
     fetchData();
-  }, [product._id]);
-
-  const starCounts = [1, 2, 3, 4, 5].reduce((counts, star) => {
-    counts[star] = reviews.filter((review) => review.stars === star).length;
-    return counts;
-  }, {});
+  }, [product._id, isAuthenticated, user]);
 
   const totalReviews = reviews.length;
   const calculatePercentage = (count) => {
@@ -60,16 +98,16 @@ export default function ReviewSection({ product }) {
 
   return (
     <div className={styles.reviewsection}>
-      <h2 style={{ padding: '15px 0px' }}>Customer Reviews</h2>
+      <h2 style={{ padding: "15px 0px" }}>Customer Reviews</h2>
       <div className={styles.header}>
         <div className={styles.ratingsummary}>
           <span className={styles.stars}>★★★★☆</span>
           <span>
             {totalReviews > 0
               ? (
-                reviews.reduce((sum, review) => sum + review.stars, 0) /
-                totalReviews
-              ).toFixed(1)
+                  reviews.reduce((sum, review) => sum + review.stars, 0) /
+                  totalReviews
+                ).toFixed(1)
               : 0}{" "}
             out of 5
           </span>
@@ -93,13 +131,25 @@ export default function ReviewSection({ product }) {
           <textarea
             className={styles.textarea}
             placeholder="Write your review here..."
+            value={reviv}
+            onChange={(e) => setReview(e.target.value)}
           />
           <div className={styles.starsContainer}>
-            <button onClick={decrementStars} className={styles.button}>-</button>
+            <button onClick={decrementStars} className={styles.button}>
+              -
+            </button>
             <span className={styles.stars}>{stars} ★</span>
-            <button onClick={incrementStars} className={styles.button}>+</button>
+            <button onClick={incrementStars} className={styles.button}>
+              +
+            </button>
           </div>
-          <button className={styles.postButton}>
+          <button
+            className={styles.postButton}
+            onClick={handleReviewSubmission}
+            disabled={
+              !reviv.trim() || !customer._id || !product._id || !isAuthenticated
+            }
+          >
             Post Review
           </button>
         </div>
@@ -107,32 +157,40 @@ export default function ReviewSection({ product }) {
 
       {reviews.length > 0 && (
         <div className={styles.review}>
-          {reviews.map((review) => (
-            <div key={review._id} className={styles.review}>
+          {reviews.map((rev) => (
+            <div key={rev._id} className={styles.review}>
               <div className={styles.reviewheader}>
                 <div className={styles.topheading}>
-                  <h4>{customers[review.customerId]?.name || "Loading..."}</h4>
-                  {customers[review.customerId]?.isVerified ? (
+                  <h4>{customers[rev.customerId]?.name || "Loading..."}</h4>
+                  {customers[rev.customerId]?.isVerified ? (
                     <span className={styles.verified}>Verified</span>
-                  ) : <span className={styles.verified} style={{ backgroundColor: 'red' }}>Not Verfied</span>}
+                  ) : (
+                    <span
+                      className={styles.verified}
+                      style={{ backgroundColor: "red" }}
+                    >
+                      Not Verified
+                    </span>
+                  )}
                   <p>
-                    {Array.from({ length: review.stars }).map((_, index) => (
-                      <span key={index} className={styles.stars}>
-                        ★
-                      </span>
-                    ))}
+                    {Array.from({ length: Number(rev.stars) || 0 }).map(
+                      (_, index) => (
+                        <span key={index} className={styles.stars}>
+                          ★
+                        </span>
+                      )
+                    )}
                   </p>
                 </div>
               </div>
               <div className={styles.reviewcontent}>
-                <h5>{review.review}</h5>
+                <h5>{rev.review || "No Review Provided"}</h5>
                 <p>
                   Location:{" "}
-                  {customers[review.customerId]?.address.city || "Loading..."},
-                  {customers[review.customerId]?.address.country ||
-                    "Loading..."}
+                  {customers[rev.customerId]?.address.city || "Loading..."},
+                  {customers[rev.customerId]?.address.country || "Loading..."}
                 </p>
-                <p>Created At: {review.createdAt}</p>
+                <p>Created At: {rev.createdAt || "Not specified"}</p>
               </div>
             </div>
           ))}
@@ -142,4 +200,5 @@ export default function ReviewSection({ product }) {
   );
 }
 
+/* Made by Zain Manzoor */
 /* Dynamic by: Wali M. Github: WaliMuhammadAhmad */
