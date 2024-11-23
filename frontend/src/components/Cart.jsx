@@ -45,8 +45,8 @@ export default function Cart() {
             <h1>CART</h1>
           </div>
           <div className={styles.cartitems}>
-            {cartData.map((data) => (
-              <div className={styles.item}>
+            {cartData.map((data, index) => (
+              <div key={index} className={styles.item}>
                 <div className={styles.imagesection}>
                   <img src={data.frontImage} alt="" />
                 </div>
