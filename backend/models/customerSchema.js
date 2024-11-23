@@ -20,22 +20,26 @@ const customerSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
       select: false,
     },
     phone: {
       type: String,
-      required: [true, "Phone number is required"],
       match: [/^\d{10,15}$/, "Please enter a valid phone number"],
     },
+    picture: {
+      type: String,
+      required: [true, "Profile picture is required"],
+      trim: true,
+      default: "N/A"
+    },
     address: {
-      house: { type: String, required: true },
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String },
-      postalCode: { type: String, required: true },
-      country: { type: String, required: true, default: "Pakistan" },
+      house: { type: String, default: "N/A"  },
+      street: { type: String, default: "N/A"  },
+      city: { type: String, default: "N/A"  },
+      state: { type: String, default: "N/A"  },
+      postalCode: { type: String, default: "N/A"  },
+      country: { type: String, default: "N/A" },
     },
     deliveryAddress : {
       type: String,
