@@ -1,6 +1,7 @@
 const Customer = require('../models/customerSchema');
 const bcrypt = require('bcrypt');
 
+// Create a new customer
 exports.createCustomer = async (req, res) => {
     try {
         const cust = req.body;
@@ -28,6 +29,19 @@ exports.getCustomerById = async (req, res) => {
         const customer = await Customer.findById(req.params.id);
         if (!customer) {
             return res.status(404).json({ message: 'Customer not found' });
+        }
+        res.status(200).json(customer);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Get customer by Email
+exports.getCustomerByEmail = async (req, res) => {
+    try {
+        const customer = await Customer.findOne({ email: req.params.email });
+        if (!customer) {
+            return res.json({ message: 'Customer not found' });
         }
         res.status(200).json(customer);
     } catch (error) {
