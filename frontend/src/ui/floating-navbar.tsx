@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "../lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   motion,
   AnimatePresence,
@@ -8,6 +8,35 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:3001/";
+
+const handleUserDatabaseSync = async (
+  user: any,
+  hasSyncedRef: React.MutableRefObject<boolean>
+) => {
+  if (!user || hasSyncedRef.current) return; // Prevent duplicate execution
+
+  const authUser = {
+    name: user.nickname,
+    email: user.email,
+    picture: user.picture,
+    isVerified: user.email_verified,
+  };
+
+  try {
+    const response = await axios.get(`/customers/email/${authUser.email}`);
+    if (response.data.message === "Customer not found") {
+      await axios.post("/customers/", authUser);
+    } else {
+      const existingUser = response.data;
+      await axios.put(`/customers/${existingUser._id}`, authUser);
+    }
+  } catch (error) {
+    console.error("Error in syncing user to database:", error);
+  }
+};
 
 export const FloatingNav = ({
   navItems,
@@ -21,9 +50,9 @@ export const FloatingNav = ({
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
-
+  const hasSyncedRef = useRef(false);
   const [visible, setVisible] = useState(false);
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
@@ -41,7 +70,13 @@ export const FloatingNav = ({
     }
   });
 
-  const handleLogin = () => {
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      handleUserDatabaseSync(user, hasSyncedRef);
+    }
+  }, [isAuthenticated, user]);
+
+  const handleLogin = async () => {
     loginWithRedirect();
   };
 
@@ -81,7 +116,6 @@ export const FloatingNav = ({
           </a>
         ))}
         <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          {/* Login/Logout Button */}
           {!isAuthenticated ? (
             <span onClick={handleLogin}>Log In</span>
           ) : (
@@ -93,3 +127,5 @@ export const FloatingNav = ({
     </AnimatePresence>
   );
 };
+
+/* Dynamic and auth by Wali Muhammad Github: WaliMuhammadAhmad */
