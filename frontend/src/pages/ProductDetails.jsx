@@ -11,10 +11,9 @@ import styles from "./style.module.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FaWhatsapp } from "react-icons/fa";
-
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -22,11 +21,12 @@ export default function ProductDetails() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [limit, setLimit] = useState(1);
-  const { showCart, setShowCart, cartData, setCartData } = useContext(CreateContextApi);
+  const { showCart, setShowCart, cartData, setCartData } =
+    useContext(CreateContextApi);
 
   useEffect(() => {
     // Check if 'cart' cookie exists
-    const cartCookie = Cookies.get('cart');
+    const cartCookie = Cookies.get("cart");
     if (cartCookie) {
       // Parse and set the cart data if the cookie is present
       setCartData(JSON.parse(cartCookie));
@@ -41,9 +41,7 @@ export default function ProductDetails() {
     if (existingProductIndex !== -1) {
       // Product already exists, update the quantity
       updatedCart = cartData.map((item, index) =>
-        index === existingProductIndex
-          ? { ...item, items: limit }
-          : item
+        index === existingProductIndex ? { ...item, items: limit } : item
       );
     } else {
       // Product doesn't exist, add it to the cart
@@ -57,12 +55,12 @@ export default function ProductDetails() {
     setCartData(updatedCart);
 
     Cookies.set("cart", JSON.stringify(updatedCart), {
-      expires: 1 // 1-day expiry
+      expires: 1, // 1-day expiry
     });
     toast.success(`Cart Item Updated to ${limit}`, {
       autoClose: 1000,
-      position: 'top-center'
-    })
+      position: "top-center",
+    });
   };
 
   useEffect(() => {
@@ -97,7 +95,9 @@ export default function ProductDetails() {
       <Navbar />
       <Cart />
       <div className={styles.maincontainer}>
-        <span className={styles.whatsapplogo}><FaWhatsapp /></span>
+        <span className={styles.whatsapplogo}>
+          <FaWhatsapp />
+        </span>
         <div className={styles.leftsection}>
           <div className={styles.imgsection}>
             <img src={product.frontImage} alt={product.name} />
@@ -119,14 +119,14 @@ export default function ProductDetails() {
           </div>
           <h5 style={{ fontWeight: "500", marginTop: "10px" }}>Size:</h5>
           <div className={styles.buttons}>
-            {product.sizes.map((size) => (
-              <button key={size}>{size.size}</button>
+            {product.sizes.map((size, index) => (
+              <button key={index}>{size.size}</button>
             ))}
           </div>
           <h5 style={{ fontWeight: "500", marginTop: "10px" }}>Quantity:</h5>
           <div className={styles.buttons}>
-            {product.sizes.map((size) => (
-              <button key={size}>{size.quantity}</button>
+            {product.sizes.map((size, index) => (
+              <button key={index}>{size.quantity}</button>
             ))}
           </div>
           <div className={styles.deliveryDetails} style={{ marginTop: "10px" }}>
@@ -172,18 +172,6 @@ export default function ProductDetails() {
           >
             Go To Cart
           </Button>
-          {/* <span
-            onClick={() => setShowCart(!showCart)}
-            style={{
-              fontSize: "13px",
-              marginTop: "auto",
-              marginBottom: "auto",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
-          >
-            Go To Cart
-          </span> */}
         </div>
       </div>
       <ProductUsage product={product} />

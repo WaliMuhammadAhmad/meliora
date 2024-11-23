@@ -41,7 +41,7 @@ function WholeSale() {
       </motion.h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8">
         {pkgs.map((pkg) => (
-          <WholeSaleCard key={pkg.id} pkg={pkg} />
+          <WholeSaleCard key={pkg._id} pkg={pkg} />
         ))}
       </div>
     </LampContainer>
