@@ -26,5 +26,5 @@ export const ProfileComponent = () => {
 };
 
 export default withAuthenticationRequired(ProfileComponent, {
-  onRedirecting: () => <Loading />,
+  onRedirecting: () => <Loading className="flex justify-center content-center m-auto" />,
 });

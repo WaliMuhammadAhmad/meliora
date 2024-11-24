@@ -166,8 +166,6 @@ export default function Packages() {
         <Package
           pkg={selectedPackage}
           onSubmit={(updatedPackage) => {
-            // Handle update logic here
-            console.log("Updated Package:", updatedPackage);
             setShowModal(false);
           }}
           onClose={() => setShowModal(false)}
