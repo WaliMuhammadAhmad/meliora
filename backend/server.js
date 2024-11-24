@@ -30,7 +30,7 @@ const checkJwt = auth({
   algorithms: ['RS256'],
 });
 
-// Public routes (like login, signup, etc. - no JWT needed)
+// Public routes (no JWT needed)
 app.use('/', router);
 
 // Protected API route (JWT needed)
@@ -41,11 +41,10 @@ app.get('/api/external', checkJwt, (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname, 'build')));
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+app.use('/images', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
+}, express.static(path.join(__dirname, 'public/images')));
 
 connection().then(() => {
   app.listen(port, () => {
