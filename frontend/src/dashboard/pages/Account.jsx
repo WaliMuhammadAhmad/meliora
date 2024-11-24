@@ -112,7 +112,8 @@ export default function Account() {
                 <input
                   type="password"
                   name="password"
-                  value={admin.password}
+                  value={admin.password || ""}
+                  placeholder="Enter new password"
                   onChange={handleChange}
                 />
               </div>
@@ -122,7 +123,15 @@ export default function Account() {
           <div className={styles.image}>
             <div className={styles.icon}>
               {admin.image ? (
-                <img src={admin.image} alt={admin.name} />
+                <img
+                  src={admin.image}
+                  alt={admin.name}
+                  crossOrigin={
+                    admin.image.startsWith("http://localhost:3001")
+                      ? "anonymous"
+                      : undefined
+                  }
+                />
               ) : (
                 <i className="fas fa-user-circle"></i>
               )}

@@ -3,7 +3,7 @@ import axios from "axios";
 import UpdateModal from "../components/Modals/UpdateProduct";
 import AddModal from "../components/Modals/AddProduct";
 import Alert from "../components/Alerts/Alert";
-import styles from './style.module.css'
+import styles from "./style.module.css";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
@@ -53,7 +53,7 @@ export default function AddProducts() {
   };
 
   const handleDeleteClick = (product) => {
-    setProductToDelete(product); 
+    setProductToDelete(product);
     setShowDeleteAlert(true);
   };
 
@@ -76,32 +76,55 @@ export default function AddProducts() {
         </div>
         <div className={styles.products}>
           <div className={styles.productgrid}>
-            <div className={`${styles.header} ${styles.productno}`}>Product No.</div>
-            <div className={`${styles.header} ${styles.productname}`}>Product Name</div>
-            <div className={`${styles.header} ${styles.productprice}`}>Price</div>
-            <div className={`${styles.header} ${styles.productstatus}`}>Status</div>
-            <div className={`${styles.header} ${styles.productoperations}`}>Operations</div>
+            <div className={`${styles.header} ${styles.productno}`}>
+              Product No.
+            </div>
+            <div className={`${styles.header} ${styles.productname}`}>
+              Product Name
+            </div>
+            <div className={`${styles.header} ${styles.productprice}`}>
+              Price
+            </div>
+            <div className={`${styles.header} ${styles.productstatus}`}>
+              Status
+            </div>
+            <div className={`${styles.header} ${styles.productoperations}`}>
+              Operations
+            </div>
 
             {products.map((product, index) => (
               <React.Fragment key={product._id}>
-                <div className={`${styles.productno} ${styles.productdescription}`}>
+                <div
+                  className={`${styles.productno} ${styles.productdescription}`}
+                >
                   {index + 1}
-                <img src={product.frontImage} alt={product.name} />
+                  <img src={product.frontImage} alt={product.name} />
                 </div>
-                <div className={`${styles.productname} ${styles.productdescription}`}>
+                <div
+                  className={`${styles.productname} ${styles.productdescription}`}
+                >
                   {product.name}
                 </div>
-                <div className={`${styles.productprice} ${styles.productdescription}`}>
+                <div
+                  className={`${styles.productprice} ${styles.productdescription}`}
+                >
                   {product.price}$
                 </div>
                 <div
-                  className={`${styles.productstatus} ${styles.productdescription} 
-                  ${product.stockQuantity === 0 ? styles.outofstock : styles.instock
-                    }`}
+                  className={`${styles.productstatus} ${
+                    styles.productdescription
+                  } 
+                  ${
+                    product.stockQuantity === 0
+                      ? styles.outofstock
+                      : styles.instock
+                  }`}
                 >
                   {product.stockQuantity === 0 ? "Out of Stock" : "In Stock"}
                 </div>
-                <div className={`${styles.productoperations} ${styles.productdescription}`} >
+                <div
+                  className={`${styles.productoperations} ${styles.productdescription}`}
+                >
                   <button
                     className={styles.updatebtn}
                     onClick={() => handleUpdateClick(product)}
@@ -121,16 +144,21 @@ export default function AddProducts() {
         </div>
 
         {/* Modals for updating and adding products */}
-        <UpdateModal
-          show={showModal}
-          onClose={() => setShowModal(false)}
-          product={selectedProduct}
-        />
-        <AddModal
-          show={showAddModal}
-          onClose={() => setShowAddModal(false)}
-          submitAction={handleAddProduct}
-        />
+        {showModal && (
+          <UpdateModal
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            product={selectedProduct}
+          />
+        )}
+
+        {showAddModal && (
+          <AddModal
+            show={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            submitAction={handleAddProduct}
+          />
+        )}
 
         {showDeleteAlert && (
           <Alert
@@ -139,7 +167,7 @@ export default function AddProducts() {
             onCancel={() => setShowDeleteAlert(false)}
           />
         )}
-      </div >
+      </div>
     </>
   );
 }
