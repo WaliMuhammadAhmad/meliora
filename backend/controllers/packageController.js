@@ -12,10 +12,16 @@ exports.createPackage = async (req, res) => {
       size,
       type,
       price,
-      image,
       products,
       isAvailable,
     } = req.body;
+
+    let image = "";
+    if (req.file) {
+      image = `${req.protocol}://${req.get("host")}/images/uploads/packages/${
+        req.file.filename
+      }`;
+    }
 
     const newPackage = new Package({
       name,
@@ -75,39 +81,42 @@ exports.updatePackage = async (req, res) => {
       size,
       type,
       price,
-      image,
       products,
       isAvailable,
     } = req.body;
 
+    // Initialize an update object
+    const updateData = {
+      name,
+      details,
+      subDetails,
+      description,
+      subDescription,
+      size,
+      type,
+      price,
+      products,
+      isAvailable,
+    };
+
+    if (req.file) {
+      updateData.image = `${req.protocol}://${req.get(
+        "host"
+      )}/images/uploads/packages/${req.file.filename}`;
+    }
     const updatedPackage = await Package.findByIdAndUpdate(
       req.params.id,
-      {
-        name,
-        details,
-        subDetails,
-        description,
-        subDescription,
-        size,
-        type,
-        price,
-        image,
-        products,
-        isAvailable,
-      },
+      updateData,
       { new: true, runValidators: true }
     );
-
     if (!updatedPackage) {
       return res.status(404).json({ message: "Package not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Package updated successfully",
-        package: updatedPackage,
-      });
+    res.status(200).json({
+      message: "Package updated successfully",
+      package: updatedPackage,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

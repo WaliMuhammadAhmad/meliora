@@ -4,7 +4,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
-export default function BarGraph({name}) {
+export default function BarGraph({ name }) {
   const [barStats, setBarStats] = useState([]);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ export default function BarGraph({name}) {
         },
       ]}
       layout="horizontal"
-      width={500}
-      height={400}
+      width={700}
+      height={500}
     />
   );
 }

@@ -52,31 +52,6 @@ export default function AddBlogs() {
     }
   };
 
-  const handleBlogSubmit = async (formData, blogId) => {
-    try {
-      console.log("Form data:", formData);
-      if (blogId) {
-        // Update blog
-        const response = await axios.put(`/blog/${blogId}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        setBlogs((prevBlogs) =>
-          prevBlogs.map((b) => (b._id === blogId ? response.data : b))
-        );
-      } else {
-        // Add new blog
-        const response = await axios.post("/blog", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        setBlogs((prevBlogs) => [...prevBlogs, response.data]);
-      }
-      setShowModal(false);
-      setSelectedBlog(null);
-    } catch (error) {
-      console.error("Error submitting blog:", error);
-    }
-  };
-
   return (
     <>
       <div className={styles.manageItems}>
@@ -116,6 +91,7 @@ export default function AddBlogs() {
                     className={`${styles.blogimg}`}
                     src={blog.image}
                     alt={blog.blogName}
+                    crossOrigin={blog.image.startsWith('http://localhost:3001') ? 'anonymous' : undefined}
                   />
                 </div>
                 <div
@@ -149,15 +125,14 @@ export default function AddBlogs() {
           </div>
         </div>
 
-        <BlogModal
-          show={showModal}
-          onClose={() => {
-            setShowModal(false);
-            setSelectedBlog(null);
-          }}
-          blog={selectedBlog}
-          onSubmit={handleBlogSubmit}
-        />
+        {showModal && (
+          <BlogModal
+            onClose={() => {
+              setShowModal(false);
+            }}
+            blog={selectedBlog}
+          />
+        )}
 
         {showDeleteAlert && (
           <Delete

@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const reviewSchema = new mongoose.Schema({
     stars: {
         type: Number,
-        required: [true, 'Rating is required'],
-        min: [1, 'Rating must be at least 1 star'],
-        max: [5, 'Rating must be at most 5 stars']
+        required: [true, 'Review stars is required'],
+        min: [1, 'Review stars must be at least 1 star'],
+        max: [5, 'Review stars must be at most 5 stars']
     },
     review: {
         type: String,
         trim: true,
         required: [true, 'Review text is required'],
-        minlength: [10, 'Review must be at least 10 characters long'],
+        minlength: [1, 'Review must be at least 1 character'],
         maxlength: [500, 'Review must not exceed 500 characters']
     },
     customerId: {

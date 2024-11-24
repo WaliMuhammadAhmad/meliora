@@ -6,6 +6,7 @@ axios.defaults.baseURL = "http://localhost:3001";
 
 export default function LineGraph() {
   const [orderStats, setOrderStats] = useState([]);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -18,18 +19,23 @@ export default function LineGraph() {
 
     fetchDashboardData();
   }, []);
-  const graphData = orderStats ? orderStats.data : [0];
-  
+
+  const series = orderStats.map((product) => ({
+    data: product.data,
+    label: `Orders of ${product.name}`,
+  }));
+
   return (
     <LineChart
-      xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
-      series={[
+      xAxis={[
         {
-          data: (graphData),
+          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          label: "Month",
         },
       ]}
-      width={500}
-      height={300}
+      series={series}
+      width={800}
+      height={500}
     />
   );
 }

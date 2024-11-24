@@ -2,26 +2,62 @@ const Order = require("../models/orderSchema");
 const Product = require("../models/productSchema");
 const Customer = require("../models/customerSchema");
 
+// Place a new order
 exports.neworder = async (req, res) => {
   try {
-    const { customerId, productId, status } = req.body;
+    const { user, billingDetails, cart, paymentMethod, totalAmount, status } =
+      req.body;
 
-    const product = await Product.findById(productId);
-    const customer = await Customer.findById(customerId);
-    if (!product || !customer) {
-      return res.status(404).json({ message: "Product or Customer not found" });
+    if (!user || !cart || cart.items.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Invalid data. User or cart is missing." });
+    }
+
+    const productChecks = await Promise.all(
+      cart.items.map((item) => Product.findById(item.productId))
+    );
+
+    if (productChecks.some((product) => !product)) {
+      return res
+        .status(404)
+        .json({ message: "One or more products not found" });
     }
 
     const newOrder = new Order({
-      customerId,
-      productId,
-      status,
+      user: {
+        auth0Id: user.auth0Id,
+        name: user.name,
+        email: user.email,
+      },
+      billingDetails: {
+        name: billingDetails.name,
+        email: billingDetails.email,
+        phone: billingDetails.phone,
+        address: {
+          house: billingDetails.address.house,
+          street: billingDetails.address.street,
+          city: billingDetails.address.city,
+          state: billingDetails.address.state,
+          postalCode: billingDetails.address.postalCode,
+          country: billingDetails.address.country,
+        },
+      },
+      cart: {
+        items: cart.items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      },
+      paymentMethod,
+      totalAmount,
+      status: status || "pending",
     });
 
     const savedOrder = await newOrder.save();
     res
       .status(201)
-      .json({ message: "Order placed successfully", Order: savedOrder });
+      .json({ message: "Order placed successfully", order: savedOrder });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -69,6 +105,24 @@ exports.getOrderByCustomerId = async (req, res) => {
   }
 };
 
+// Get Order by Customer Email
+exports.getOrderByCustomerEmail = async (req, res) => {
+  try {
+    const { customerEmail } = req.params;
+
+    // Find orders based on billingDetails.email
+    const orders = await Order.find({ 'billingDetails.email': customerEmail });
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found for this customer" });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Update Order by ID
 exports.updateOrder = async (req, res) => {
   try {
@@ -107,46 +161,47 @@ exports.deleteOrder = async (req, res) => {
 // cal revenue
 exports.getRevenue = async (req, res) => {
   try {
-    const completedOrders = await Order.find({ status: "completed" }).populate(
-      "productId"
-    );
+    const completedOrders = await Order.find({ status: "completed" });
+    const totalRevenue = completedOrders.reduce((sum, order) => sum + order.totalAmount, 0);
 
-    if (!completedOrders.length) {
-      return res
-        .status(200)
-        .json({ totalRevenue: 0, message: "No completed orders found" });
-    }
-
-    const totalRevenue = completedOrders.reduce((sum, order) => {
-      if (!order.productId || order.productId.price == null) {
-        console.warn(`Order ${order._id} has no price or product data.`);
-        return sum;
-      }
-      return sum + order.productId.price;
-    }, 0);
-
-    res.status(200).json({ totalRevenue });
+    res.status(200).json({
+      message: "Total revenue calculated successfully",
+      revenue: totalRevenue,
+    });
   } catch (error) {
-    console.error("Error calculating total revenue:", error);
-    res.status(500).json({ message: "Error calculating total revenue", error });
+    res.status(500).json({ message: "Error calculating revenue", error });
   }
 };
 
+// Get top selling product
 exports.topSellingProduct = async (req, res) => {
   try {
     const completedOrders = await Order.find({ status: "completed" });
     const productCount = {};
+    let totalItemCount = 0; // To count the total number of items sold
+
+    // Count occurrences of each productId within the cart items and total item count
     completedOrders.forEach((order) => {
-      const productId = order.productId.toString();
-      productCount[productId] = (productCount[productId] || 0) + 1;
+      order.cart.items.forEach((item) => {
+        const productId = item.productId.toString();
+        productCount[productId] = (productCount[productId] || 0) + item.quantity;
+        totalItemCount += item.quantity; // Add the item quantity to the total count
+      });
     });
+
+    if (Object.keys(productCount).length === 0) {
+      return res.status(404).json({ message: "No completed orders found" });
+    }
+
+    // Find the top product ID
     const topProductId = Object.keys(productCount).reduce((a, b) =>
       productCount[a] > productCount[b] ? a : b
     );
-    const totalCompletedOrders = completedOrders.length;
     const topProductCount = productCount[topProductId];
+
+    // Calculate the percentage based on total items sold
     const topProductPercentage = (
-      (topProductCount / totalCompletedOrders) *
+      (topProductCount / totalItemCount) *
       100
     ).toFixed(2);
 
@@ -155,6 +210,7 @@ exports.topSellingProduct = async (req, res) => {
     res.status(200).json({
       name: topProduct ? topProduct.name : "No top-selling product",
       percentage: topProduct ? parseFloat(topProductPercentage) : 0,
+      totalItemCount, // Optional: to show the total number of items sold
     });
   } catch (error) {
     res
@@ -163,57 +219,94 @@ exports.topSellingProduct = async (req, res) => {
   }
 };
 
+// Get monthly sales data for line chart
 exports.lineStats = async (req, res) => {
   try {
+    // Fetch all completed orders
     const completedOrders = await Order.find({ status: "completed" });
-    const productCount = {};
-    completedOrders.forEach((order) => {
-      const productId = order.productId.toString();
-      productCount[productId] = (productCount[productId] || 0) + 1;
-    });
-    const topProductId = Object.keys(productCount).reduce((a, b) =>
-      productCount[a] > productCount[b] ? a : b
-    );
-    const topProduct = await Product.findById(topProductId);
-    if (!topProduct) {
-      return res.status(404).json({ message: "Top-selling product not found" });
+
+    if (completedOrders.length === 0) {
+      return res.status(404).json({ message: "No completed orders found" });
     }
+
+    // Aggregate monthly sales for all products
     const monthlySales = await Order.aggregate([
       {
-        $match: { status: "completed", productId: topProduct._id },
+        $match: { status: "completed" },
+      },
+      {
+        $unwind: "$cart.items", // Flatten the cart items array
       },
       {
         $group: {
-          _id: { $month: "$created_at" },
-          count: { $sum: 1 },
+          _id: {
+            productId: "$cart.items.productId",
+            month: { $month: "$created_at" },
+          },
+          count: { $sum: "$cart.items.quantity" },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.productId", // Group by product ID
+          monthlySales: {
+            $push: {
+              month: "$_id.month",
+              count: "$count",
+            },
+          },
         },
       },
     ]);
 
-    const salesData = Array(12).fill(0);
-    monthlySales.forEach((entry) => {
-      const monthIndex = entry._id - 1;
-      salesData[monthIndex] = entry.count;
-    });
-    res.status(200).json({
-      name: topProduct.name,
-      data: salesData,
-    });
+    // Fetch product names and structure the final result
+    const productsData = [];
+    for (const entry of monthlySales) {
+      const product = await Product.findById(entry._id);
+      if (!product) continue;
+
+      // Initialize an array with zeros for all 12 months
+      const salesData = Array(12).fill(0);
+
+      // Populate salesData array with the correct counts
+      entry.monthlySales.forEach((sale) => {
+        const monthIndex = sale.month - 1; // Convert month to 0-indexed
+        salesData[monthIndex] = sale.count;
+      });
+
+      productsData.push({
+        name: product.name,
+        data: salesData,
+      });
+    }
+
+    res.status(200).json(productsData);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving top-selling product stats", error });
+    res.status(500).json({
+      message: "Error retrieving product stats",
+      error: error.message,
+    });
   }
 };
 
+// Get top-selling product and monthly sales data for bar chart
 exports.barStats = async (req, res) => {
   try {
     const completedOrders = await Order.find({ status: "completed" });
     const productCount = {};
+
     completedOrders.forEach((order) => {
-      const productId = order.productId.toString();
-      productCount[productId] = (productCount[productId] || 0) + 1;
+      order.cart.items.forEach((item) => {
+        const productId = item.productId.toString();
+        productCount[productId] =
+          (productCount[productId] || 0) + item.quantity;
+      });
     });
+
+    if (Object.keys(productCount).length === 0) {
+      return res.status(404).json({ message: "No completed orders found" });
+    }
+
     const topProductId = Object.keys(productCount).reduce((a, b) =>
       productCount[a] > productCount[b] ? a : b
     );
@@ -221,18 +314,31 @@ exports.barStats = async (req, res) => {
     if (!topProduct) {
       return res.status(404).json({ message: "Top-selling product not found" });
     }
+
     const monthlySales = await Order.aggregate([
       {
-        $match: { status: "completed", productId: topProduct._id },
+        $match: {
+          status: "completed",
+          "cart.items.productId": topProduct._id,
+        },
+      },
+      {
+        $unwind: "$cart.items",
+      },
+      {
+        $match: {
+          "cart.items.productId": topProduct._id,
+        },
       },
       {
         $group: {
           _id: { $month: "$created_at" },
-          count: { $sum: 1 },
+          count: { $sum: "$cart.items.quantity" },
         },
       },
       { $sort: { _id: 1 } },
     ]);
+
     const months = [
       "Jan",
       "Feb",
@@ -256,6 +362,7 @@ exports.barStats = async (req, res) => {
       const monthIndex = entry._id - 1;
       salesData[monthIndex].value = entry.count;
     });
+
     res.status(200).json({
       name: topProduct.name,
       salesData,
