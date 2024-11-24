@@ -3,6 +3,7 @@ const Product = require("../models/productSchema");
 // Create a new product
 exports.createProduct = async (req, res) => {
   try {
+
     const {
       name,
       detail,
@@ -10,13 +11,33 @@ exports.createProduct = async (req, res) => {
       description,
       price,
       sizes,
-      frontImage,
-      backImage,
       stockQuantity,
       usageTitle,
       steps,
     } = req.body;
 
+    const files = req.files || {};
+    let frontImage = "";
+    let backImage = "";
+
+    if (files.frontImage) {
+      frontImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.frontImage[0].filename}`;
+    }
+    if (files.backImage) {
+      backImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.backImage[0].filename}`;
+    }
+
+    if (files.step1Image) {
+      steps.step1.image = `${req.protocol}://${req.get("host")}/images/uploads/products/usage/${files.step1Image[0].filename}`;
+    }
+    if (files.step2Image) {
+      steps.step2.image = `${req.protocol}://${req.get("host")}/images/uploads/products/usage/${files.step2Image[0].filename}`;
+    }
+    if (files.step3Image) {
+      steps.step3.image = `${req.protocol}://${req.get("host")}/images/uploads/products/usage/${files.step3Image[0].filename}`;
+    }
+
+    // Create a new product instance
     const newProduct = new Product({
       name,
       detail,
@@ -32,10 +53,12 @@ exports.createProduct = async (req, res) => {
     });
 
     const savedProduct = await newProduct.save();
+
     res
       .status(201)
       .json({ message: "Product created successfully", product: savedProduct });
   } catch (error) {
+    console.error("Error creating product:", error.message);
     res.status(400).json({ error: error.message });
   }
 };
@@ -79,6 +102,13 @@ exports.updateProduct = async (req, res) => {
       usageTitle,
       steps,
     } = req.body;
+
+    if (files.frontImage) {
+      frontImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.frontImage[0].filename}`;
+    }
+    if (files.backImage) {
+      backImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.backImage[0].filename}`;
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -159,41 +189,6 @@ exports.updateProductUsage = async (req, res) => {
 
     if (!steps || typeof steps !== "object") {
       return res.status(400).json({ message: "Invalid steps format" });
-    }
-
-    res.status(200).json({
-      message: "Product updated successfully",
-      product: updatedProduct,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-// Update product Usage ID
-exports.updateProductSizes = async (req, res) => {
-  try {
-    const { sizes } = req.body;
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        sizes,
-      },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    if (
-      !Array.isArray(sizes) ||
-      sizes.some((size) => !size.size || !size.quantity)
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Each size must include product size and quantity" });
     }
 
     res.status(200).json({
