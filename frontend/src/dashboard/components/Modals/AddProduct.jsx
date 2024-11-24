@@ -1,13 +1,133 @@
 import { useState } from "react";
-import styles from './style.module.css';
+import styles from "./style.module.css";
+import axios from "axios";
 
-export default function AddModal({ show, onClose }) {
-  const [currentProduct, setCurrentProduct] = useState({});
+// Transform data to the required schema for API
+const transformDataToSchema = (formData) => {
+  const {
+    name,
+    detail,
+    subsection: subDetail,
+    description,
+    price,
+    sizes,
+    stepTitle1,
+    stepDescription1,
+    stepImage1,
+    stepTitle2,
+    stepDescription2,
+    stepImage2,
+    stepTitle3,
+    stepDescription3,
+    stepImage3,
+    stock: stockQuantity,
+    usageTitle,
+    frontImage,
+    backImage,
+  } = formData;
 
-  if (!show) return null;
+  const formattedSteps = [
+    {
+      title: stepTitle1,
+      description: stepDescription1,
+      image: stepImage1,
+    },
+    {
+      title: stepTitle2,
+      description: stepDescription2,
+      image: stepImage2,
+    },
+    {
+      title: stepTitle3,
+      description: stepDescription3,
+      image: stepImage3,
+    },
+  ];
 
-  const handleSubmit = () => {
-    // Handle product submission
+  const steps = {
+    step1: formattedSteps[0],
+    step2: formattedSteps[1],
+    step3: formattedSteps[2],
+  };
+
+  const transformedData = {
+    name,
+    detail,
+    subDetail,
+    description,
+    price,
+    sizes: [
+      { size: "Small", quantity: sizes.small.quantity },
+      { size: "Medium", quantity: sizes.medium.quantity },
+      { size: "Large", quantity: sizes.large.quantity },
+      { size: "XL", quantity: sizes.xl.quantity },
+    ],
+    frontImage,
+    backImage,
+    stockQuantity,
+    usageTitle,
+    steps,
+  };
+
+  return transformedData;
+};
+
+export default function AddModal({ onClose }) {
+  const [currentProduct, setCurrentProduct] = useState({
+    name: "",
+    detail: "",
+    subsection: "",
+    description: "",
+    price: 0,
+    stock: 0,
+    sizes: {
+      small: { selected: false, quantity: 0 },
+      medium: { selected: false, quantity: 0 },
+      large: { selected: false, quantity: 0 },
+      xl: { selected: false, quantity: 0 },
+    },
+    frontImage: null,
+    backImage: null,
+    steps: [
+      { title: "", description: "", image: null },
+      { title: "", description: "", image: null },
+      { title: "", description: "", image: null },
+    ],
+  });
+
+  const handleSubmit = async () => {
+    try {
+      const product = transformDataToSchema(currentProduct);
+      console.log(product);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(product));
+
+      if (currentProduct.frontImage) {
+        formData.append("frontImage", currentProduct.frontImage);
+      }
+      if (currentProduct.backImage) {
+        formData.append("backImage", currentProduct.backImage);
+      }
+
+      currentProduct.steps.forEach((step, index) => {
+        if (step.image) {
+          formData.append(`stepImage${index + 1}`, step.image);
+        }
+      });
+
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.post("/products", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("Product updated successfully");
+    } catch (error) {
+      console.error("Error adding Product:", error);
+      const message = error.response?.data?.error || "Failed to add product";
+      alert(message);
+    }
   };
 
   return (
@@ -19,14 +139,17 @@ export default function AddModal({ show, onClose }) {
         <div className={styles.flexContainer}>
           {/* Product Information Section */}
           <div className={styles.column}>
-            <h3 style={{ fontWeight: 'bold' }}>Product Information</h3>
+            <h3 style={{ fontWeight: "bold" }}>Product Information</h3>
             <div className={styles.row}>
               <label>Name:</label>
               <input
                 type="text"
-                value={currentProduct.name || ''}
+                value={currentProduct.name || ""}
                 onChange={(e) =>
-                  setCurrentProduct((prev) => ({ ...prev, name: e.target.value }))
+                  setCurrentProduct((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
                 }
               />
             </div>
@@ -34,9 +157,12 @@ export default function AddModal({ show, onClose }) {
               <label>Detail:</label>
               <input
                 type="text"
-                value={currentProduct.detail || ''}
+                value={currentProduct.detail || ""}
                 onChange={(e) =>
-                  setCurrentProduct((prev) => ({ ...prev, detail: e.target.value }))
+                  setCurrentProduct((prev) => ({
+                    ...prev,
+                    detail: e.target.value,
+                  }))
                 }
               />
             </div>
@@ -44,9 +170,12 @@ export default function AddModal({ show, onClose }) {
               <label>Sub Section:</label>
               <input
                 type="text"
-                value={currentProduct.subsection || ''}
+                value={currentProduct.subsection || ""}
                 onChange={(e) =>
-                  setCurrentProduct((prev) => ({ ...prev, subsection: e.target.value }))
+                  setCurrentProduct((prev) => ({
+                    ...prev,
+                    subsection: e.target.value,
+                  }))
                 }
               />
             </div>
@@ -54,7 +183,7 @@ export default function AddModal({ show, onClose }) {
               <label>Description:</label>
               <input
                 type="text"
-                value={currentProduct.description || ''}
+                value={currentProduct.description || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -76,7 +205,7 @@ export default function AddModal({ show, onClose }) {
                   }))
                 } // Prevent negative values
               />
-              <label style={{ marginLeft: '10px' }}>Stock:</label>
+              <label style={{ marginLeft: "10px" }}>Stock:</label>
               <input
                 type="number"
                 className={styles.counterInput}
@@ -89,7 +218,7 @@ export default function AddModal({ show, onClose }) {
                 } // Prevent negative values
               />
             </div>
-            <h4 style={{fontWeight:'bold'}}>Sizes and Quantity</h4>
+            <h4 style={{ fontWeight: "bold" }}>Sizes and Quantity</h4>
             <div className={styles.row}>
               {/* Sizes Column */}
               <div className={styles.column}>
@@ -111,7 +240,9 @@ export default function AddModal({ show, onClose }) {
                       }))
                     }
                   />
-                  <label  style={{marginLeft:'10px'}}htmlFor="small">Small</label>
+                  <label style={{ marginLeft: "10px" }} htmlFor="small">
+                    Small
+                  </label>
                 </div>
                 <div>
                   <input
@@ -131,7 +262,9 @@ export default function AddModal({ show, onClose }) {
                       }))
                     }
                   />
-                  <label  style={{marginLeft:'10px'}}htmlFor="medium">Medium</label>
+                  <label style={{ marginLeft: "10px" }} htmlFor="medium">
+                    Medium
+                  </label>
                 </div>
                 <div>
                   <input
@@ -151,7 +284,9 @@ export default function AddModal({ show, onClose }) {
                       }))
                     }
                   />
-                  <label  style={{marginLeft:'10px'}}htmlFor="large">Large</label>
+                  <label style={{ marginLeft: "10px" }} htmlFor="large">
+                    Large
+                  </label>
                 </div>
                 <div>
                   <input
@@ -171,7 +306,9 @@ export default function AddModal({ show, onClose }) {
                       }))
                     }
                   />
-                  <label style={{marginLeft:'10px'}} htmlFor="xl">XL</label>
+                  <label style={{ marginLeft: "10px" }} htmlFor="xl">
+                    XL
+                  </label>
                 </div>
               </div>
 
@@ -183,7 +320,7 @@ export default function AddModal({ show, onClose }) {
                     type="number"
                     id="small-quantity"
                     disabled={!currentProduct.sizes?.small?.selected}
-                    value={currentProduct.sizes?.small?.quantity || ''}
+                    value={currentProduct.sizes?.small?.quantity || ""}
                     onChange={(e) =>
                       setCurrentProduct((prev) => ({
                         ...prev,
@@ -204,7 +341,7 @@ export default function AddModal({ show, onClose }) {
                     type="number"
                     id="medium-quantity"
                     disabled={!currentProduct.sizes?.medium?.selected}
-                    value={currentProduct.sizes?.medium?.quantity || ''}
+                    value={currentProduct.sizes?.medium?.quantity || ""}
                     onChange={(e) =>
                       setCurrentProduct((prev) => ({
                         ...prev,
@@ -225,7 +362,7 @@ export default function AddModal({ show, onClose }) {
                     type="number"
                     id="large-quantity"
                     disabled={!currentProduct.sizes?.large?.selected}
-                    value={currentProduct.sizes?.large?.quantity || ''}
+                    value={currentProduct.sizes?.large?.quantity || ""}
                     onChange={(e) =>
                       setCurrentProduct((prev) => ({
                         ...prev,
@@ -246,7 +383,7 @@ export default function AddModal({ show, onClose }) {
                     type="number"
                     id="xl-quantity"
                     disabled={!currentProduct.sizes?.xl?.selected}
-                    value={currentProduct.sizes?.xl?.quantity || ''}
+                    value={currentProduct.sizes?.xl?.quantity || ""}
                     onChange={(e) =>
                       setCurrentProduct((prev) => ({
                         ...prev,
@@ -268,6 +405,8 @@ export default function AddModal({ show, onClose }) {
               <label>Front Image:</label>
               <input
                 type="file"
+                name="frontImage"
+                id="frontImage"
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -280,6 +419,8 @@ export default function AddModal({ show, onClose }) {
               <label>Back Image:</label>
               <input
                 type="file"
+                name="backImage"
+                id="backImage"
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -292,12 +433,12 @@ export default function AddModal({ show, onClose }) {
 
           {/* Usage Information Section */}
           <div className={styles.column}>
-            <h3 style={{ fontWeight: 'bold' }}>Usage Information</h3>
+            <h3 style={{ fontWeight: "bold" }}>Usage Information</h3>
             <div className={styles.row}>
               <label>Usage Title:</label>
               <input
                 type="text"
-                value={currentProduct.usageTitle || ''}
+                value={currentProduct.usageTitle || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -306,13 +447,13 @@ export default function AddModal({ show, onClose }) {
                 }
               />
             </div>
-            <h4 style={{ fontWeight: 'bold' }}>Steps</h4>
+            <h4 style={{ fontWeight: "bold" }}>Steps</h4>
             <h4>First</h4>
             <div className={styles.row}>
               <label>Step Title:</label>
               <input
                 type="text"
-                value={currentProduct.stepTitle1 || ''}
+                value={currentProduct.stepTitle1 || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -325,7 +466,7 @@ export default function AddModal({ show, onClose }) {
               <label>Description:</label>
               <input
                 type="text"
-                value={currentProduct.stepDescription1 || ''}
+                value={currentProduct.stepDescription1 || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -337,6 +478,8 @@ export default function AddModal({ show, onClose }) {
             <div className={styles.row}>
               <label>Image:</label>
               <input
+                name="step1Image"
+                id="step1Image"
                 type="file"
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
@@ -351,7 +494,7 @@ export default function AddModal({ show, onClose }) {
               <label>Step Title:</label>
               <input
                 type="text"
-                value={currentProduct.stepTitle2 || ''}
+                value={currentProduct.stepTitle2 || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -364,7 +507,7 @@ export default function AddModal({ show, onClose }) {
               <label>Description:</label>
               <input
                 type="text"
-                value={currentProduct.stepDescription2 || ''}
+                value={currentProduct.stepDescription2 || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -376,6 +519,8 @@ export default function AddModal({ show, onClose }) {
             <div className={styles.row}>
               <label>Image:</label>
               <input
+                name="step2Image"
+                id="step2Image"
                 type="file"
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
@@ -390,7 +535,7 @@ export default function AddModal({ show, onClose }) {
               <label>Step Title:</label>
               <input
                 type="text"
-                value={currentProduct.stepTitle3 || ''}
+                value={currentProduct.stepTitle3 || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -403,7 +548,7 @@ export default function AddModal({ show, onClose }) {
               <label>Description:</label>
               <input
                 type="text"
-                value={currentProduct.stepDescription3 || ''}
+                value={currentProduct.stepDescription3 || ""}
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
                     ...prev,
@@ -415,6 +560,8 @@ export default function AddModal({ show, onClose }) {
             <div className={styles.row}>
               <label>Image:</label>
               <input
+                name="step3Image"
+                id="step3Image"
                 type="file"
                 onChange={(e) =>
                   setCurrentProduct((prev) => ({
@@ -424,7 +571,9 @@ export default function AddModal({ show, onClose }) {
                 }
               />
             </div>
-            <button className={styles.submitButton} onClick={handleSubmit}>Add Product</button>
+            <button className={styles.submitButton} onClick={handleSubmit}>
+              Add Product
+            </button>
           </div>
         </div>
       </div>
