@@ -60,7 +60,7 @@ export default function AddBlogs() {
           <button onClick={() => setShowModal(true)}>Add Blog</button>
         </div>
         <div className={styles.blogs}>
-          <div className={styles.productgrid}>
+          <div className={styles.bloggrid}>
             <div className={`${styles.header} ${styles.productname}`}>
               Blog No.
             </div>

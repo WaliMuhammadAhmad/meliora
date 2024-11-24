@@ -187,15 +187,20 @@ input[type="checkbox"] {
   width: 300px;
   height: 300px;
   margin-top: 20px;
-  padding: 10px;
+  /* padding: 10px; */
   background-color: white;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.icon svg {
-  width: 250px;
-  height: 250px;
-  margin: auto;
+
+.icon img {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: fill;
 }
 
 .image label {
@@ -557,7 +562,7 @@ button {
 
 .bloggrid {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
   /* Defines the grid structure: 4 columns */
   padding: 0;
   background-color: #216d9e;
@@ -613,6 +618,11 @@ button {
 .bloggrid .productdescription {
   margin-top: 20px;
 }
+.bloggrid .productdescription img{
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
 
 .productgrid .productno,
 .bloggrid .productno {
@@ -621,7 +631,7 @@ button {
 }
 
 .productgrid>div:nth-child(5n),
-.bloggrid>div:nth-child(4n) {
+.bloggrid>div:nth-child(5n) {
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
