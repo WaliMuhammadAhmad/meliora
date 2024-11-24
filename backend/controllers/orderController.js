@@ -2,6 +2,7 @@ const Order = require("../models/orderSchema");
 const Product = require("../models/productSchema");
 const Customer = require("../models/customerSchema");
 
+// Place a new order
 exports.neworder = async (req, res) => {
   try {
     const { user, billingDetails, cart, paymentMethod, totalAmount, status } =
@@ -172,6 +173,7 @@ exports.getRevenue = async (req, res) => {
   }
 };
 
+// Get top selling product
 exports.topSellingProduct = async (req, res) => {
   try {
     const completedOrders = await Order.find({ status: "completed" });
@@ -217,71 +219,77 @@ exports.topSellingProduct = async (req, res) => {
   }
 };
 
+// Get monthly sales data for line chart
 exports.lineStats = async (req, res) => {
   try {
+    // Fetch all completed orders
     const completedOrders = await Order.find({ status: "completed" });
-    const productCount = {};
 
-    completedOrders.forEach((order) => {
-      order.cart.items.forEach((item) => {
-        const productId = item.productId.toString();
-        productCount[productId] =
-          (productCount[productId] || 0) + item.quantity;
-      });
-    });
-
-    if (Object.keys(productCount).length === 0) {
+    if (completedOrders.length === 0) {
       return res.status(404).json({ message: "No completed orders found" });
     }
 
-    const topProductId = Object.keys(productCount).reduce((a, b) =>
-      productCount[a] > productCount[b] ? a : b
-    );
-    const topProduct = await Product.findById(topProductId);
-    if (!topProduct) {
-      return res.status(404).json({ message: "Top-selling product not found" });
-    }
-
+    // Aggregate monthly sales for all products
     const monthlySales = await Order.aggregate([
       {
-        $match: {
-          status: "completed",
-          "cart.items.productId": topProduct._id,
-        },
+        $match: { status: "completed" },
       },
       {
-        $unwind: "$cart.items",
+        $unwind: "$cart.items", // Flatten the cart items array
       },
       {
-        $match: {
-          "cart.items.productId": topProduct._id,
+        $group: {
+          _id: {
+            productId: "$cart.items.productId",
+            month: { $month: "$created_at" },
+          },
+          count: { $sum: "$cart.items.quantity" },
         },
       },
       {
         $group: {
-          _id: { $month: "$created_at" },
-          count: { $sum: "$cart.items.quantity" },
+          _id: "$_id.productId", // Group by product ID
+          monthlySales: {
+            $push: {
+              month: "$_id.month",
+              count: "$count",
+            },
+          },
         },
       },
     ]);
 
-    const salesData = Array(12).fill(0);
-    monthlySales.forEach((entry) => {
-      const monthIndex = entry._id - 1;
-      salesData[monthIndex] = entry.count;
-    });
+    // Fetch product names and structure the final result
+    const productsData = [];
+    for (const entry of monthlySales) {
+      const product = await Product.findById(entry._id);
+      if (!product) continue;
 
-    res.status(200).json({
-      name: topProduct.name,
-      data: salesData,
-    });
+      // Initialize an array with zeros for all 12 months
+      const salesData = Array(12).fill(0);
+
+      // Populate salesData array with the correct counts
+      entry.monthlySales.forEach((sale) => {
+        const monthIndex = sale.month - 1; // Convert month to 0-indexed
+        salesData[monthIndex] = sale.count;
+      });
+
+      productsData.push({
+        name: product.name,
+        data: salesData,
+      });
+    }
+
+    res.status(200).json(productsData);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving top-selling product stats", error });
+    res.status(500).json({
+      message: "Error retrieving product stats",
+      error: error.message,
+    });
   }
 };
 
+// Get top-selling product and monthly sales data for bar chart
 exports.barStats = async (req, res) => {
   try {
     const completedOrders = await Order.find({ status: "completed" });
