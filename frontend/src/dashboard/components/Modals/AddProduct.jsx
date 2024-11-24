@@ -99,24 +99,9 @@ export default function AddModal({ onClose }) {
     try {
       const product = transformDataToSchema(currentProduct);
       console.log(product);
-      const formData = new FormData();
-      formData.append("data", JSON.stringify(product));
-
-      if (currentProduct.frontImage) {
-        formData.append("frontImage", currentProduct.frontImage);
-      }
-      if (currentProduct.backImage) {
-        formData.append("backImage", currentProduct.backImage);
-      }
-
-      currentProduct.steps.forEach((step, index) => {
-        if (step.image) {
-          formData.append(`stepImage${index + 1}`, step.image);
-        }
-      });
 
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.post("/products", formData, {
+      const response = await axios.post("/products", product, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -132,7 +117,7 @@ export default function AddModal({ onClose }) {
 
   return (
     <div className={styles.modaloverlay}>
-      <div className={styles.modalcontent}>
+      <form encType="multipart/form-data" className={styles.modalcontent}>
         <span className={styles.closeicon} onClick={onClose}>
           &times;
         </span>
@@ -576,7 +561,7 @@ export default function AddModal({ onClose }) {
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
