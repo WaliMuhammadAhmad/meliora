@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import styles from './style.module.css'
+import axios from 'axios';
 
-export default function Blog({ show, onClose, blog, onSubmit }) {
+export default function Blog({ onClose, blog }) {
   const [currentBlog, setCurrentBlog] = useState({
     blogName: "",
     text: "",
     image: null,
   });
 
-  // Load blog data into the modal if updating
   useEffect(() => {
     if (blog) {
       setCurrentBlog({
@@ -26,29 +26,23 @@ export default function Blog({ show, onClose, blog, onSubmit }) {
   }, [blog]);
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-
-    // Log values before appending to ensure they are populated
-    console.log("Current Blog Data:", currentBlog);
-    formData.append("blogName", currentBlog.blogName);
-    formData.append("text", currentBlog.text);
-    console.log(
-      "Current Blog Data after appending:",
-      formData.blogName,
-      formData.text
-    );
-    if (currentBlog.image) formData.append("image", currentBlog.image);
-
     try {
-      await onSubmit(formData, blog?._id);
-      console.log("Submitted FormData:", Array.from(formData.entries()));
-      onClose(); // Close modal after submission
+      if (blog) {
+        console.log("Updating blog with ID:", currentBlog);
+        await axios.put(`/blog/${blog._id}`, currentBlog, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        console.log("Adding new blog:", currentBlog);
+        await axios.post("/blog/", currentBlog, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+      onClose();
     } catch (error) {
       console.error("Error submitting blog:", error);
     }
   };
-
-  if (!show) return null;
 
   return (
     <div className={styles.modaloverlay}>
@@ -78,6 +72,7 @@ export default function Blog({ show, onClose, blog, onSubmit }) {
         <label>Image:</label>
         <input
           type="file"
+          name="image"
           onChange={(e) =>
             setCurrentBlog((prev) => ({
               ...prev,
