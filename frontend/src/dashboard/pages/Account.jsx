@@ -12,7 +12,7 @@ export default function Account() {
     isActive: true,
   });
   const [selectedFile, setSelectedFile] = useState(null);
-  const id = "6719ce23a316938ba713dc0a"; // static admin ID for now
+  const id = "6742fcbe9f1e5cfdfbf02b0a"; // static admin ID for now
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,17 +123,13 @@ export default function Account() {
           <div className={styles.image}>
             <div className={styles.icon}>
               {admin.image ? (
-                <img
-                  src={admin.image}
-                  alt={admin.name}
-                  crossOrigin={
-                    admin.image.startsWith("http://localhost:3001")
-                      ? "anonymous"
-                      : undefined
-                  }
-                />
+                <img src={admin.image} alt={admin.name} crossOrigin={
+                  admin.image.startsWith("http://localhost:3001")
+                    ? "anonymous"
+                    : undefined
+                } />
               ) : (
-                <i className="fas fa-user-circle"></i>
+                <i className="fa fa-user-circle"></i>
               )}
             </div>
             <label htmlFor="admin-image">Upload Image</label>

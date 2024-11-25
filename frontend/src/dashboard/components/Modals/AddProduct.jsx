@@ -474,7 +474,7 @@ export default function AddModal({ onClose }) {
                 }
               />
             </div>
-            <h4>Second</h4>
+            <h4 style={{ fontWeight: 'bold' }}>Second</h4>
             <div className={styles.row}>
               <label>Step Title:</label>
               <input
@@ -515,7 +515,7 @@ export default function AddModal({ onClose }) {
                 }
               />
             </div>
-            <h4>Third</h4>
+            <h4 style={{ fontWeight: 'bold' }}>Third</h4>
             <div className={styles.row}>
               <label>Step Title:</label>
               <input
