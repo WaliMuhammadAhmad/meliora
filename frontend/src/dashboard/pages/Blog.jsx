@@ -91,7 +91,11 @@ export default function AddBlogs() {
                     className={`${styles.blogimg}`}
                     src={blog.image}
                     alt={blog.blogName}
-                    crossOrigin={blog.image.startsWith('http://localhost:3001') ? 'anonymous' : undefined}
+                    crossOrigin={
+                      blog.image.startsWith("http://localhost:3001")
+                        ? "anonymous"
+                        : undefined
+                    }
                   />
                 </div>
                 <div

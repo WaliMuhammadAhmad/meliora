@@ -112,7 +112,8 @@ export default function Account() {
                 <input
                   type="password"
                   name="password"
-                  value={admin.password}
+                  value={admin.password || ""}
+                  placeholder="Enter new password"
                   onChange={handleChange}
                 />
               </div>

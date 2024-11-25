@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./style.module.css";
 
-export default function Package({ onClose, pkg, onSubmit }) {
+export default function Package({ onClose, pkg }) {
   const [currentPackage, setCurrentPackage] = useState({
     name: "",
     details: "",
@@ -56,12 +56,10 @@ export default function Package({ onClose, pkg, onSubmit }) {
   const handleSubmit = async () => {
     try {
       if (pkg) {
-        console.log("Updating package with ID:", currentPackage);
         await axios.put(`/package/${pkg._id}`, currentPackage, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        console.log("Adding new package:", currentPackage);
         await axios.post("/package/", currentPackage, {
           headers: { "Content-Type": "multipart/form-data" },
         });
