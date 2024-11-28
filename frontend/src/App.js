@@ -18,9 +18,6 @@ import Account from "./dashboard/pages/Account";
 import Packages from "./dashboard/pages/Packages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
-// import { useAuth } from "./hooks/useAuth";
-// import { useAdminAuth } from "./hooks/useAdminAuth";
-// import { useCart } from "./hooks/useCart";
 
 const router = createBrowserRouter([
   {
