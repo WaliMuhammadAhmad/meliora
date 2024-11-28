@@ -9,6 +9,7 @@ backend/public/images/
 
 # testing
 /coverage
+/test
 
 # production
 /build
