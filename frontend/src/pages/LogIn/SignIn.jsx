@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./style.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth"; // Import the custom useAuth hook
+import useAuth from "../../hooks/useAuth";
 import CustomAlert from "../../components/CustomAlert";
 import axios from "axios";
 
@@ -66,49 +66,40 @@ export default function SignIn() {
     }
 
     try {
-      const resposne = await axios.post("/auth/user/signin", {
+      const response = await axios.post("/auth/user/signin", {
         email: formData.email,
         password: formData.password,
       });
-      if (resposne.status === 200) {
+      if (response.status === 200) {
         await login(
-          resposne.data.user,
-          resposne.data.accessToken,
-          resposne.data.refreshToken
+          response.data.user,
+          response.data.accessToken,
+          response.data.refreshToken
         );
-        setAlert({ type: "success", text: "Sign in Successfull!", open: true });
-      } else {
         setAlert({
-          type: "error",
-          text: "Invalid credentials, please try again.",
+          type: "success",
+          text: "Sign in successful! Redirecting...",
           open: true,
         });
+        setTimeout(() => navigate(location.state?.from || "/"), 1500);
       }
-
-      // Redirect to the last page or home page
-      const redirectPath = location.state?.from || "/";
-      navigate(redirectPath);
     } catch (error) {
-      if (error.status === 404) {
+      const status = error.response?.status;
+      if (status === 404) {
         setAlert({
           type: "warning",
-          text: "User not found please Sign up first!",
+          text: "Invalid email or password.",
           open: true,
         });
       } else {
         setAlert({
           type: "error",
-          text: "Invalid credentials, please try again.",
+          text: "Something went wrong. Please try again later.",
           open: true,
         });
       }
     }
   };
-
-  useEffect(() => {
-    const currentPage = window.location.pathname;
-    localStorage.setItem("lastPage", currentPage);
-  }, []);
 
   return (
     <div className={styles.container} style={{ position: "relative" }}>
