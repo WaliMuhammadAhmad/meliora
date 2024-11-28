@@ -1,23 +1,26 @@
-import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Auth0Provider } from '@auth0/auth0-react';
-import Home from './pages/Home';
-import ProductDetails from './pages/ProductDetails';
-import Checkout from './pages/Chekcout';
-import Admin from './dashboard/pages/Admin';
-import Dashboard from './dashboard/pages/Dashboard';
-import Order from './dashboard/pages/Order';
-import AddProducts from './dashboard/pages/Product';
-import Blog from './dashboard/pages/Blog';
-import Account from './dashboard/pages/Account';
-import Packages from './dashboard/pages/Packages';
-import OrderDetails from './pages/OrderDetails';
-import { Navbar } from './components/Navbar';
-import ProfileComponent from './components/Profile';
-
-// Create the Auth0Provider configuration
-const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import Home from "./pages/Home";
+import ProductDetails from "./pages/ProductDetails";
+import Checkout from "./pages/Checkout";
+import ProfileComponent from "./pages/Profile";
+import SignIn from "./pages/LogIn/SignIn";
+import SignUp from "./pages/LogIn/SignUp";
+import OrderDetails from "./pages/OrderDetails";
+import AdminSignIn from "./dashboard/pages/AdminSignIn";
+import Admin from "./dashboard/pages/Admin";
+import Dashboard from "./dashboard/pages/Dashboard";
+import Order from "./dashboard/pages/Order";
+import AddProducts from "./dashboard/pages/Product";
+import Blog from "./dashboard/pages/Blog";
+import Account from "./dashboard/pages/Account";
+import Packages from "./dashboard/pages/Packages";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminProtectedRoute from "./routes/AdminProtectedRoute";
+// import { useAuth } from "./hooks/useAuth";
+// import { useAdminAuth } from "./hooks/useAdminAuth";
+// import { useCart } from "./hooks/useCart";
 
 const router = createBrowserRouter([
   {
@@ -25,94 +28,105 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "/signin",
+    element: <SignIn />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
     path: "/product-details/:id",
     element: <ProductDetails />,
   },
   {
+    path: "/order-details/:id",
+    element: (
+      <ProtectedRoute>
+        <Navbar />
+        <OrderDetails />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/checkout",
-    element: <Checkout />,
+    element: (
+      <ProtectedRoute>
+        <Checkout />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <ProfileComponent />
+      </ProtectedRoute>
+    ),
+  },
+  // Admin routes
+  {
+    path: "/admin",
+    element: <AdminSignIn />,
   },
   {
     path: "/admin/dashboard",
     element: (
-      <>
+      <AdminProtectedRoute>
         <Admin />
         <Dashboard />
-      </>
+      </AdminProtectedRoute>
     ),
   },
   {
     path: "/admin/orders",
     element: (
-      <>
+      <AdminProtectedRoute>
         <Admin />
         <Order />
-      </>
+      </AdminProtectedRoute>
     ),
   },
   {
     path: "/admin/packages",
     element: (
-      <>
+      <AdminProtectedRoute>
         <Admin />
         <Packages />
-      </>
+      </AdminProtectedRoute>
     ),
   },
   {
     path: "/admin/products",
     element: (
-      <>
+      <AdminProtectedRoute>
         <Admin />
         <AddProducts />
-      </>
+      </AdminProtectedRoute>
     ),
   },
   {
     path: "/admin/blogs",
     element: (
-      <>
+      <AdminProtectedRoute>
         <Admin />
         <Blog />
-      </>
+      </AdminProtectedRoute>
     ),
   },
   {
     path: "/admin/account",
     element: (
-      <>
+      <AdminProtectedRoute>
         <Admin />
         <Account />
-      </>
+      </AdminProtectedRoute>
     ),
-  },
-  {
-    path: "/orderDetails",
-    element: (
-      <>
-        <Navbar />
-        <OrderDetails />
-      </>
-    ),
-  },
-  {
-    path: "/profile",
-    element: <ProfileComponent />,
   },
 ]);
 
 function App() {
-  return (
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-      }}
-    >
-      <RouterProvider router={router} />
-    </Auth0Provider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

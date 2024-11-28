@@ -1,42 +1,14 @@
 "use client";
 import { cn } from "../lib/utils";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   motion,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:3001/";
-
-const handleUserDatabaseSync = async (
-  user: any,
-  hasSyncedRef: React.MutableRefObject<boolean>
-) => {
-  if (!user || hasSyncedRef.current) return; // Prevent duplicate execution
-
-  const authUser = {
-    name: user.nickname,
-    email: user.email,
-    picture: user.picture,
-    isVerified: user.email_verified,
-  };
-
-  try {
-    const response = await axios.get(`/customers/email/${authUser.email}`);
-    if (response.data.message === "Customer not found") {
-      await axios.post("/customers/", authUser);
-    } else {
-      const existingUser = response.data;
-      await axios.put(`/customers/${existingUser._id}`, authUser);
-    }
-  } catch (error) {
-    console.error("Error in syncing user to database:", error);
-  }
-};
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export const FloatingNav = ({
   navItems,
@@ -50,9 +22,9 @@ export const FloatingNav = ({
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
-  const hasSyncedRef = useRef(false);
   const [visible, setVisible] = useState(false);
-  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
@@ -70,14 +42,8 @@ export const FloatingNav = ({
     }
   });
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      handleUserDatabaseSync(user, hasSyncedRef);
-    }
-  }, [isAuthenticated, user]);
-
   const handleLogin = async () => {
-    loginWithRedirect();
+    navigate("/signin");
   };
 
   const handleLogout = () => {
@@ -85,7 +51,7 @@ export const FloatingNav = ({
   };
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode='wait'>
       <motion.div
         initial={{
           opacity: 1,
@@ -101,27 +67,25 @@ export const FloatingNav = ({
         className={cn(
           "flex max-w-fit  fixed top-10 inset-x-0 mx-auto border border-transparent dark:border-white/[0.2] rounded-full dark:bg-black bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-[5000] pr-2 pl-8 py-2  items-center justify-center space-x-4",
           className
-        )}
-      >
+        )}>
         {navItems.map((navItem: any, idx: number) => (
           <a
             key={`link=${idx}`}
             href={navItem.link}
             className={cn(
               "relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
-            )}
-          >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            <span className="hidden sm:block text-sm">{navItem.name}</span>
+            )}>
+            <span className='block sm:hidden'>{navItem.icon}</span>
+            <span className='hidden sm:block text-sm'>{navItem.name}</span>
           </a>
         ))}
-        <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
+        <button className='border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full'>
           {!isAuthenticated ? (
             <span onClick={handleLogin}>Log In</span>
           ) : (
             <span onClick={handleLogout}>Log Out</span>
           )}
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+          <span className='absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px' />
         </button>
       </motion.div>
     </AnimatePresence>

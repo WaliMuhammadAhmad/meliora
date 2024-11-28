@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@mui/joy";
 import styles from "./style.module.css";
 import axios from "axios";
-import CreateContextApi from "../ContextApi/CreateContextApi";
+import CreateContextApi from "../hooks/CreateContextApi";
 import Cookies from "js-cookie";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -106,30 +106,30 @@ export default function Checkout() {
           <form onSubmit={handleSubmit}>
             <div className={styles.name}>
               <label>First Name</label>
-              <input type="text" name="firstName" onChange={handleChange} />
+              <input type='text' name='firstName' onChange={handleChange} />
             </div>
             <div className={styles.street}>
               <label>Street Address</label>
-              <input type="text" name="streetAddress" onChange={handleChange} />
+              <input type='text' name='streetAddress' onChange={handleChange} />
             </div>
             <div className={styles.apartment}>
               <label>Apartment, floor, etc (optional)</label>
-              <input type="text" name="apartment" onChange={handleChange} />
+              <input type='text' name='apartment' onChange={handleChange} />
             </div>
             <div className={styles.city}>
               <label>Town City</label>
-              <input type="text" name="city" onChange={handleChange} />
+              <input type='text' name='city' onChange={handleChange} />
             </div>
             <div className={styles.number}>
               <label>Phone Number</label>
-              <input type="number" name="phoneNumber" onChange={handleChange} />
+              <input type='number' name='phoneNumber' onChange={handleChange} />
             </div>
             <div className={styles.email}>
               <label>Email</label>
-              <input type="email" name="email" onChange={handleChange} />
+              <input type='email' name='email' onChange={handleChange} />
             </div>
             <div className={styles.radio}>
-              <input type="checkbox" name="saveInfo" onChange={handleChange} />
+              <input type='checkbox' name='saveInfo' onChange={handleChange} />
               <label>
                 Save this information for faster check-out next time
               </label>
@@ -168,14 +168,14 @@ export default function Checkout() {
           </div>
           <div className={styles.radio}>
             <input
-              type="checkbox"
-              name="cashOnDelivery"
+              type='checkbox'
+              name='cashOnDelivery'
               checked={formData.cashOnDelivery}
               onChange={handleChange}
             />
             <label>Cash On Delivery</label>
           </div>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button type='submit' onClick={handleSubmit}>
             Place Order
           </Button>
         </div>
