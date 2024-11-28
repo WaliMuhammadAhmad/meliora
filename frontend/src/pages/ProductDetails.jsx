@@ -4,7 +4,7 @@ import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
 import { Navbar } from "../components/Navbar";
 import Cart from "../components/Cart";
-import CreateContextApi from "../ContextApi/CreateContextApi";
+import CreateContextApi from "../hooks/CreateContextApi";
 import ProductUsage from "../components/ProductUsage";
 import ReviewSection from "../components/ReviewSection";
 import styles from "./style.module.css";
@@ -84,7 +84,7 @@ export default function ProductDetails() {
 
   if (!product) {
     return (
-      <div className="h-screen flex justify-center content-center">
+      <div className='h-screen flex justify-center content-center'>
         Loading...
       </div>
     );
@@ -134,7 +134,7 @@ export default function ProductDetails() {
               <div className={styles.logo}>
                 <FiTruck />
               </div>
-              <div className="text">
+              <div className='text'>
                 <h3>Fast Delivery</h3>
                 <h3>Enter your postal code for Delivery Availability</h3>
               </div>
@@ -160,16 +160,14 @@ export default function ProductDetails() {
             <Button
               onClick={() => {
                 handleAddToCart();
-              }}
-            >
+              }}>
               Add to Cart
             </Button>
           </div>
           <Button
             onClick={() => {
               setShowCart(!showCart);
-            }}
-          >
+            }}>
             Go To Cart
           </Button>
         </div>

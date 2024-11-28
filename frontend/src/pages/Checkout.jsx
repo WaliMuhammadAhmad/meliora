@@ -4,12 +4,12 @@ import styles from "./style.module.css";
 import axios from "axios";
 import CreateContextApi from "../hooks/CreateContextApi";
 import Cookies from "js-cookie";
-import { useAuth0 } from "@auth0/auth0-react";
+import useAuth from "../hooks/useAuth";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function Checkout() {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth();
   // eslint-disable-next-line no-unused-vars
   const { cartData, setCartData, total, setTotal } =
     useContext(CreateContextApi);
