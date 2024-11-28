@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
-import CreateContextApi from "../ContextApi/CreateContextApi";
+import CreateContextApi from "../hooks/CreateContextApi";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
@@ -31,12 +31,10 @@ export default function Cart() {
         className={styles.cartcontainer}
         initial={{ x: "100vw" }}
         animate={{ x: showCart ? 0 : "100vw" }}
-        transition={{ duration: 1, ease: "easeInOut" }}
-      >
+        transition={{ duration: 1, ease: "easeInOut" }}>
         <div
           className={styles.leftsection}
-          style={{ backgroundColor: bgColor }}
-        ></div>
+          style={{ backgroundColor: bgColor }}></div>
         <div className={styles.rightsection}>
           <div className={styles.crossicon}>
             <RxCross1 onClick={() => setShowCart(!showCart)} />
@@ -48,7 +46,7 @@ export default function Cart() {
             {cartData.map((data, index) => (
               <div key={index} className={styles.item}>
                 <div className={styles.imagesection}>
-                  <img src={data.frontImage} alt="" />
+                  <img src={data.frontImage} alt='' />
                 </div>
                 <div className={styles.itemright}>
                   <h5>{data.name}</h5>
@@ -84,8 +82,7 @@ export default function Cart() {
                 navigate("/checkout");
                 setShowCart(!showCart);
                 document.body.classList.remove("no-scroll");
-              }}
-            >
+              }}>
               Proceed to Checkout
             </button>
           </div>

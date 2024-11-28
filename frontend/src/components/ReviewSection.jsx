@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
+import useAuth from "../hooks/useAuth";
 
 axios.defaults.baseURL = "http://localhost:3001";
 
 export default function ReviewSection({ product }) {
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user } = useAuth();
   const [reviews, setReviews] = useState([]);
   const [customers, setCustomers] = useState({});
   const [customer, setCustomer] = useState({});
@@ -120,8 +120,9 @@ export default function ReviewSection({ product }) {
               <div className={styles.bar}>
                 <div
                   className={styles.fill}
-                  style={{ width: `${calculatePercentage(starCounts[star])}%` }}
-                ></div>
+                  style={{
+                    width: `${calculatePercentage(starCounts[star])}%`,
+                  }}></div>
               </div>
               <span>{starCounts[star]}</span>
             </div>
@@ -130,7 +131,7 @@ export default function ReviewSection({ product }) {
         <div className={styles.reviewcontainer}>
           <textarea
             className={styles.textarea}
-            placeholder="Write your review here..."
+            placeholder='Write your review here...'
             value={reviv}
             onChange={(e) => setReview(e.target.value)}
           />
@@ -148,8 +149,7 @@ export default function ReviewSection({ product }) {
             onClick={handleReviewSubmission}
             disabled={
               !reviv.trim() || !customer._id || !product._id || !isAuthenticated
-            }
-          >
+            }>
             Post Review
           </button>
         </div>
@@ -167,8 +167,7 @@ export default function ReviewSection({ product }) {
                   ) : (
                     <span
                       className={styles.verified}
-                      style={{ backgroundColor: "red" }}
-                    >
+                      style={{ backgroundColor: "red" }}>
                       Not Verified
                     </span>
                   )}
