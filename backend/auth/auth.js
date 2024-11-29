@@ -105,6 +105,12 @@ const adminLogin = async (req, res) => {
       return res.status(404).json({ message: "Admin not found" });
     }
 
+    if (!admin.password) {
+      return res.status(500).json({
+        message: "Password was not provieded in Admin Sign Up",
+      });
+    }
+
     const isPasswordValid = await admin.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
@@ -116,7 +122,12 @@ const adminLogin = async (req, res) => {
     res.status(200).json({
       accessToken,
       refreshToken,
-      admin: { email: admin.email, name: admin.name },
+      admin: {
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        image: admin.image,
+      },
     });
   } catch (error) {
     console.error("Error in adminLogin:", error);

@@ -21,7 +21,7 @@
   font-weight: bold;
 }
 
-.productImage{
+.productImage {
   height: 5rem;
   width: 5rem;
 }
@@ -100,7 +100,7 @@ form input {
 }
 
 input[type="checkbox"] {
-  accent-color: #007BFF;
+  accent-color: #007bff;
   /* Changes the color of the radio button */
   width: 15px;
   height: 15px;
@@ -194,7 +194,6 @@ input[type="checkbox"] {
   align-items: center;
   justify-content: center;
 }
-
 
 .icon img {
   width: 300px;
@@ -477,7 +476,6 @@ button {
 .lastcard h2 {
   text-align: left;
   color: black;
-
 }
 
 .card h1 {
@@ -607,8 +605,8 @@ button {
   object-fit: contain;
 }
 
-.productgrid>div,
-.bloggrid>div {
+.productgrid > div,
+.bloggrid > div {
   border-left: none;
   border-right: none;
   border-radius: 0;
@@ -618,7 +616,7 @@ button {
 .bloggrid .productdescription {
   margin-top: 20px;
 }
-.bloggrid .productdescription img{
+.bloggrid .productdescription img {
   width: 200px;
   height: 200px;
   object-fit: contain;
@@ -630,8 +628,8 @@ button {
   border-bottom-left-radius: 12px;
 }
 
-.productgrid>div:nth-child(5n),
-.bloggrid>div:nth-child(5n) {
+.productgrid > div:nth-child(5n),
+.bloggrid > div:nth-child(5n) {
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
@@ -712,7 +710,7 @@ ul li a:hover {
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height:100dvh;
+  height: 100dvh;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -735,7 +733,6 @@ ul li a:hover {
   color: white;
   border-radius: 10px;
 }
-
 
 @media screen and (max-width: 750px) {
   .hamburger {
@@ -772,7 +769,6 @@ ul li a:hover {
     display: none;
   }
 }
-
 
 @media (max-width: 1110px) {
   .manageItems {
@@ -821,9 +817,7 @@ ul li a:hover {
   }
 }
 
-
 @media screen and (max-width: 500px) {
-
   #customers td,
   #customers th {
     font-size: 7px;
@@ -832,7 +826,6 @@ ul li a:hover {
 }
 
 @media (max-width: 768px) {
-
   .productgrid,
   .bloggrid {
     width: 100%;
@@ -887,7 +880,6 @@ ul li a:hover {
     height: 150px;
     margin: auto;
   }
-
 }
 
 @media (max-width: 1024px) {
