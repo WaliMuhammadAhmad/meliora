@@ -131,7 +131,7 @@ const useAdminAuth = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       checkAuth();
-    }, 50000);
+    }, 900000);
 
     return () => clearInterval(interval);
   });
