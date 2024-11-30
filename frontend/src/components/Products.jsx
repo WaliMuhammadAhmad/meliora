@@ -4,8 +4,6 @@ import { LampContainer } from "../ui/lamp.tsx";
 import ProductCard from "./ProductCard.jsx";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 function Products() {
   const [products, setProducts] = useState([]);
 
@@ -37,11 +35,10 @@ function Products() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="bg-gradient-to-br mt-[-10%] from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-      >
+        className='bg-gradient-to-br mt-[-10%] from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl'>
         Our Products
       </motion.h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8">
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8'>
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}

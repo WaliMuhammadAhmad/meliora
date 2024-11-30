@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function BarGraph({ name }) {
   const [barStats, setBarStats] = useState([]);
 
@@ -31,7 +29,7 @@ export default function BarGraph({ name }) {
           valueFormatter: (val) => `${val} orders`,
         },
       ]}
-      layout="horizontal"
+      layout='horizontal'
       width={700}
       height={500}
     />

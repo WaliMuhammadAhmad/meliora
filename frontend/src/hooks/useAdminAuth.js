@@ -3,8 +3,6 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_ORIGIN;
-
 const useAdminAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("isAuth") === "true";
@@ -69,8 +67,10 @@ const useAdminAuth = () => {
   const logout = async () => {
     try {
       removeLocalStorage("isAuth");
-      await Cookies.remove("accessToken");
-      await Cookies.remove("refreshToken");
+      await Promise.all([
+        Cookies.remove("accessToken"),
+        Cookies.remove("refreshToken"),
+      ]);
 
       setIsAuthenticated(false);
     } catch (error) {

@@ -3,7 +3,6 @@ const Product = require("../models/productSchema");
 // Create a new product
 exports.createProduct = async (req, res) => {
   try {
-
     const {
       name,
       detail,
@@ -21,21 +20,26 @@ exports.createProduct = async (req, res) => {
     let backImage = "";
 
     if (files.frontImage) {
-      frontImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.frontImage[0].filename}`;
+      frontImage = `${req.protocol}://${req.get(
+        "host"
+      )}/images/uploads/products/${files.frontImage[0].filename}`;
     }
     if (files.backImage) {
-      backImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.backImage[0].filename}`;
+      backImage = `${req.protocol}://${req.get(
+        "host"
+      )}/images/uploads/products/${files.backImage[0].filename}`;
     }
 
-    if (files.step1Image) {
-      steps.step1.image = `${req.protocol}://${req.get("host")}/images/uploads/products/usage/${files.step1Image[0].filename}`;
-    }
-    if (files.step2Image) {
-      steps.step2.image = `${req.protocol}://${req.get("host")}/images/uploads/products/usage/${files.step2Image[0].filename}`;
-    }
-    if (files.step3Image) {
-      steps.step3.image = `${req.protocol}://${req.get("host")}/images/uploads/products/usage/${files.step3Image[0].filename}`;
-    }
+    Object.keys(files).forEach((key) => {
+      if (key.startsWith("steps[step")) {
+        const stepNumber = key.match(/steps\[step(\d+)\]/)[1];
+        if (files[key] && files[key][0]) {
+          steps[`step${stepNumber}`].image = `${req.protocol}://${req.get(
+            "host"
+          )}/images/uploads/products/usage/${files[key][0].filename}`;
+        }
+      }
+    });
 
     // Create a new product instance
     const newProduct = new Product({
@@ -96,19 +100,36 @@ exports.updateProduct = async (req, res) => {
       description,
       price,
       sizes,
-      frontImage,
-      backImage,
       stockQuantity,
       usageTitle,
       steps,
     } = req.body;
 
+    const files = req.files || {};
+    let frontImage = "";
+    let backImage = "";
+
     if (files.frontImage) {
-      frontImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.frontImage[0].filename}`;
+      frontImage = `${req.protocol}://${req.get(
+        "host"
+      )}/images/uploads/products/${files.frontImage[0].filename}`;
     }
     if (files.backImage) {
-      backImage = `${req.protocol}://${req.get("host")}/images/uploads/products/${files.backImage[0].filename}`;
+      backImage = `${req.protocol}://${req.get(
+        "host"
+      )}/images/uploads/products/${files.backImage[0].filename}`;
     }
+
+    Object.keys(files).forEach((key) => {
+      if (key.startsWith("steps[step")) {
+        const stepNumber = key.match(/steps\[step(\d+)\]/)[1];
+        if (files[key] && files[key][0]) {
+          steps[`step${stepNumber}`].image = `${req.protocol}://${req.get(
+            "host"
+          )}/images/uploads/products/usage/${files[key][0].filename}`;
+        }
+      }
+    });
 
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,

@@ -179,10 +179,40 @@ const verifyToken = (req, res) => {
   });
 };
 
+const verifyAdmin = async (req, res, next) => {
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const admin = await Admin.findById(decoded.id);
+
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    res.status(200).json({
+      _id: admin._id,
+      name: admin.name,
+      email: admin.email,
+      image: admin.image,
+    });
+    next();
+  } catch (error) {
+    console.error("Error in verifyAdmin:", error);
+    res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
 module.exports = {
   userSignUp,
   userSignIn,
   adminLogin,
   refreshToken,
   verifyToken,
+  verifyAdmin,
 };

@@ -5,8 +5,6 @@ import CancelOrder from "../components/Alerts/CancelOrder";
 import DeleteOrder from "../components/Alerts/DeleteOrder";
 import styles from "./style.module.css";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function Orders() {
   // Alerts
   const [showCancelAlert, setShowCancelAlert] = useState(false);
@@ -137,7 +135,7 @@ export default function Orders() {
             {order._id}
           </div>
           <div className={`${styles.productname} ${styles.productdescription}`}>
-            <div className="flex flex-col">
+            <div className='flex flex-col'>
               <div>
                 Cutomer Name: <strong>{order.billingDetails.name}</strong>
               </div>
@@ -147,22 +145,30 @@ export default function Orders() {
               <div>
                 Contact: <strong>{order.billingDetails.phone}</strong>
               </div>
-              <div className="flex flex-col">
+              <div className='flex flex-col'>
                 <div>
-                Address: <strong>{order.billingDetails.address.house},{order.billingDetails.address.street}</strong>
+                  Address:{" "}
+                  <strong>
+                    {order.billingDetails.address.house},
+                    {order.billingDetails.address.street}
+                  </strong>
                 </div>
                 <div>
-                  Postal Code: <strong>{order.billingDetails.address.postalCode}</strong>
+                  Postal Code:{" "}
+                  <strong>{order.billingDetails.address.postalCode}</strong>
                 </div>
                 <div>
-                City: <strong>{order.billingDetails.address.city},{order.billingDetails.address.country}</strong>
+                  City:{" "}
+                  <strong>
+                    {order.billingDetails.address.city},
+                    {order.billingDetails.address.country}
+                  </strong>
                 </div>
               </div>
             </div>
           </div>
           <div
-            className={`${styles.productprice} ${styles.productdescription}`}
-          >
+            className={`${styles.productprice} ${styles.productdescription}`}>
             <div>
               {order.productDetails.map((product) => (
                 <div key={product.productId}>
@@ -186,25 +192,21 @@ export default function Orders() {
                   : order.status === "completed"
                   ? "green"
                   : "red",
-            }}
-          >
+            }}>
             {order.status}
           </div>
           <div
-            className={`${styles.productoperations} ${styles.productdescription}`}
-          >
+            className={`${styles.productoperations} ${styles.productdescription}`}>
             {status === "pending" && (
               <div>
                 <button
                   className={styles.updatebtn}
-                  onClick={() => handleCompleteClick(order)}
-                >
+                  onClick={() => handleCompleteClick(order)}>
                   Complete
                 </button>
                 <button
                   className={styles.deletebtn}
-                  onClick={() => handleCancelClick(order)}
-                >
+                  onClick={() => handleCancelClick(order)}>
                   Cancel
                 </button>
               </div>
@@ -213,8 +215,7 @@ export default function Orders() {
               <div>
                 <button
                   className={styles.deletebtn}
-                  onClick={() => handleDeleteClick(order)}
-                >
+                  onClick={() => handleDeleteClick(order)}>
                   Delete
                 </button>
               </div>
@@ -223,7 +224,7 @@ export default function Orders() {
         </React.Fragment>
       ))
     ) : (
-      <div className="text-xl text-white">
+      <div className='text-xl text-white'>
         No <strong>{status}</strong> Orders
       </div>
     );

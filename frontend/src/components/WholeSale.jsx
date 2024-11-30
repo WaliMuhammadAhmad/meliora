@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { LampContainer } from "../ui/lamp.tsx";
-import WholeSaleCard from './WholeSaleCard.jsx';
+import WholeSaleCard from "./WholeSaleCard.jsx";
 import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:3001";
 
 function WholeSale() {
   const [pkgs, setProducts] = useState([]);
@@ -35,17 +33,16 @@ function WholeSale() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="bg-gradient-to-br mt-[-10%] from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-      >
+        className='bg-gradient-to-br mt-[-10%] from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl'>
         WholeSale
       </motion.h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8">
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8'>
         {pkgs.map((pkg) => (
           <WholeSaleCard key={pkg._id} pkg={pkg} />
         ))}
       </div>
     </LampContainer>
-  )
+  );
 }
 
 export default WholeSale;

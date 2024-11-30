@@ -1,33 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UpdateModal from "../components/Modals/UpdateProduct";
-import AddModal from "../components/Modals/AddProduct";
+import Modal from "../components/Modals/Product";
 import Alert from "../components/Alerts/Alert";
+import Stack from "@mui/material/Stack";
 import styles from "./style.module.css";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function AddProducts() {
-  const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
   const [products, setProducts] = useState([]);
   const [productToDelete, setProductToDelete] = useState(null);
-
-  const handleAddProduct = async (productData) => {
-    try {
-      // eslint-disable-next-line no-unused-vars
-      const response = await axios.post("/products", productData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      alert("Product added successfully");
-    } catch (error) {
-      console.error("Error adding product", error);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +33,7 @@ export default function AddProducts() {
 
   const handleUpdateClick = (product) => {
     setSelectedProduct(product);
-    setShowModal(true);
+    setShowUpdateModal(true);
   };
 
   const handleDeleteClick = (product) => {
@@ -95,19 +79,27 @@ export default function AddProducts() {
             {products.map((product, index) => (
               <React.Fragment key={product._id}>
                 <div
-                  className={`${styles.productno} ${styles.productdescription}`}
-                >
+                  className={`${styles.productno} ${styles.productdescription}`}>
                   {index + 1}
-                  <img src={product.frontImage} alt={product.name} />
+                  <Stack spacing={2} direction='row'>
+                    <img
+                      src={product.frontImage}
+                      alt={product.name}
+                      crossOrigin='anonymous'
+                    />
+                    <img
+                      src={product.backImage}
+                      alt={product.name}
+                      crossOrigin='anonymous'
+                    />
+                  </Stack>
                 </div>
                 <div
-                  className={`${styles.productname} ${styles.productdescription}`}
-                >
+                  className={`${styles.productname} ${styles.productdescription}`}>
                   {product.name}
                 </div>
                 <div
-                  className={`${styles.productprice} ${styles.productdescription}`}
-                >
+                  className={`${styles.productprice} ${styles.productdescription}`}>
                   {product.price}$
                 </div>
                 <div
@@ -118,23 +110,19 @@ export default function AddProducts() {
                     product.stockQuantity === 0
                       ? styles.outofstock
                       : styles.instock
-                  }`}
-                >
+                  }`}>
                   {product.stockQuantity === 0 ? "Out of Stock" : "In Stock"}
                 </div>
                 <div
-                  className={`${styles.productoperations} ${styles.productdescription}`}
-                >
+                  className={`${styles.productoperations} ${styles.productdescription}`}>
                   <button
                     className={styles.updatebtn}
-                    onClick={() => handleUpdateClick(product)}
-                  >
+                    onClick={() => handleUpdateClick(product)}>
                     Update
                   </button>
                   <button
                     className={styles.deletebtn}
-                    onClick={() => handleDeleteClick(product)}
-                  >
+                    onClick={() => handleDeleteClick(product)}>
                     Delete
                   </button>
                 </div>
@@ -144,19 +132,20 @@ export default function AddProducts() {
         </div>
 
         {/* Modals for updating and adding products */}
-        {showModal && (
-          <UpdateModal
-            show={showModal}
-            onClose={() => setShowModal(false)}
-            product={selectedProduct}
+
+        {showAddModal && (
+          <Modal
+            show={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            product={{}}
           />
         )}
 
-        {showAddModal && (
-          <AddModal
-            show={showAddModal}
-            onClose={() => setShowAddModal(false)}
-            submitAction={handleAddProduct}
+        {showUpdateModal && (
+          <Modal
+            show={showUpdateModal}
+            onClose={() => setShowUpdateModal(false)}
+            product={selectedProduct}
           />
         )}
 

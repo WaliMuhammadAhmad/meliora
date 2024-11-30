@@ -4,8 +4,6 @@ import Delete from "../components/Alerts/Delete";
 import BlogModal from "../components/Modals/Blog";
 import styles from "./style.module.css";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function AddBlogs() {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -80,13 +78,11 @@ export default function AddBlogs() {
             {blogs.map((blog, index) => (
               <React.Fragment key={blog._id}>
                 <div
-                  className={`${styles.productno} ${styles.productdescription}`}
-                >
+                  className={`${styles.productno} ${styles.productdescription}`}>
                   {index + 1}
                 </div>
                 <div
-                  className={`${styles.productname} ${styles.productdescription}`}
-                >
+                  className={`${styles.productname} ${styles.productdescription}`}>
                   <img
                     className={`${styles.blogimg}`}
                     src={blog.image}
@@ -99,28 +95,23 @@ export default function AddBlogs() {
                   />
                 </div>
                 <div
-                  className={`${styles.productprice} ${styles.productdescription}`}
-                >
+                  className={`${styles.productprice} ${styles.productdescription}`}>
                   {blog.blogName}
                 </div>
                 <div
-                  className={`${styles.productprice} ${styles.productdescription}`}
-                >
+                  className={`${styles.productprice} ${styles.productdescription}`}>
                   {blog.text}
                 </div>
                 <div
-                  className={`${styles.productoperations} ${styles.productdescription}`}
-                >
+                  className={`${styles.productoperations} ${styles.productdescription}`}>
                   <button
                     className={styles.updatebtn}
-                    onClick={() => handleUpdateClick(blog)}
-                  >
+                    onClick={() => handleUpdateClick(blog)}>
                     Update
                   </button>
                   <button
                     className={styles.deletebtn}
-                    onClick={() => handleDeleteClick(blog)}
-                  >
+                    onClick={() => handleDeleteClick(blog)}>
                     Delete
                   </button>
                 </div>
@@ -140,7 +131,7 @@ export default function AddBlogs() {
 
         {showDeleteAlert && (
           <Delete
-            text="Blog"
+            text='Blog'
             obj={blogToDelete.blogName}
             onConfirm={handleConfirmDelete}
             onCancel={() => setShowDeleteAlert(false)}

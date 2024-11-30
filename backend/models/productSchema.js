@@ -6,26 +6,26 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Product name is required"],
       trim: true,
-      minlength: [3, "Product name must be at least 3 characters long"],
+      minlength: [1, "Product name must be at least 3 characters long"],
       maxlength: [100, "Product name must not exceed 100 characters"],
     },
     detail: {
       type: String,
       required: [true, "Product Detail is required"],
       trim: true,
-      minlength: [10, "Detail must be at least 10 characters long"],
+      minlength: [1, "Detail must be at least 10 characters long"],
     },
     subDetail: {
       type: String,
       required: [true, "Product sub-detail is required"],
       trim: true,
-      minlength: [10, "Sub-detail must be at least 10 characters long"],
+      minlength: [1, "Sub-detail must be at least 10 characters long"],
     },
     description: {
       type: String,
       required: [true, "Product description is required"],
       trim: true,
-      minlength: [10, "Description must be at least 10 characters long"],
+      minlength: [1, "Description must be at least 10 characters long"],
     },
     price: {
       type: Number,
@@ -41,7 +41,7 @@ const productSchema = new mongoose.Schema(
         },
         quantity: {
           type: Number,
-          required: true, 
+          required: true,
         },
       },
     ],
@@ -63,9 +63,12 @@ const productSchema = new mongoose.Schema(
     },
     usageTitle: {
       type: String,
-      required: [true, "Product Usage title is required"],
+      required: [true, "How to use Product title is required"],
       trim: true,
-      minlength: [5, "Product Usage title must be at least 5 characters long"],
+      minlength: [
+        1,
+        "How to use Product title must be at least 5 characters long",
+      ],
     },
     steps: {
       step1: {

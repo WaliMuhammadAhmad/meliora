@@ -4,8 +4,6 @@ import LineGraph from "../components/graphs/LineGraph";
 import BarGraph from "../components/graphs/BarGraph";
 import styles from "./style.module.css";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function Dashboard() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -69,7 +67,7 @@ export default function Dashboard() {
             <h2>Total Products</h2>
           </div>
           <div className={styles.card}>
-            <h1>${totalRevenue ? totalRevenue.toFixed(2) : "0" }</h1>
+            <h1>${totalRevenue ? totalRevenue.toFixed(2) : "0"}</h1>
             <h2>Total Revenue</h2>
           </div>
           <div className={styles.lastcard}>
@@ -78,32 +76,31 @@ export default function Dashboard() {
               <h1>{topSellingProduct.name}</h1>
             </div>
             <div className={styles.progresscontainer}>
-              <svg width="120" height="120" className={styles.circularchart}>
+              <svg width='120' height='120' className={styles.circularchart}>
                 <circle
                   className={styles.circlebackground}
-                  cx="60"
-                  cy="60"
-                  r="45"
-                  strokeWidth="10"
-                  fill="none"
+                  cx='60'
+                  cy='60'
+                  r='45'
+                  strokeWidth='10'
+                  fill='none'
                 />
                 <circle
                   className={styles.circleprogress}
-                  cx="60"
-                  cy="60"
-                  r="45"
-                  strokeWidth="10"
-                  fill="none"
+                  cx='60'
+                  cy='60'
+                  r='45'
+                  strokeWidth='10'
+                  fill='none'
                   strokeDasharray={circleCircumference}
                   strokeDashoffset={circleCircumference - progress}
                 />
                 <text
-                  x="50%"
-                  y="50%"
-                  textAnchor="middle"
-                  dy=".3em"
-                  className={styles.progresstext}
-                >
+                  x='50%'
+                  y='50%'
+                  textAnchor='middle'
+                  dy='.3em'
+                  className={styles.progresstext}>
                   {topSellingProduct.percentage}%
                 </text>
               </svg>

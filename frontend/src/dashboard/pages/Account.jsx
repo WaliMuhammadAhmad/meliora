@@ -1,33 +1,41 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import styles from "./style.module.css";
 import axios from "axios";
 
 export default function Account() {
   const [admin, setAdmin] = useState({
+    id: "",
     name: "",
     email: "",
     password: "",
-    role: "",
     image: "",
     isActive: true,
   });
   const [selectedFile, setSelectedFile] = useState(null);
-  const id = "6742fcbe9f1e5cfdfbf02b0a"; // static admin ID for now
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAdminDetails = async () => {
       try {
-        const response = await axios.get(`/admins/${id}`);
-        if (response.data) {
-          setAdmin(response.data);
-        } else {
-          alert("No Admin found");
-        }
+        const response = await axios.post(
+          "/auth/admin/verify",
+          { token: Cookies.get("accessToken") },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("accessToken")}`,
+              "token-type": "access",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const { _id, name, email, image } = response.data;
+        setAdmin({ _id, name, email, image });
       } catch (error) {
-        console.error("Error fetching Admin:", error);
+        console.error("Error fetching admin details:", error);
       }
     };
-    fetchData();
+
+    fetchAdminDetails();
   }, []);
 
   const handleChange = (e) => {
@@ -55,7 +63,7 @@ export default function Account() {
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const response = await axios.put(`/admins/${id}`, {
+      const response = await axios.put(`/admins/${admin._id}`, {
         name: admin.name,
         email: admin.email,
         password: admin.password,
@@ -66,9 +74,7 @@ export default function Account() {
       if (selectedFile) {
         const fileData = new FormData();
         fileData.append("admin-image", selectedFile);
-
-        // eslint-disable-next-line no-unused-vars
-        const imageResponse = await axios.put(`/admins/${id}`, fileData, {
+        await axios.put(`/admins/${admin._id}`, fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -92,8 +98,8 @@ export default function Account() {
               <div className={styles.name}>
                 <label>Name</label>
                 <input
-                  type="text"
-                  name="name"
+                  type='text'
+                  name='name'
                   value={admin.name}
                   onChange={handleChange}
                 />
@@ -101,8 +107,8 @@ export default function Account() {
               <div className={styles.email}>
                 <label>Email Address</label>
                 <input
-                  type="email"
-                  name="email"
+                  type='email'
+                  name='email'
                   value={admin.email}
                   onChange={handleChange}
                 />
@@ -110,34 +116,34 @@ export default function Account() {
               <div className={styles.password}>
                 <label>Password</label>
                 <input
-                  type="password"
-                  name="password"
+                  type='password'
+                  name='password'
                   value={admin.password || ""}
-                  placeholder="Enter new password"
+                  placeholder='Enter new password'
                   onChange={handleChange}
                 />
               </div>
-              <button type="submit">Save</button>
+              <button type='submit'>Save</button>
             </form>
           </div>
           <div className={styles.image}>
             <div className={styles.icon}>
               {admin.image ? (
-                <img src={admin.image} alt={admin.name} crossOrigin={
-                  admin.image.startsWith("http://localhost:3001")
-                    ? "anonymous"
-                    : undefined
-                } />
+                <img
+                  src={admin.image}
+                  alt={admin.name}
+                  crossOrigin='anonymous'
+                />
               ) : (
-                <i className="fa fa-user-circle"></i>
+                <i className='fa fa-user-circle'></i>
               )}
             </div>
-            <label htmlFor="admin-image">Upload Image</label>
+            <label htmlFor='admin-image'>Upload Image</label>
             <input
               style={{ display: "none" }}
-              type="file"
-              name="admin-image"
-              id="admin-image"
+              type='file'
+              name='admin-image'
+              id='admin-image'
               onChange={handleFileChange}
             />
           </div>

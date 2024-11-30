@@ -13,6 +13,7 @@ const {
   adminLogin,
   refreshToken,
   verifyToken,
+  verifyAdmin,
 } = require("../auth/auth");
 
 router.use("/admins", adminRouter);
@@ -25,6 +26,7 @@ router.use("/blog", blogRouter);
 router.post("/auth/user/signup", userSignUp);
 router.post("/auth/user/signin", userSignIn);
 router.post("/auth/admin/login", adminLogin);
+router.post("/auth/admin/verify", verifyAdmin);
 router.post("/auth/token/refresh", refreshToken);
 router.post("/auth/token/verify", verifyToken);
 

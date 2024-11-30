@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LineChart } from "@mui/x-charts/LineChart";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function LineGraph() {
   const [orderStats, setOrderStats] = useState([]);
 

@@ -3,8 +3,6 @@ import styles from "./style.module.css";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function ReviewSection({ product }) {
   const { isAuthenticated, user } = useAuth();
   const [reviews, setReviews] = useState([]);

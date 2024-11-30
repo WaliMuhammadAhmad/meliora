@@ -6,8 +6,6 @@ import CreateContextApi from "../hooks/CreateContextApi";
 import Cookies from "js-cookie";
 import useAuth from "../hooks/useAuth";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function Checkout() {
   const { user, isAuthenticated } = useAuth();
   // eslint-disable-next-line no-unused-vars

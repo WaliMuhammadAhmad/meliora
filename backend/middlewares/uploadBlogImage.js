@@ -3,8 +3,9 @@ const path = require("path");
 const multer = require("multer");
 const crypto = require("crypto");
 
-// Ensure the directory exists
-const uploadPath = "public/images/uploads/blogs";
+const UPLOAD_PATH = process.env.IMG_UPLOAD_PATH;
+
+const uploadPath = `${UPLOAD_PATH}/blogs`;
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }

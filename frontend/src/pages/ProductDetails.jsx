@@ -15,8 +15,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaWhatsapp } from "react-icons/fa";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function ProductDetails() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);

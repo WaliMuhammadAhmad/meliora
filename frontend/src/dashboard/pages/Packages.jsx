@@ -4,8 +4,6 @@ import Delete from "../components/Alerts/Delete";
 import Package from "../components/Modals/Package";
 import styles from "./style.module.css";
 
-axios.defaults.baseURL = "http://localhost:3001";
-
 export default function Packages() {
   const [products, setPackages] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -93,25 +91,22 @@ export default function Packages() {
           {products.map((product, index) => (
             <React.Fragment key={product._id}>
               <div
-                className={`${styles.productno} ${styles.productdescription}`}
-              >
+                className={`${styles.productno} ${styles.productdescription}`}>
                 {index + 1}
                 {product.image && (
                   <img
                     src={product.image}
                     alt={product.name}
-                    crossOrigin="anonymous"
+                    crossOrigin='anonymous'
                   />
                 )}
               </div>
               <div
-                className={`${styles.productname} ${styles.productdescription}`}
-              >
+                className={`${styles.productname} ${styles.productdescription}`}>
                 {product.name}
               </div>
               <div
-                className={`${styles.productprice} ${styles.productdescription}`}
-              >
+                className={`${styles.productprice} ${styles.productdescription}`}>
                 {product.price}
               </div>
               <div
@@ -121,23 +116,19 @@ export default function Packages() {
                   product.isAvailable === false
                     ? styles.outofstock
                     : styles.instock
-                }`}
-              >
+                }`}>
                 {product.isAvailable === false ? "Out of Stock" : "In Stock"}
               </div>
               <div
-                className={`${styles.productoperations} ${styles.productdescription}`}
-              >
+                className={`${styles.productoperations} ${styles.productdescription}`}>
                 <button
                   className={styles.updatebtn}
-                  onClick={() => handleUpdateClick(product)}
-                >
+                  onClick={() => handleUpdateClick(product)}>
                   Update
                 </button>
                 <button
                   className={styles.deletebtn}
-                  onClick={() => handleDeleteClick(product)}
-                >
+                  onClick={() => handleDeleteClick(product)}>
                   Delete
                 </button>
               </div>
@@ -148,7 +139,7 @@ export default function Packages() {
 
       {showDeleteAlert && (
         <Delete
-          text="Package"
+          text='Package'
           obj={productToDelete?.name}
           onConfirm={handleConfirmDelete}
           onCancel={() => setShowDeleteAlert(false)}
