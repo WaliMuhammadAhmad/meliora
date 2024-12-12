@@ -31,7 +31,7 @@ router.post("/auth/token/refresh", refreshToken);
 router.post("/auth/token/verify", verifyToken);
 
 router.get("/", (req, res) => {
-  res.send("hello");
+  res.send(`Hello from SERVER : ${process.env.SERVER_PORT}`);
 });
 
 router.get("/test", (req, res) => {

@@ -30,21 +30,21 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: [true, "Profile picture is required"],
       trim: true,
-      default: "N/A"
+      default: "N/A",
     },
     address: {
-      house: { type: String, default: "N/A"  },
-      street: { type: String, default: "N/A"  },
-      city: { type: String, default: "N/A"  },
-      state: { type: String, default: "N/A"  },
-      postalCode: { type: String, default: "N/A"  },
+      house: { type: String, default: "N/A" },
+      street: { type: String, default: "N/A" },
+      city: { type: String, default: "N/A" },
+      state: { type: String, default: "N/A" },
+      postalCode: { type: String, default: "N/A" },
       country: { type: String, default: "N/A" },
     },
-    deliveryAddress : {
+    deliveryAddress: {
       type: String,
       required: false,
       trim: true,
-      minlength: [3,"Same as address or not"]
+      minlength: [3, "Same as address or not"],
     },
     paymentMethods: {
       cashOnDelivery: {
