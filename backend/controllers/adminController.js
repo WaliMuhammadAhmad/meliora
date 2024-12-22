@@ -7,26 +7,29 @@ exports.createAdmin = async (req, res) => {
     const { name, email, password, role } = req.body;
     let image = "";
 
-    // Check if there is an uploaded image
     if (req.file) {
-      image = `${req.protocol}://${req.get("host")}/images/uploads/admins/${
-        req.file.filename
-      }`;
+      image = req.file.location;
+    } else {
+      console.error("No image uploaded.");
     }
 
+    // Create a new admin document
     const newAdmin = new Admin({
       name,
       email,
       password,
       role,
-      image,
+      image, // Store the S3 URL in the database
     });
 
+    // Save the admin to the database
     const savedAdmin = await newAdmin.save();
-    res
-      .status(201)
-      .json({ message: "Admin created successfully", admin: savedAdmin });
+    res.status(201).json({
+      message: "Admin created successfully",
+      admin: savedAdmin,
+    });
   } catch (error) {
+    console.error("Error creating admin:", error.message);
     res.status(400).json({ error: error.message });
   }
 };
@@ -35,13 +38,12 @@ exports.createAdmin = async (req, res) => {
 exports.updateAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    let image = req.body.image;
+    let image = "";
 
-    // Update image if a new file is uploaded
     if (req.file) {
-      image = `${req.protocol}://${req.get("host")}/images/uploads/admins/${
-        req.file.filename
-      }`;
+      image = req.file.location;
+    } else {
+      console.error("No image uploaded.");
     }
 
     const updateData = {

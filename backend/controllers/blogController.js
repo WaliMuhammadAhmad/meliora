@@ -4,12 +4,12 @@ const Blog = require("../models/blogSchema");
 exports.createBlog = async (req, res) => {
   try {
     const { blogName, text } = req.body;
-
     let image = "";
+
     if (req.file) {
-      image = `${req.protocol}://${req.get("host")}/images/uploads/blogs/${
-        req.file.filename
-      }`;
+      image = req.file.location;
+    } else {
+      console.error("No image uploaded.");
     }
 
     const newblog = new Blog({
@@ -55,11 +55,12 @@ exports.updateBlog = async (req, res) => {
   try {
     const { blogName, text } = req.body;
     const updateData = { blogName, text };
+    let image = "";
 
     if (req.file) {
-      updateData.image = `${req.protocol}://${req.get(
-        "host"
-      )}/images/uploads/blogs/${req.file.filename}`;
+      image = req.file.location;
+    } else {
+      console.error("No image uploaded.");
     }
 
     const updatedBlog = await Blog.findByIdAndUpdate(

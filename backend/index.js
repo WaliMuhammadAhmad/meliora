@@ -1,25 +1,15 @@
 require("dotenv").config();
-const AWS = require("aws-sdk");
+const { S3Client } = require("@aws-sdk/client-s3");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
-const path = require("path");
-const connection = require("./db");
+const connection = require("./config/db");
 const router = require("./routers/router");
-
+const s3 = require("./config/s3");
 const app = express();
 const port = process.env.SERVER_PORT;
 const appOrigin = process.env.REACT_APP_API_ORIGIN;
-
-// AWS S3 Configuration
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
-});
-
-const s3 = new AWS.S3();
 
 app.use(cors({ origin: appOrigin }));
 app.use(express.json());
@@ -30,7 +20,6 @@ app.use(
   })
 );
 
-// Serve routes
 app.use("/", router);
 
 // Serve images from S3
@@ -43,7 +32,7 @@ app.get("/images/:key", async (req, res) => {
   };
 
   try {
-    const data = await s3.getObject(params).promise();
+    const data = await s3.send(new GetObjectCommand(params));
     res.writeHead(200, { "Content-Type": data.ContentType });
     res.write(data.Body);
     res.end();
@@ -53,10 +42,12 @@ app.get("/images/:key", async (req, res) => {
   }
 });
 
-connection().then(() => {
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+if (process.env.NODE_ENV !== "production") {
+  connection().then(() => {
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
   });
-});
+}
 
 module.exports = app;

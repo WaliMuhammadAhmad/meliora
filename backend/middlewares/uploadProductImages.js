@@ -1,6 +1,7 @@
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const crypto = require("crypto");
+const path = require("path");
 const s3 = require("../config/s3");
 
 const uploadMultiple = multer({

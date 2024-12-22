@@ -17,10 +17,11 @@ exports.createPackage = async (req, res) => {
     } = req.body;
 
     let image = "";
+
     if (req.file) {
-      image = `${req.protocol}://${req.get("host")}/images/uploads/packages/${
-        req.file.filename
-      }`;
+      image = req.file.location;
+    } else {
+      console.error("No image uploaded.");
     }
 
     const newPackage = new Package({
@@ -85,7 +86,6 @@ exports.updatePackage = async (req, res) => {
       isAvailable,
     } = req.body;
 
-    // Initialize an update object
     const updateData = {
       name,
       details,
@@ -98,12 +98,14 @@ exports.updatePackage = async (req, res) => {
       products,
       isAvailable,
     };
+    let image = "";
 
     if (req.file) {
-      updateData.image = `${req.protocol}://${req.get(
-        "host"
-      )}/images/uploads/packages/${req.file.filename}`;
+      image = req.file.location;
+    } else {
+      console.error("No image uploaded.");
     }
+
     const updatedPackage = await Package.findByIdAndUpdate(
       req.params.id,
       updateData,
