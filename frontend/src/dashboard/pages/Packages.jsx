@@ -31,12 +31,12 @@ export default function Packages() {
 
   const handleAddPackage = async (productData) => {
     try {
+      // eslint-disable-next-line
       const response = await axios.post("/package", productData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Package added successfully:", response.data);
       setShowAddModal(false);
       fetchPackages();
     } catch (error) {

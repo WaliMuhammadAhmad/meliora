@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import styles from './style.module.css'
-import axios from 'axios';
+import styles from "./style.module.css";
+import axios from "axios";
 
 export default function Blog({ onClose, blog }) {
   const [currentBlog, setCurrentBlog] = useState({
@@ -28,12 +28,10 @@ export default function Blog({ onClose, blog }) {
   const handleSubmit = async () => {
     try {
       if (blog) {
-        console.log("Updating blog with ID:", currentBlog);
         await axios.put(`/blog/${blog._id}`, currentBlog, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        console.log("Adding new blog:", currentBlog);
         await axios.post("/blog/", currentBlog, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -53,7 +51,7 @@ export default function Blog({ onClose, blog }) {
         <h2>{blog ? "Update Blog" : "Add Blog"}</h2>
         <label>Blog Name:</label>
         <input
-          type="text"
+          type='text'
           value={currentBlog.blogName}
           onChange={(e) =>
             setCurrentBlog((prev) => ({ ...prev, blogName: e.target.value }))
@@ -62,7 +60,7 @@ export default function Blog({ onClose, blog }) {
         />
         <label>Description:</label>
         <input
-          type="text"
+          type='text'
           value={currentBlog.text}
           onChange={(e) =>
             setCurrentBlog((prev) => ({ ...prev, text: e.target.value }))
@@ -71,8 +69,8 @@ export default function Blog({ onClose, blog }) {
         />
         <label>Image:</label>
         <input
-          type="file"
-          name="image"
+          type='file'
+          name='image'
           onChange={(e) =>
             setCurrentBlog((prev) => ({
               ...prev,

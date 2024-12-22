@@ -102,7 +102,6 @@ export default function AddModal({ onClose, product = {} }) {
       console.error("Error adding/updating Product:", error);
       const message =
         error.response?.data?.error || "Failed to add/update product";
-      console.log(message);
     }
   };
 

@@ -41,7 +41,6 @@ export default function Checkout() {
   };
 
   const placeOrder = async (orderData) => {
-    console.log("Placing order", orderData);
     try {
       // eslint-disable-next-line no-unused-vars
       const response = await axios.post("/order", orderData, {
